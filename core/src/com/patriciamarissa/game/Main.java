@@ -1,6 +1,7 @@
 package com.patriciamarissa.game;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -9,18 +10,30 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Player player;
-	Background background;
-	Background background2;
+	Background background, background2;
+	ArrayList <Platform> platforms ;
+	ArrayList <Enemy> enemies ;
+
+	ShapeRenderer rend ;
+
 	int speed;
-	ArrayList<Platform> platforms;
+
 	private Random rand = new Random(System.currentTimeMillis());
+	Random rand2 ;
 	
 	boolean onStartMenu;
 	Texture titleImg;
+	long speedtimer ;
 	
 	@Override
 	public void create () {
@@ -33,8 +46,43 @@ public class Main extends ApplicationAdapter {
 		int speed = 2;
 		onStartMenu = true;
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
-		
+		platforms = new ArrayList <Platform> () ;
+		enemies = new ArrayList <Enemy> () ;
+		rand2 = new Random () ;
+		rend = new ShapeRenderer () ;
 		createPlatforms();
+		makeEnemies () ; // REMOVE LATER
+		runTimer () ;
+	}
+	
+	public void runTimer () { // TESTING PURPOSES, THANKS SIR!
+		Timer.schedule (new Task () { 
+			@Override public void run () {
+				System.out.println ("tick") ;
+				increaseSpeed (1) ;
+				}
+		} ,10, 10 ) ; // 0 is delay to starting in seconds, 1 is time in between each tick in seconds
+	}
+	
+	public void createPlatforms() {
+		platforms = new ArrayList<Platform>();
+		int platNum = 4; 
+		platforms.add(new Platform(batch, speed, 200, 0));
+		for(int i = 1; i < platNum; i++) {	
+			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
+		}
+		
+		platforms.add(new Platform(batch, speed, 320, 0));
+		for(int i = 1; i < platNum; i++) {	
+			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
+		}
+	}
+	
+	public void makeEnemies () {
+		//int type = rand.nextInt (5) ;
+		// for the x and y, need to take into account where platforms are and make it based off that?
+		// TEST
+		enemies.add (new Enemy (batch, 0, 600, 400, speed)) ;
 	}
 	
 	public void move() {
@@ -100,6 +148,23 @@ public class Main extends ApplicationAdapter {
 		player.draw();
 		move();
 	}
+	public void increaseSpeed (int s) {
+		player.addSpeed(s);
+		for (Platform p : platforms) {
+			p.addSpeed(s);
+		}
+		for (Enemy e : enemies) {
+			e.addSpeed(s);
+		}
+	}
+	
+	public void drawFloor () {
+		rend.begin (ShapeType.Filled) ;
+		rend.setColor (255, 175, 229, 255) ; // TEMP VALUES
+		rend.rect (0, 0, 1200, 100) ;
+		rend.end () ;
+	}
+	
 
 	@Override
 	public void render () {
@@ -116,6 +181,7 @@ public class Main extends ApplicationAdapter {
 		background.draw();
 		background2.draw();
 		drawPlatforms();
+		drawFloor () ;
 		update();
 		
 		
@@ -144,7 +210,7 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	
-	public void createPlatforms() {
+	/*public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
 		int platNum = 4; 
 		platforms.add(new Platform(batch, speed, 200, 0));
@@ -158,10 +224,26 @@ public class Main extends ApplicationAdapter {
 			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
 			
 		}
-	}
+	}*/
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
+		batch.dispose () ;
+		rend.dispose () ;
 	}
 }
+
+
+
+/* BIT MANIPULATION
+ * accessing pixel colors. use a pixmap.
+ * Pixmap mask ;
+ * mask = new Pixmap ("filename") ;
+ * int color = mask.getPixel (x, y) ;
+ * that'll be in rgba form
+ * int red = ( color >> 24 ) ;
+ * shift it over 24 bits
+ * int green = (color >> 16 ) & OxFf ;
+ * int blue = (color >> 8 ) & OxFf ;
+ * int alpha = color & OxFf ;
+ */

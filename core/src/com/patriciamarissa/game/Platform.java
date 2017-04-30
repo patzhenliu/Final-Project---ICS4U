@@ -1,6 +1,9 @@
 package com.patriciamarissa.game;
 
+import java.awt.Image;
 import java.util.Random;
+
+import javax.swing.ImageIcon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -43,7 +46,7 @@ public class Platform {
 		plat = new Sprite (platimg) ;*/
 	}
 	
-	private void move() {
+	public void move() {
 		x -= moveSpeed;
 		if(x < 0 - platformSprite.getWidth()) {
 			x = rand.nextInt(200) + 1000;
@@ -57,15 +60,6 @@ public class Platform {
 		batch.end();
 		move();
 	}
-	
-	/*public boolean stillOnScreen () { // know when to remove from the arraylist
-		if (x + w < 0) {
-			return true ;
-		}
-		else {
-			return false ;
-		}
-	}*/
 	
 	public boolean collideTop(Player player){ ///should only be feet colliding not anything
 		Sprite playerSprite = player.getSprite();
@@ -97,5 +91,7 @@ public class Platform {
 		return (int) platformSprite.getHeight();
 	}
 	
-	
+	public void addSpeed (int s) {
+		moveSpeed += s ;
+	}
 }

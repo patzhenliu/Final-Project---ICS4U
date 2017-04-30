@@ -24,7 +24,9 @@ public class Player {
 	private int y;
 	private int groundLvl;
 	private int jumpHeight;
-	
+	private int lives ;
+	private int [] powerups ; // ignore this for now
+	// powerups: shoot, increase lives, higher jump? tba
 	
 	boolean isJumpingUp;
 	boolean facingForwards; //true-right false-left
@@ -47,6 +49,7 @@ public class Player {
 		spriteCount = 0;
 		animationCount = 2;
 		
+		powerups = new int [4] ; // uhhh change this once we actually decide the powerups
 		
 		groundLvl = 100;
 		jumpHeight = groundLvl + 50;
@@ -66,6 +69,8 @@ public class Player {
 		x = 100;
 		y = 100;
 		speed = 10;
+		lives = 1 ;
+		lives += powerups [1] ;
 		
 		isJumpingUp = false;
 		facingForwards = true;
@@ -74,9 +79,7 @@ public class Player {
 	}
 	
 	public void moveLeft() {
-		//if (x - speed > 0) {
-			x -= speed;
-		//}
+		x -= speed;
 		if (spriteCount == 0) {
 			
 			spriteCount = sprites.length - 1;
@@ -119,7 +122,6 @@ public class Player {
 	
 	public void draw() {
 		batch.begin();
-		//sprites[spriteCount].flip(true,false);
 		currentSprite.draw(batch);
 		batch.end();
 	}
@@ -154,6 +156,7 @@ public class Player {
 	
 	public void die(){
 		isDead = true;
+		//lives = 0 ;
 	}
 	
 	public boolean dying() {
@@ -193,7 +196,6 @@ public class Player {
 	
 	public void setGroundLvl(int gl) {
 		groundLvl = gl;
-		//System.out.println(jumpHeight);
 	}
 	
 	public boolean isJumping() {
@@ -211,5 +213,18 @@ public class Player {
 	public int getX() {
 		return x;
 	}
-
+	public int getLives () {
+		return lives ;
+	}
+	
+	public void loseLife () {
+		lives -= 1 ;
+	}
+	
+	public void addSpeed (int s) {
+		speed += s ;
+	}
+	public int getY () {
+		return y ;
+	}
 }
