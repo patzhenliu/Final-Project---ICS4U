@@ -31,8 +31,9 @@ public class Main extends ApplicationAdapter {
 	private Random rand = new Random(System.currentTimeMillis());
 	Random rand2 ;
 	
-	boolean onStartMenu;
+	String page;
 	Texture titleImg;
+	Texture loseImg;
 	long speedtimer ;
 	
 	@Override
@@ -44,8 +45,9 @@ public class Main extends ApplicationAdapter {
 		background = new Background(batch, 0, 1920, 1080, speed);
 		background2 = new Background(batch, 1920, 1920, 1080, speed);
 		int speed = 2;
-		onStartMenu = true;
+		page = "START";
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
+		loseImg = new Texture(Gdx.files.internal("loseImg.png"));
 		platforms = new ArrayList <Platform> () ;
 		enemies = new ArrayList <Enemy> () ;
 		rand2 = new Random () ;
@@ -114,13 +116,20 @@ public class Main extends ApplicationAdapter {
 	
 	public void update() {
 		if (player.dying()) {
+			page = "LOSE";
+			return;
+		}
+		else if (page.equals("LOSE")) {
+			loseScreen();
 			return;
 		}
 		
-		if (onStartMenu) {
+		if (page.equals("START")) {
 			startMenu();
 			return;
 		}
+		
+		
 		
 		boolean isOnPlatform = false;
 		for (int i = 0; i < platforms.size(); i++) {
@@ -202,8 +211,21 @@ public class Main extends ApplicationAdapter {
         
 		if(Gdx.input.isKeyPressed(Keys.ENTER)) {
 			//menuMusic.dispose();
-			onStartMenu = false;
+			page = "GAME";
 		}
+	}
+	
+	public void loseScreen() {
+		//draws screen when player loses
+		//checks if player hits ENTER - play again
+		batch.begin();
+	    batch.draw(loseImg, -100, -120);
+        batch.end();
+        
+        if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
+        	player.reset();
+        	page = "GAME";
+        }
 	}
 	
 	public void drawPlatforms() {
