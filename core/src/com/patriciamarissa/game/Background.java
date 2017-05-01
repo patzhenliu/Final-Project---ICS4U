@@ -50,4 +50,8 @@ public class Background {
 	public void start() {
 		moving = true;
 	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
 }

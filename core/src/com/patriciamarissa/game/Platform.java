@@ -46,6 +46,10 @@ public class Platform {
 		plat = new Sprite (platimg) ;*/
 	}
 	
+	public void randPosition() { //does nothing
+		return;
+	}
+	
 	public void move() {
 		x -= moveSpeed;
 		if(x < 0 - platformSprite.getWidth()) {

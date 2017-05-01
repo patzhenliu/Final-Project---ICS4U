@@ -166,7 +166,7 @@ public class Main extends ApplicationAdapter {
 			p.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
-			e.addSpeed(s);
+			e.addSpeed(speed);
 		}
 	}
 	
@@ -223,7 +223,7 @@ public class Main extends ApplicationAdapter {
         batch.end();
         
         if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
-        	player.reset();
+        	reset();
         	page = "GAME";
         }
 	}
@@ -231,6 +231,20 @@ public class Main extends ApplicationAdapter {
 	public void drawPlatforms() {
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).draw();
+		}
+	}
+	
+	public void reset() {
+		background.setX(0);
+		background2.setX(1920);
+		player.reset();
+    	speed = 2;
+    	player.setMoveSpeed(speed);
+    	for (Platform p : platforms) {
+			p.setMoveSpeed(speed);
+		}
+		for (Enemy e : enemies) {
+			e.addSpeed(speed);
 		}
 	}
 	
