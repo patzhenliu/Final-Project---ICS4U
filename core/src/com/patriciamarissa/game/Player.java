@@ -221,10 +221,20 @@ public class Player {
 		lives -= 1 ;
 	}
 	
-	public void addSpeed (int s) {
-		speed += s ;
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}
+	
+	public int getSpeed() {
+		return speed;
+	}
+	
 	public int getY () {
 		return y ;
 	}
+	
+	public void setMoveSpeed(int moveSpeed) {
+		this.moveSpeed = moveSpeed;
+	}
+	
 }

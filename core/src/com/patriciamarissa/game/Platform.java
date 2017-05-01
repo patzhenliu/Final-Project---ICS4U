@@ -91,6 +91,10 @@ public class Platform {
 		return (int) platformSprite.getHeight();
 	}
 	
+	public void setMoveSpeed (int moveSpeed) {
+		this.moveSpeed = moveSpeed ;
+	}
+	
 	public void addSpeed (int s) {
 		moveSpeed += s ;
 	}

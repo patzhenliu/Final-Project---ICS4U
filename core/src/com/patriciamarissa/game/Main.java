@@ -148,10 +148,13 @@ public class Main extends ApplicationAdapter {
 		player.draw();
 		move();
 	}
+	
 	public void increaseSpeed (int s) {
-		player.addSpeed(s);
+		speed += s;
+		player.setSpeed(player.getSpeed() + s);
+		player.setMoveSpeed(speed);
 		for (Platform p : platforms) {
-			p.addSpeed(s);
+			p.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
 			e.addSpeed(s);
