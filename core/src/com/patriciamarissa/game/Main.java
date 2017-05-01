@@ -50,8 +50,8 @@ public class Main extends ApplicationAdapter {
 		loseImg = new Texture(Gdx.files.internal("loseImg.png"));
 		platforms = new ArrayList <Platform> () ;
 		enemies = new ArrayList <Enemy> () ;
-		rand2 = new Random () ;
-		rend = new ShapeRenderer () ;
+		rand2 = new Random ();
+		rend = new ShapeRenderer ();
 		createPlatforms();
 		makeEnemies () ; // REMOVE LATER
 		runTimer () ;
@@ -119,10 +119,12 @@ public class Main extends ApplicationAdapter {
 			page = "LOSE";
 			return;
 		}
-		else if (page.equals("LOSE")) {
+		else if (page.equals("LOSE") && player.getLives() == 0) {
 			loseScreen();
 			return;
 		}
+	
+		System.out.println(player.getLives());
 		
 		if (page.equals("START")) {
 			startMenu();
@@ -238,6 +240,7 @@ public class Main extends ApplicationAdapter {
 		background.setX(0);
 		background2.setX(1920);
 		player.reset();
+		player.resetLives();
     	speed = 2;
     	player.setMoveSpeed(speed);
     	for (Platform p : platforms) {

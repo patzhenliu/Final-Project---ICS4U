@@ -24,8 +24,8 @@ public class Player {
 	private int y;
 	private int groundLvl;
 	private int jumpHeight;
-	private int lives ;
-	private int [] powerups ; // ignore this for now
+	private int lives;
+	private int [] powerups; // ignore this for now
 	// powerups: shoot, increase lives, higher jump? tba
 	
 	boolean isJumpingUp;
@@ -54,6 +54,7 @@ public class Player {
 		groundLvl = 100;
 		jumpHeight = groundLvl + 50;
 		facingForwards = true;
+		lives = 3;
 		reset();
 		
 		//deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
@@ -69,7 +70,7 @@ public class Player {
 		x = 100;
 		y = 100;
 		speed = 10;
-		lives = 1 ;
+		//lives = 3 ;
 		lives += powerups [1] ;
 		
 		isJumpingUp = false;
@@ -156,7 +157,7 @@ public class Player {
 	
 	public void die(){
 		isDead = true;
-		//lives = 0 ;
+		lives -= 1 ;
 	}
 	
 	public boolean dying() {
@@ -213,12 +214,8 @@ public class Player {
 	public int getX() {
 		return x;
 	}
-	public int getLives () {
+	public int getLives() {
 		return lives ;
-	}
-	
-	public void loseLife () {
-		lives -= 1 ;
 	}
 	
 	public void setSpeed(int speed) {
@@ -235,6 +232,10 @@ public class Player {
 	
 	public void setMoveSpeed(int moveSpeed) {
 		this.moveSpeed = moveSpeed;
+	}
+	
+	public void resetLives() {
+		lives = 3;
 	}
 	
 }
