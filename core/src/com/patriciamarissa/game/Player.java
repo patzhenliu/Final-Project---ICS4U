@@ -59,7 +59,6 @@ public class Player {
 		
 		//deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
 		
-		
 	}
 	
 	public void reset() {

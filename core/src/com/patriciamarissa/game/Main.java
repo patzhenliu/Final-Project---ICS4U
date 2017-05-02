@@ -251,6 +251,10 @@ public class Main extends ApplicationAdapter {
 		}
 	}
 	
+	public void drawLives() {
+		return;
+	}
+	
 	
 	/*public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
