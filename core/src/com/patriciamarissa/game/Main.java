@@ -168,7 +168,7 @@ public class Main extends ApplicationAdapter {
 			p.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
-			e.addSpeed(speed);
+			e.setSpeed(speed);
 		}
 	}
 	
@@ -247,26 +247,9 @@ public class Main extends ApplicationAdapter {
 			p.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
-			e.addSpeed(speed);
+			e.setSpeed(speed);
 		}
 	}
-	
-	
-	/*public void createPlatforms() {
-		platforms = new ArrayList<Platform>();
-		int platNum = 4; 
-		platforms.add(new Platform(batch, speed, 200, 0));
-		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
-			
-		}
-		
-		platforms.add(new Platform(batch, speed, 320, 0));
-		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
-			
-		}
-	}*/
 	
 	@Override
 	public void dispose () {

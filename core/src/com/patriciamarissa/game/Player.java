@@ -56,14 +56,9 @@ public class Player {
 		facingForwards = true;
 		lives = 3;
 		reset();
-		
-		//deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
-		
-		
 	}
 	
 	public void reset() {
-		
 		if (!facingForwards) {
 			changeDirection();
 		}
