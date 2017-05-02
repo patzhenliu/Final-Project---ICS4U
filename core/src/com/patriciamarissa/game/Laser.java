@@ -51,7 +51,7 @@ public class Laser {
 	}
 	
 	public void doDamage (Player player) { // enemies always do the same amount of damage, 1 life lost each time
-		player.loseLife () ;
+		player.die () ;
 	}
 	
 	public void doDamage (Enemy enemy) {
