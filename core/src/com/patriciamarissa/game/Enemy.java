@@ -29,8 +29,22 @@ public class Enemy {
 			leftright = false ;
 		}
 		else if (type == 1) { // ENEMY TYPE 2: FLIES UP AND DOWN BETWEEN PLATS
-			// INCOMPLETE
+			// COMPLETE
 			spritesheet = new Texture  (Gdx.files.internal("flying.png")) ;
+			sprites = new Sprite [4] ;
+			deathSprs = new Sprite [5] ;
+			
+			sprites [0] = new Sprite (spritesheet, 5, 10, 79, 114) ;
+			sprites [0] = new Sprite (spritesheet, 102, 46, 81, 78) ;
+			sprites [0] = new Sprite (spritesheet, 205, 45, 90, 80) ;
+			sprites [0] = new Sprite (spritesheet, 311, 31, 103, 92) ;
+			
+			deathSprs [0] = new Sprite (spritesheet, 8, 409, 91, 100) ;
+			deathSprs [1] = new Sprite (spritesheet, 116, 372, 101, 136) ;
+			deathSprs [2] = new Sprite (spritesheet, 245, 364, 81, 144) ;
+			deathSprs [3] = new Sprite (spritesheet, 352, 355, 81, 136) ;
+			deathSprs [4] = new Sprite (spritesheet, 455, 394, 81, 144) ;
+			
 			hp = 1 ;
 			updown = false ;
 		}
@@ -41,10 +55,10 @@ public class Enemy {
 			leftright = false ;
 		}
 		else if (type == 3) { // ENEMY TYPE 4: CHARGES TOWARDS PLAYER. JUST RUNS ON FLOOR-LEVEL.
-			// INCOMPLETE
+			// COMPLETE
 			spritesheet = new Texture  (Gdx.files.internal("charging.png")) ;
 			sprites = new Sprite [6] ;
-			//deathSprs = new Sprite [8] ;
+			deathSprs = new Sprite [10] ;
 			
 			sprites [0] = new Sprite (spritesheet, 29, 577, 162, 125) ;
 			sprites [1] = new Sprite (spritesheet, 207, 577, 162, 125) ;
@@ -52,6 +66,17 @@ public class Enemy {
 			sprites [3] = new Sprite (spritesheet, 545, 577, 162, 125) ;
 			sprites [4] = new Sprite (spritesheet, 727, 577, 162, 125) ;
 			sprites [5] = new Sprite (spritesheet, 917, 577, 162, 125) ;
+			
+			deathSprs [0] = new Sprite (spritesheet, 30, 1004, 165, 124) ;
+			deathSprs [1] = new Sprite (spritesheet, 196, 1004, 165, 124) ;
+			deathSprs [2] = new Sprite (spritesheet, 371, 1004, 165, 124) ;
+			deathSprs [3] = new Sprite (spritesheet, 540, 1004, 165, 124) ;
+			deathSprs [4] = new Sprite (spritesheet, 710, 1004, 165, 124) ;
+			deathSprs [5] = new Sprite (spritesheet, 882, 1004, 165, 124) ;
+			deathSprs [6] = new Sprite (spritesheet, 30, 1169, 165, 124) ;
+			deathSprs [7] = new Sprite (spritesheet, 179, 1169, 159, 124) ;
+			deathSprs [6] = new Sprite (spritesheet, 320, 1169, 165, 124) ;
+			deathSprs [7] = new Sprite (spritesheet, 440, 1134, 155, 147) ;
 			
 			hp = 2 ;
 			leftright = false ;
@@ -102,6 +127,10 @@ public class Enemy {
 		batch.end () ;
 	}
 	
+	public void hurt () { // make the sprite flicker when damage is taken
+		
+	}
+	
 	public void walk (int left, int right) { // THIS NEEDS TO TAKE THE PLATFORM BOUNDARIES AS A PARAMETER
 		
 	}
@@ -143,6 +172,10 @@ public class Enemy {
 	
 	public void loseHp (int power) {
 		hp -= power ;
+	}
+	
+	public int getHp () {
+		return hp ;
 	}
 	
 	public int getSpeed () {
