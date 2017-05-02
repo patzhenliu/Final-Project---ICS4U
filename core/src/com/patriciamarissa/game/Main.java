@@ -21,20 +21,21 @@ public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Player player;
 	Background background, background2;
-	ArrayList <Platform> platforms ;
-	ArrayList <Enemy> enemies ;
+	ArrayList <Platform> platforms;
+	ArrayList <Enemy> enemies;
 
-	ShapeRenderer rend ;
+	ShapeRenderer rend;
+	Texture[] nums;
 
 	int speed;
 
 	private Random rand = new Random(System.currentTimeMillis());
-	Random rand2 ;
+	Random rand2;
 	
 	String page;
 	Texture titleImg;
 	Texture loseImg;
-	long speedtimer ;
+	long speedtimer;
 	
 	@Override
 	public void create () {
@@ -55,6 +56,12 @@ public class Main extends ApplicationAdapter {
 		createPlatforms();
 		makeEnemies () ; // REMOVE LATER
 		runTimer () ;
+		
+		nums = new Texture[10];
+		for(int i = 0; i < nums.length; i++){
+		    String fileName = "text/" + i + ".png";
+		    nums[i] = new Texture(Gdx.files.internal(fileName));
+		}
 	}
 	
 	public void runTimer () { // TESTING PURPOSES, THANKS SIR!
@@ -115,6 +122,8 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	public void update() {
+		drawLives();
+		
 		if (player.dying()) {
 			page = "LOSE";
 			return;
@@ -130,7 +139,6 @@ public class Main extends ApplicationAdapter {
 			startMenu();
 			return;
 		}
-		
 		
 		
 		boolean isOnPlatform = false;
@@ -168,7 +176,7 @@ public class Main extends ApplicationAdapter {
 			p.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
-			e.addSpeed(speed);
+			e.setSpeed(speed);
 		}
 	}
 	
@@ -247,30 +255,22 @@ public class Main extends ApplicationAdapter {
 			p.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
-			e.addSpeed(speed);
+			e.setSpeed(speed);
 		}
 	}
 	
 	public void drawLives() {
-		return;
+		drawNum(20, 20, player.getLives());
 	}
 	
-	
-	/*public void createPlatforms() {
-		platforms = new ArrayList<Platform>();
-		int platNum = 4; 
-		platforms.add(new Platform(batch, speed, 200, 0));
-		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
-			
-		}
-		
-		platforms.add(new Platform(batch, speed, 320, 0));
-		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
-			
-		}
-	}*/
+	public void drawNum(int xDisplace, int y, int num) { //i was lazy ill make it nicer
+		//draws numbers
+		batch.begin();
+		for(int i = 0; i < Integer.toString(num).length(); i++) {
+			batch.draw(nums[Integer.parseInt(Integer.toString(num).substring(i, i + 1))], i * 20 + xDisplace, y);
+        }
+		batch.end();
+	}
 	
 	@Override
 	public void dispose () {
