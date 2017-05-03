@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Enemy {
-	private int x, y, w, h, hp, speed, spritecount, animatecount ;
+	private int x, y, w, h, hp, speed, spritecount, animatecount, bx, bw ;
 	private final int type ;
 	private Batch batch ;
 	private Texture spritesheet ;
@@ -16,12 +16,14 @@ public class Enemy {
 	boolean leftright ; // true right, false left
 	boolean updown ; // true up, false down
 	
-	public Enemy (Batch batch, int t, int x, int y, int s) {
+	public Enemy (Batch batch, int t, int x, int y, int s, int bx, int bw) {
 		spritecount = 0 ;
 		animatecount = 2 ;
 		type = t ;
 		this.x = x ;
 		this.y = y ;
+		this.bx = bx ; // boundary x
+		this.bw = bw ; // boundary width
 		if (type == 0) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
 			spritesheet = new Texture  (Gdx.files.internal("walking.png")) ;
 			sprites = new Sprite [4] ;
@@ -150,6 +152,92 @@ public class Enemy {
 		}
 	}
 	
+	public void moveLeft() {
+		// maybe make the lion run faster?
+		x -= speed;
+		if (spritecount == 0) {
+			spritecount = sprites.length - 1;
+			if (leftright) {
+				changeDirection();
+			}
+		}
+	}
+	
+	public void moveRight() {
+		if (x + speed < Gdx.graphics.getWidth()) {
+			x += speed;
+		}
+		if (spritecount == 0) {
+			spritecount = sprites.length - 1;
+			if (!leftright) {
+				changeDirection();
+			}
+		}
+	}
+	
+	public void moveUp () {
+		y += speed ;
+		if (spritecount == 0) {
+			spritecount = sprites.length - 1 ;
+			if (!updown) {
+				changeDirection () ;
+			}
+		}
+	}
+	
+	public void moveDown () {
+		y -= speed ;
+		if (spritecount == 0) {
+			spritecount = sprites.length - 1 ;
+			if (updown) {
+				changeDirection () ;
+			}
+		}
+	}
+	
+	public void move () { // oh god, still need to do actual animating
+		// TYPES 2 AND 4 DONT MOVE. TYPE 2 SHOOTS A LASER THO.
+		if (type == 3) {
+			moveLeft () ; // the lion is stuck on the floor, therefore will only go left
+		}
+		if (type == 1) {
+			if (updown) { // going up
+				if (y >= 600 - currentsprite.getHeight ()) {
+					moveDown () ;
+				}
+				else {
+					moveUp () ;
+				}
+			}
+			else if (!updown) {
+				if (y <= 100) { // 100 is the floor
+					moveUp () ;
+				}
+				else {
+					moveDown () ;
+				}
+			}
+		}
+		if (type == 0) { // its the tree that walks based on boundaries
+			if (leftright) { // going right
+				if (x >= bw - currentsprite.getWidth ()) {
+					moveLeft () ;
+				}
+				else {
+					moveRight () ;
+				}
+			}
+			else if (!leftright) {
+				if (x <= bx) { // 100 is the floor
+					moveRight () ;
+				}
+				else {
+					moveLeft () ;
+				}
+			}
+		}
+	}
+	
 	public void die () {
 		//dying "animation"
 		batch.begin () ;
@@ -163,29 +251,7 @@ public class Enemy {
 		
 	}
 	
-	public void walk (int left, int right) { // THIS NEEDS TO TAKE THE PLATFORM BOUNDARIES AS A PARAMETER
-		
-	}
-	
-	public void fly () {
-		if (y >= 600 - currentsprite.getHeight ()) {
-			updown = false ;
-		}
-		if (y <= 100) {
-			updown = true ;
-		}
-		if (updown == true) {
-			y += speed ;
-		}
-		else {
-			y -= speed ;
-		}
-	}
-	
 	public void shoot () {
-	}
-	
-	public void charge () {
 		
 	}
 	
