@@ -48,7 +48,7 @@ public class Main extends ApplicationAdapter {
 		player = new Player(batch, speed);
 		background = new Background(batch, 0, 1920, 1080, speed);
 		background2 = new Background(batch, 1920, 1920, 1080, speed);
-		int speed = 2;
+		//int speed = 2;
 		page = "START";
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
 		loseImg = new Texture(Gdx.files.internal("loseImg.png"));

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Enemy {
 	private int x, y, w, h, hp, speed, spritecount, animatecount, bx, bw ;
@@ -18,7 +19,6 @@ public class Enemy {
 	
 	public Enemy (Batch batch, int t, int x, int y, int s, int bx, int bw) {
 		spritecount = 0 ;
-		animatecount = 2 ;
 		type = t ;
 		this.x = x ;
 		this.y = y ;
@@ -26,6 +26,7 @@ public class Enemy {
 		this.bw = bw ; // boundary width
 		if (type == 0) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
 			spritesheet = new Texture  (Gdx.files.internal("walking.png")) ;
+			animatecount = 4 ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
 			
@@ -46,6 +47,7 @@ public class Enemy {
 		}
 		else if (type == 1) { // ENEMY TYPE 2: FLIES UP AND DOWN BETWEEN PLATS
 			spritesheet = new Texture  (Gdx.files.internal("flying.png")) ;
+			animatecount = 4 ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
 			
@@ -66,6 +68,7 @@ public class Enemy {
 		}
 		else if (type == 2) { // ENEMY TYPE 3: ONLY SHOOTS STRAIGHT BEAM. STANDS STILL.
 			spritesheet = new Texture  (Gdx.files.internal("fire laser.png")) ;
+			animatecount = 9 ;
 			sprites = new Sprite [9] ;
 			deathSprs = new Sprite [7] ;
 
@@ -92,6 +95,7 @@ public class Enemy {
 		}
 		else if (type == 3) { // ENEMY TYPE 4: CHARGES TOWARDS PLAYER. JUST RUNS ON FLOOR-LEVEL.
 			spritesheet = new Texture  (Gdx.files.internal("charging.png")) ;
+			animatecount = 6 ;
 			sprites = new Sprite [6] ;
 			deathSprs = new Sprite [10] ;
 			
@@ -119,6 +123,7 @@ public class Enemy {
 		}
 		else if (type == 4) { // ENEMY TYPE 5: JUST STANDS THERE. HAS TO BE SHOT A LOT. BETTER TO AVOID.
 			spritesheet = new Texture  (Gdx.files.internal("stand still.png")) ;
+			animatecount = 0 ;
 			deathSprs = new Sprite [6] ;
 			
 			deathSprs [0] = new Sprite (spritesheet, 6, 776, 159, 100) ;
@@ -195,6 +200,18 @@ public class Enemy {
 		}
 	}
 	
+	/*public void move() {
+		moveBack();
+		if (spriteCount > 0) {
+			animationCount--;
+			if (animationCount == 0) {
+				spriteCount--;
+				animationCount = speed;
+			}
+			currentSprite = sprites[spriteCount];
+		}
+	}*/
+	
 	public void move () { // oh god, still need to do actual animating
 		// TYPES 2 AND 4 DONT MOVE. TYPE 2 SHOOTS A LASER THO.
 		if (type == 3) {
@@ -236,6 +253,15 @@ public class Enemy {
 				}
 			}
 		}
+		if (spritecount > 0) {
+			animatecount--;
+			if (animatecount == 0) {
+				spritecount--;
+				animatecount = speed;
+			}
+			currentsprite = sprites[spritecount];
+		}
+		currentsprite.setPosition (x, y) ;
 	}
 	
 	public void die () {
@@ -245,6 +271,13 @@ public class Enemy {
 			batch.draw(i, x, y) ;
 		}
 		batch.end () ;
+	}
+	
+	public boolean collide (Player player) {
+		Sprite playerSprite = player.getSprite();
+		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
+		Rectangle logRect = new Rectangle(x, y, w, h);
+		return rect.overlaps(logRect);
 	}
 	
 	public void hurt () { // make the sprite flicker when damage is taken
