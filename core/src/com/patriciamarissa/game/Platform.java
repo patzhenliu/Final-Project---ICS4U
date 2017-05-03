@@ -62,7 +62,7 @@ public class Platform {
 		batch.begin();
 		platformSprite.draw(batch);
 		batch.end();
-		move();
+		//move();
 	}
 	
 	public boolean collideTop(Player player){ ///should only be feet colliding not anything

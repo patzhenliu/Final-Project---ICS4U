@@ -76,6 +76,7 @@ public class Player {
 		facingForwards = true;
 		isDead = false;
 		dyingSpeed = 20;
+		currentSprite.setPosition(x, y);
 	}
 	
 	public void moveLeft() {

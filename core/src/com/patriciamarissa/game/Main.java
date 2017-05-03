@@ -38,6 +38,8 @@ public class Main extends ApplicationAdapter {
 	Texture lifeImg;
 	long speedtimer;
 	
+	boolean isMoving;
+	
 	@Override
 	public void create () {
 		speed = 2; //speed on screen moving backwards
@@ -58,6 +60,7 @@ public class Main extends ApplicationAdapter {
 		createPlatforms();
 		//makeEnemies () ; // REMOVE LATER
 		runTimer () ;
+		isMoving = false;
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -69,7 +72,7 @@ public class Main extends ApplicationAdapter {
 	public void runTimer () { // TESTING PURPOSES, THANKS SIR!
 		Timer.schedule (new Task () { 
 			@Override public void run () {
-				System.out.println ("tick") ;
+				//System.out.println ("tick") ;
 				increaseSpeed (1) ;
 				}
 		} ,10, 10 ) ; // 0 is delay to starting in seconds, 1 is time in between each tick in seconds
@@ -99,11 +102,17 @@ public class Main extends ApplicationAdapter {
 	public void move() {
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
 			player.moveRight();
+			if (page.equals("GAME")) {
+				isMoving = true;
+			}
 			
 		}
 		
 		else if(Gdx.input.isKeyPressed(Keys.LEFT)){
 			player.moveLeft();
+			if (page.equals("GAME")) {
+				isMoving = true;
+			}
 				
 		}
 		else {
@@ -112,6 +121,9 @@ public class Main extends ApplicationAdapter {
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			player.jump();
+			if (page.equals("GAME")) {
+				isMoving = true;
+			}
 				
 		}
 		else if(Gdx.input.isKeyPressed(Keys.DOWN) && !player.isJumping()){ //not important
@@ -119,7 +131,10 @@ public class Main extends ApplicationAdapter {
 				
 		}
 		
-		player.move();
+		System.out.println(page);
+		if (isMoving) {
+			player.move();
+		}
 		
 	}
 	
@@ -136,7 +151,7 @@ public class Main extends ApplicationAdapter {
 			return;
 		}
 	
-		System.out.println(player.getLives());
+		//System.out.println(player.getLives());
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			if (page.equals("PAUSE")) {
@@ -181,7 +196,13 @@ public class Main extends ApplicationAdapter {
 		}
 			
 		player.draw();
+		
+		if (isMoving) {
+			movePlatforms();
+		}
 		move();
+		
+		
 	}
 	
 	public void increaseSpeed (int s) {
@@ -274,13 +295,24 @@ public class Main extends ApplicationAdapter {
 		}
 	}
 	
+	public void movePlatforms() {
+		for (int i = 0; i < platforms.size(); i++) {
+			platforms.get(i).move();
+		}
+	}
+	
 	public void reset(boolean gameOver) {
 		background.setX(0);
 		background2.setX(1920);
 		player.reset();
+		player.draw();
 		if (gameOver) {
 			player.resetLives();
 		}
+		else {
+			page = "GAME";
+		}
+		isMoving = false;
     	speed = 2;
     	player.setMoveSpeed(speed);
     	for (Platform p : platforms) {
