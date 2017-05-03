@@ -128,6 +128,7 @@ public class Main extends ApplicationAdapter {
 		
 		if (player.dying()) {
 			page = "LOSE";
+			reset();
 			return;
 		}
 		else if (page.equals("LOSE") && player.getLives() == 0) {
@@ -137,8 +138,21 @@ public class Main extends ApplicationAdapter {
 	
 		System.out.println(player.getLives());
 		
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			if (page.equals("PAUSE")) {
+				page = "GAME";
+			}
+			else {
+				page = "PAUSE";
+			}
+		}
+		
 		if (page.equals("START")) {
 			startMenu();
+			return;
+		}
+		else if (page.equals("PAUSE")) {
+			pauseMenu();
 			return;
 		}
 		
@@ -215,6 +229,19 @@ public class Main extends ApplicationAdapter {
 		//draws start menu
 		//checks if player hits ENTER - play
 		//drawBackground();
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		batch.begin();
+        batch.draw(titleImg, -60, -100);
+        //batch.draw(playImg, 105, 125);
+        batch.end();
+        
+		if(Gdx.input.isKeyPressed(Keys.ENTER)) {
+			//menuMusic.dispose();
+			page = "GAME";
+		}
+	}
+	
+	public void pauseMenu() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
         batch.draw(titleImg, -60, -100);
