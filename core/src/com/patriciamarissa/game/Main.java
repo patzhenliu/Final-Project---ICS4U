@@ -35,6 +35,7 @@ public class Main extends ApplicationAdapter {
 	String page;
 	Texture titleImg;
 	Texture loseImg;
+	Texture lifeImg;
 	long speedtimer;
 	
 	@Override
@@ -49,12 +50,13 @@ public class Main extends ApplicationAdapter {
 		page = "START";
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
 		loseImg = new Texture(Gdx.files.internal("loseImg.png"));
+		lifeImg = new Texture(Gdx.files.internal("lifeImg.png"));
 		platforms = new ArrayList <Platform> () ;
 		enemies = new ArrayList <Enemy> () ;
 		rand2 = new Random ();
 		rend = new ShapeRenderer ();
 		createPlatforms();
-		makeEnemies () ; // REMOVE LATER
+		//makeEnemies () ; // REMOVE LATER
 		runTimer () ;
 		
 		nums = new Texture[10];
@@ -87,12 +89,12 @@ public class Main extends ApplicationAdapter {
 		}
 	}
 	
-	public void makeEnemies () {
+	//public void makeEnemies () {
 		//int type = rand.nextInt (5) ;
 		// for the x and y, need to take into account where platforms are and make it based off that?
 		// TEST
-		enemies.add (new Enemy (batch, 0, 600, 400, speed)) ;
-	}
+		//enemies.add (new Enemy (batch, 0, 600, 400, speed)) ;
+	//}
 	
 	public void move() {
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
@@ -260,7 +262,11 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	public void drawLives() {
-		drawNum(20, 20, player.getLives());
+		batch.begin();
+		for(int i = 0; i < player.getLives() - 1; i ++) {
+        	batch.draw(lifeImg, i * 45 + 18, 10);
+        }
+        batch.end();
 	}
 	
 	public void drawNum(int xDisplace, int y, int num) { //i was lazy ill make it nicer
