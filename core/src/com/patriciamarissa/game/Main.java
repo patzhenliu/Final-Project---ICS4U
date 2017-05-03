@@ -128,7 +128,7 @@ public class Main extends ApplicationAdapter {
 		
 		if (player.dying()) {
 			page = "LOSE";
-			reset();
+			reset(false);
 			return;
 		}
 		else if (page.equals("LOSE") && player.getLives() == 0) {
@@ -198,7 +198,7 @@ public class Main extends ApplicationAdapter {
 	
 	public void drawFloor () {
 		rend.begin (ShapeType.Filled) ;
-		rend.setColor (255, 175, 229, 255) ; // TEMP VALUES
+		rend.setColor (0, 0, 0, 255) ; // TEMP VALUES 255, 175, 229, 255
 		rend.rect (0, 0, 1200, 100) ;
 		rend.end () ;
 	}
@@ -214,10 +214,10 @@ public class Main extends ApplicationAdapter {
 			Thread.currentThread().interrupt();
 		}
 		
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		background.draw();
-		background2.draw();
+		//background.draw();
+		//background2.draw();
 		drawPlatforms();
 		drawFloor () ;
 		update();
@@ -242,6 +242,7 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	public void pauseMenu() {
+		//temporary picture and stuff
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
         batch.draw(titleImg, -60, -100);
@@ -262,7 +263,7 @@ public class Main extends ApplicationAdapter {
         batch.end();
         
         if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
-        	reset();
+        	reset(true);
         	page = "GAME";
         }
 	}
@@ -273,11 +274,13 @@ public class Main extends ApplicationAdapter {
 		}
 	}
 	
-	public void reset() {
+	public void reset(boolean gameOver) {
 		background.setX(0);
 		background2.setX(1920);
 		player.reset();
-		player.resetLives();
+		if (gameOver) {
+			player.resetLives();
+		}
     	speed = 2;
     	player.setMoveSpeed(speed);
     	for (Platform p : platforms) {

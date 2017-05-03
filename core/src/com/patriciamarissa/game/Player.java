@@ -52,7 +52,7 @@ public class Player {
 		powerups = new int [4] ; // uhhh change this once we actually decide the powerups
 		
 		groundLvl = 100;
-		jumpHeight = groundLvl + 50;
+		jumpHeight = 150;
 		facingForwards = true;
 		lives = 3;
 		reset();
@@ -165,7 +165,7 @@ public class Player {
 			if (dyingSpeed > 0) {
 				dyingSpeed--;
 				batch.begin();
-				batch.draw(deathImg, x, y);
+				batch.draw(deathImg, 0, y);
 				batch.end();	
 			}
 			else {
