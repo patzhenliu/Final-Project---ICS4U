@@ -131,7 +131,7 @@ public class Main extends ApplicationAdapter {
 				
 		}
 		
-		System.out.println(page);
+		//System.out.println(page);
 		if (isMoving) {
 			player.move();
 		}
@@ -143,14 +143,17 @@ public class Main extends ApplicationAdapter {
 		
 		if (player.dying()) {
 			page = "LOSE";
-			reset(false);
+			if (player.getLives() > 0) {
+				reset(false);
+			}
 			return;
 		}
 		else if (page.equals("LOSE") && player.getLives() == 0) {
 			loseScreen();
 			return;
 		}
-	
+		System.out.println(page);
+		System.out.println(player.getLives());
 		//System.out.println(player.getLives());
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
@@ -269,11 +272,6 @@ public class Main extends ApplicationAdapter {
         batch.draw(titleImg, -60, -100);
         //batch.draw(playImg, 105, 125);
         batch.end();
-        
-		if(Gdx.input.isKeyPressed(Keys.ENTER)) {
-			//menuMusic.dispose();
-			page = "GAME";
-		}
 	}
 	
 	public void loseScreen() {
