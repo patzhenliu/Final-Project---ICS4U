@@ -207,6 +207,10 @@ public class Player {
 		return (int) currentSprite.getHeight();
 	}
 	
+	public int getWidth () {
+		return (int) currentSprite.getWidth () ;
+	}
+	
 	public int getJumpHeight() { //not in use
 		return jumpHeight;
 	}
