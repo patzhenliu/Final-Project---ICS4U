@@ -23,10 +23,12 @@ public class Main extends ApplicationAdapter {
 	Player player;
 	Background background, background2;
 	ArrayList <Platform> platforms;
+	ArrayList <Hole> holes;
 	Enemy [] enemies;
 
 	ShapeRenderer rend;
 	Texture [] nums;
+	int score;
 
 	int speed;
 
@@ -37,6 +39,7 @@ public class Main extends ApplicationAdapter {
 	Texture titleImg;
 	Texture loseImg;
 	Texture lifeImg;
+	Texture pauseImg;
 	long speedtimer;
 	
 	boolean isMoving;
@@ -53,11 +56,13 @@ public class Main extends ApplicationAdapter {
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
 		loseImg = new Texture(Gdx.files.internal("loseImg.png"));
 		lifeImg = new Texture(Gdx.files.internal("lifeImg.png"));
+		pauseImg = new Texture(Gdx.files.internal("pause.png"));
 		platforms = new ArrayList <Platform> () ;
 		enemies = new Enemy [4] ;
 		rand2 = new Random ();
 		rend = new ShapeRenderer ();
 		createPlatforms();
+		createHoles();
 		makeEnemies () ;
 		runTimer () ;
 		isMoving = false;
@@ -67,6 +72,7 @@ public class Main extends ApplicationAdapter {
 		    String fileName = "text/" + i + ".png";
 		    nums[i] = new Texture(Gdx.files.internal(fileName));
 		}
+		score = 0;
 	}
 	
 	public void runTimer () { // TESTING PURPOSES, THANKS SIR!
@@ -88,6 +94,15 @@ public class Main extends ApplicationAdapter {
 		platforms.add(new Platform(batch, speed, 320, 0));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
+		}
+	}
+	
+	public void createHoles() {
+		holes = new ArrayList<Hole>();
+		int holeNum = 2; 
+		holes.add(new Hole(batch, speed, 500));
+		for(int i = 1; i < holeNum; i++) {	
+			holes.add(new Hole(batch, speed, holes.get(i - 1).getX() + holes.get(i-1).getLength()));
 		}
 	}
 	
@@ -201,13 +216,19 @@ public class Main extends ApplicationAdapter {
 			player.setGroundLvl(100);
 		}
 		
-		if (player.getX() < 0) {
+		if (player.getX() < 0 || player.getY() <= 0) {
 			player.die();
 			//background.stop();
 			//platforms.stop();
 		}
 			
-		player.draw();
+		for (int i = 0; i < holes.size(); i++) {
+			System.out.println(holes.get(i).collide(player));
+			if (holes.get(i).collide(player)) {
+				player.setGroundLvl(0);
+			}
+			
+		}
 		
 		for (Enemy e : enemies) {
 			if (e.getX () + e.getWidth () <= 0) {
@@ -218,7 +239,9 @@ public class Main extends ApplicationAdapter {
 		
 		if (isMoving) {
 			movePlatforms();
+			moveHoles();
 			moveEnemies () ;
+			score += speed/2; //temp idk
 		}
 		move();
 	}
@@ -259,8 +282,12 @@ public class Main extends ApplicationAdapter {
 		//background2.draw();
 		drawPlatforms();
 		drawFloor () ;
-		update();
+		drawHoles();
 		drawEnemies () ;
+		player.draw();
+		drawNum(900, 40, score - score%10);
+		update();
+		
 	}
 	
 	public void startMenu() {
@@ -283,7 +310,7 @@ public class Main extends ApplicationAdapter {
 		//temporary picture and stuff
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
-        batch.draw(titleImg, -60, -100);
+        batch.draw(pauseImg, 270, 250);
         //batch.draw(playImg, 105, 125);
         batch.end();
 	}
@@ -307,9 +334,21 @@ public class Main extends ApplicationAdapter {
 		}
 	}
 	
+	public void drawHoles() {
+		for (int i = 0; i < holes.size(); i++) {
+			holes.get(i).draw();
+		}
+	}
+	
 	public void movePlatforms() {
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).move();
+		}
+	}
+	
+	public void moveHoles() {
+		for (int i = 0; i < holes.size(); i++) {
+			holes.get(i).move();
 		}
 	}
 	
@@ -333,6 +372,7 @@ public class Main extends ApplicationAdapter {
 		player.draw();
 		if (gameOver) {
 			player.resetLives();
+			score = 0;
 		}
 		else {
 			page = "GAME";

@@ -35,7 +35,7 @@ public class Player {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
 		
-		spritePage = new Texture(Gdx.files.internal("SpriteSheet.png"));
+		spritePage = new Texture(Gdx.files.internal("sprites/SpriteSheet.png"));
 		deathImg = new Texture(Gdx.files.internal("death.png"));
 
 		sprites = new Sprite[4];
@@ -71,6 +71,7 @@ public class Player {
 		speed = 10;
 		//lives = 3 ;
 		lives += powerups [1] ;
+		groundLvl = 100;
 		
 		isJumpingUp = false;
 		facingForwards = true;
@@ -166,7 +167,7 @@ public class Player {
 			if (dyingSpeed > 0) {
 				dyingSpeed--;
 				batch.begin();
-				batch.draw(deathImg, 0, y);
+				batch.draw(deathImg, x, y);
 				batch.end();	
 			}
 			else {

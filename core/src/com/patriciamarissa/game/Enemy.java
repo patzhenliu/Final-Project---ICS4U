@@ -28,7 +28,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 		this.bx = bx ; // boundary x
 		this.bw = bw ; // boundary width
 		if (type == 0) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
-			spritesheet = new Texture  (Gdx.files.internal("walking.png")) ;
+			spritesheet = new Texture  (Gdx.files.internal("sprites/walking.png")) ;
 			animatecount = 4 ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
@@ -50,7 +50,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 			movespeed = 4 ;
 		}
 		else if (type == 1) { // ENEMY TYPE 2: FLIES UP AND DOWN BETWEEN PLATS
-			spritesheet = new Texture  (Gdx.files.internal("flying.png")) ;
+			spritesheet = new Texture  (Gdx.files.internal("sprites/flying.png")) ;
 			animatecount = 4 ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
@@ -72,7 +72,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 			movespeed = 4 ;
 		}
 		else if (type == 2) { // ENEMY TYPE 3: ONLY SHOOTS STRAIGHT BEAM. STANDS STILL.
-			spritesheet = new Texture  (Gdx.files.internal("fire laser.png")) ;
+			spritesheet = new Texture  (Gdx.files.internal("sprites/fire laser.png")) ;
 			animatecount = 9 ;
 			sprites = new Sprite [9] ;
 			deathSprs = new Sprite [7] ;
@@ -99,7 +99,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 			currentsprite = sprites [0] ;
 		}
 		else if (type == 3) { // ENEMY TYPE 4: CHARGES TOWARDS PLAYER. JUST RUNS ON FLOOR-LEVEL.
-			spritesheet = new Texture  (Gdx.files.internal("charging.png")) ;
+			spritesheet = new Texture  (Gdx.files.internal("sprites/charging.png")) ;
 			animatecount = 6 ;
 			sprites = new Sprite [6] ;
 			deathSprs = new Sprite [10] ;
@@ -128,7 +128,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 			movespeed = 8 ;
 		}
 		else if (type == 4) { // ENEMY TYPE 5: JUST STANDS THERE. HAS TO BE SHOT A LOT. BETTER TO AVOID.
-			spritesheet = new Texture  (Gdx.files.internal("stand still.png")) ;
+			spritesheet = new Texture  (Gdx.files.internal("sprites/stand still.png")) ;
 			animatecount = 0 ;
 			deathSprs = new Sprite [6] ;
 			

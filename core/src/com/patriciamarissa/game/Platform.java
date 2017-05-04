@@ -68,15 +68,15 @@ public class Platform {
 	public boolean collideTop(Player player){ ///should only be feet colliding not anything
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY() + playerSprite.getHeight()/2, playerSprite.getWidth(), playerSprite.getHeight()/2);
-		Rectangle logRect = new Rectangle(platformSprite.getX(), platformSprite.getY() + playerSprite.getHeight(), platformSprite.getWidth(), playerSprite.getHeight() );
-		return rect.overlaps(logRect);
+		Rectangle platformRect = new Rectangle(platformSprite.getX(), platformSprite.getY() + playerSprite.getHeight(), platformSprite.getWidth(), playerSprite.getHeight() );
+		return rect.overlaps(platformRect);
 	}
 	
 	public boolean collideBottom(Player player){ ///hitting bottom of platform - trial and erroring stuff rn
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY() + playerSprite.getHeight(), playerSprite.getWidth(), playerSprite.getHeight());
-		Rectangle logRect = new Rectangle(platformSprite.getX(), platformSprite.getY() + playerSprite.getHeight(), platformSprite.getWidth(), playerSprite.getHeight());
-		return rect.overlaps(logRect);
+		Rectangle platformRect = new Rectangle(platformSprite.getX(), platformSprite.getY() + playerSprite.getHeight(), platformSprite.getWidth(), playerSprite.getHeight());
+		return rect.overlaps(platformRect);
 	}
 	
 	public int getX() {
@@ -91,7 +91,7 @@ public class Platform {
 		return length;
 	}
 	
-	public int getWidth () {
+	public int getWidth() {
 		return (int) platformSprite.getWidth () ;
 	}
 	
