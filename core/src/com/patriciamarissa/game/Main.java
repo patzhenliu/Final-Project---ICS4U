@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -22,10 +23,10 @@ public class Main extends ApplicationAdapter {
 	Player player;
 	Background background, background2;
 	ArrayList <Platform> platforms;
-	ArrayList <Enemy> enemies;
+	Enemy [] enemies;
 
 	ShapeRenderer rend;
-	Texture[] nums;
+	Texture [] nums;
 
 	int speed;
 
@@ -48,17 +49,16 @@ public class Main extends ApplicationAdapter {
 		player = new Player(batch, speed);
 		background = new Background(batch, 0, 1920, 1080, speed);
 		background2 = new Background(batch, 1920, 1920, 1080, speed);
-		//int speed = 2;
 		page = "START";
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
 		loseImg = new Texture(Gdx.files.internal("loseImg.png"));
 		lifeImg = new Texture(Gdx.files.internal("lifeImg.png"));
 		platforms = new ArrayList <Platform> () ;
-		enemies = new ArrayList <Enemy> () ;
+		enemies = new Enemy [4] ;
 		rand2 = new Random ();
 		rend = new ShapeRenderer ();
 		createPlatforms();
-		//makeEnemies () ; // REMOVE LATER
+		makeEnemies () ;
 		runTimer () ;
 		isMoving = false;
 		
@@ -85,19 +85,28 @@ public class Main extends ApplicationAdapter {
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
 		}
-		
 		platforms.add(new Platform(batch, speed, 320, 0));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
 		}
 	}
 	
-	//public void makeEnemies () {
-		//int type = rand.nextInt (5) ;
-		// for the x and y, need to take into account where platforms are and make it based off that?
-		// TEST
-		//enemies.add (new Enemy (batch, 0, 600, 400, speed)) ;
-	//}
+	public void makeEnemies () {
+		// TEST Batch batch, int t, int x, int y, int s, int bx, int bw
+		for (int i = 0 ; i < enemies.length ; i ++) {
+			if (enemies [i] == null) {
+				int p = rand.nextInt (platforms.size ()) ;
+				int type = rand.nextInt (5) ;
+				Platform plat = platforms.get (p) ;
+				if (type != 3) { // lion always on floor
+					enemies [i] = (new Enemy (batch, type, plat.getWidth () - 100, plat.getY () + plat.getHeight (), speed, plat.getX (), plat.getWidth ())) ;
+				}
+				else {
+					enemies [i] = (new Enemy (batch, type, plat.getWidth () - 100, 100, speed, 0, 1200)) ;
+				}
+			}
+		}
+	}
 	
 	public void move() {
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
@@ -197,12 +206,18 @@ public class Main extends ApplicationAdapter {
 			
 		player.draw();
 		
+		for (Enemy e : enemies) {
+			if (e.getX () + e.getWidth () <= 0) {
+				e = null ;
+				makeEnemies () ;
+			}
+		}
+		
 		if (isMoving) {
 			movePlatforms();
+			moveEnemies () ;
 		}
 		move();
-		
-		
 	}
 	
 	public void increaseSpeed (int s) {
@@ -242,8 +257,7 @@ public class Main extends ApplicationAdapter {
 		drawPlatforms();
 		drawFloor () ;
 		update();
-		
-		
+		drawEnemies () ;
 	}
 	
 	public void startMenu() {
@@ -298,6 +312,19 @@ public class Main extends ApplicationAdapter {
 	public void movePlatforms() {
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).move();
+		}
+	}
+	
+	public void drawEnemies () {
+		for (Enemy e : enemies) {
+			e.draw () ;
+		}
+	}
+	
+	public void moveEnemies () {
+		for (Enemy e : enemies) {
+			e.moveWithPlat () ;
+			e.move () ;
 		}
 	}
 	

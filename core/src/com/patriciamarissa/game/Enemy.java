@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Enemy {
-	private int x, y, w, h, hp, speed, spritecount, animatecount, bx, bw ;
+public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER PLATFORM GAPS
+	// WHEN FIRST MADE THEY END UP ON THE TITLE SCREEN AND THEY ALL GENERATE ON THE FIRST PLATFORM
+	private int x, y, w, h, hp, speed, spritecount, animatecount, bx, bw, movespeed ;
 	private final int type ;
 	private Batch batch ;
 	private Texture spritesheet ;
@@ -20,6 +21,8 @@ public class Enemy {
 	public Enemy (Batch batch, int t, int x, int y, int s, int bx, int bw) {
 		spritecount = 0 ;
 		type = t ;
+		speed = s ;
+		this.batch = batch ;
 		this.x = x ;
 		this.y = y ;
 		this.bx = bx ; // boundary x
@@ -44,6 +47,7 @@ public class Enemy {
 			hp = 1 ;
 			leftright = false ;
 			currentsprite = sprites [0] ;
+			movespeed = 4 ;
 		}
 		else if (type == 1) { // ENEMY TYPE 2: FLIES UP AND DOWN BETWEEN PLATS
 			spritesheet = new Texture  (Gdx.files.internal("flying.png")) ;
@@ -65,6 +69,7 @@ public class Enemy {
 			hp = 1 ;
 			updown = false ;
 			currentsprite = sprites [0] ;
+			movespeed = 4 ;
 		}
 		else if (type == 2) { // ENEMY TYPE 3: ONLY SHOOTS STRAIGHT BEAM. STANDS STILL.
 			spritesheet = new Texture  (Gdx.files.internal("fire laser.png")) ;
@@ -120,6 +125,7 @@ public class Enemy {
 			hp = 2 ;
 			leftright = false ;
 			currentsprite = sprites [0] ;
+			movespeed = 8 ;
 		}
 		else if (type == 4) { // ENEMY TYPE 5: JUST STANDS THERE. HAS TO BE SHOT A LOT. BETTER TO AVOID.
 			spritesheet = new Texture  (Gdx.files.internal("stand still.png")) ;
@@ -136,7 +142,6 @@ public class Enemy {
 			currentsprite = new Sprite (spritesheet, 3, 10, 128, 116) ;
 			hp = 5 ;
 		}
-		speed = 2 ; // MAKE IT SO THE ENEMIES SPEED UP THE LONGER YOU'VE BEEN PLAYING? FOR EACH 30 SECOND INTERVAL, INCREASE SPEED BY 1
 	}
 	
 	public void draw() {
@@ -157,9 +162,14 @@ public class Enemy {
 		}
 	}
 	
+	public void moveWithPlat () {
+		x -= speed ;
+		bx -= speed ;
+	}
+	
 	public void moveLeft() {
 		// maybe make the lion run faster?
-		x -= speed;
+		x -= movespeed;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1;
 			if (leftright) {
@@ -169,8 +179,8 @@ public class Enemy {
 	}
 	
 	public void moveRight() {
-		if (x + speed < Gdx.graphics.getWidth()) {
-			x += speed;
+		if (x + movespeed < Gdx.graphics.getWidth()) {
+			x += movespeed;
 		}
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1;
@@ -181,7 +191,7 @@ public class Enemy {
 	}
 	
 	public void moveUp () {
-		y += speed ;
+		y += movespeed ;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1 ;
 			if (!updown) {
@@ -191,7 +201,7 @@ public class Enemy {
 	}
 	
 	public void moveDown () {
-		y -= speed ;
+		y -= movespeed ;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1 ;
 			if (updown) {
@@ -237,7 +247,7 @@ public class Enemy {
 		}
 		if (type == 0) { // its the tree that walks based on boundaries
 			if (leftright) { // going right
-				if (x >= bw - currentsprite.getWidth ()) {
+				if (x >= bx + bw - currentsprite.getWidth ()) {
 					moveLeft () ;
 				}
 				else {
@@ -273,7 +283,7 @@ public class Enemy {
 		batch.end () ;
 	}
 	
-	public boolean collide (Player player) {
+	public boolean collide (Player player) { // NOT IN USE YET
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
 		Rectangle logRect = new Rectangle(x, y, w, h);
@@ -319,5 +329,13 @@ public class Enemy {
 	
 	public int getType () {
 		return type ;
+	}
+	
+	public int getX () {
+		return x ;
+	}
+	
+	public int getWidth () {
+		return w ;
 	}
 }
