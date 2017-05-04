@@ -107,17 +107,17 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	public void makeEnemies () {
-		// TEST Batch batch, int t, int x, int y, int s, int bx, int bw
+		// TEST Batch batch, int t, int x, int y, int s
 		for (int i = 0 ; i < enemies.length ; i ++) {
 			if (enemies [i] == null) {
 				int p = rand.nextInt (platforms.size ()) ;
 				int type = rand.nextInt (5) ;
 				Platform plat = platforms.get (p) ;
 				if (type != 3) { // lion always on floor
-					enemies [i] = (new Enemy (batch, type, plat.getWidth () - 100, plat.getY () + plat.getHeight (), speed, plat.getX (), plat.getWidth ())) ;
+					enemies [i] = (new Enemy (batch, type, plat.getWidth () - 100, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
 				}
 				else {
-					enemies [i] = (new Enemy (batch, type, plat.getWidth () - 100, 100, speed, 0, 1200)) ;
+					enemies [i] = (new Enemy (batch, type, plat.getWidth () - 100, 100, speed, plat)) ;
 				}
 			}
 		}
