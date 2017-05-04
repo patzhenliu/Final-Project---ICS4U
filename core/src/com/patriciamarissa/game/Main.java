@@ -152,8 +152,8 @@ public class Main extends ApplicationAdapter {
 			loseScreen();
 			return;
 		}
-		System.out.println(page);
-		System.out.println(player.getLives());
+		//System.out.println(page);
+		//System.out.println(player.getLives());
 		//System.out.println(player.getLives());
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
