@@ -31,7 +31,7 @@ public class Platform {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
 		
-		x = prevX + rand.nextInt(200) + 50;
+		x = prevX + rand.nextInt(200) + 100;
 		this.y = y;
 		length = rand.nextInt(200) + 150;
 		platformImg = new Texture(Gdx.files.internal("platform.png"));
