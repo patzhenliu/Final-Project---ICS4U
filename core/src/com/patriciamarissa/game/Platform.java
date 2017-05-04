@@ -91,6 +91,10 @@ public class Platform {
 		return length;
 	}
 	
+	public int getWidth () {
+		return (int) platformSprite.getWidth () ;
+	}
+	
 	public int getHeight() {
 		return (int) platformSprite.getHeight();
 	}
