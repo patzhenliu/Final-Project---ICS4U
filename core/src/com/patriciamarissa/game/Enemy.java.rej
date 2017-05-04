@@ -1,0 +1,11 @@
+diff a/core/src/com/patriciamarissa/game/Enemy.java b/core/src/com/patriciamarissa/game/Enemy.java	(rejected hunks)
+@@ -8,7 +8,8 @@
+ 
+ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER PLATFORM GAPS
+ 	// WHEN FIRST MADE THEY END UP ON THE TITLE SCREEN AND THEY ALL GENERATE ON THE FIRST PLATFORM
+-	private int x, y, w, h, hp, speed, spritecount, animatecount, bx, bw, movespeed ;
++	private int x, y, w, h, hp, speed, spritecount, animatecount, movespeed ;
++	private Platform plat ;
+ 	private final int type ;
+ 	private Batch batch ;
+ 	private Texture spritesheet ;

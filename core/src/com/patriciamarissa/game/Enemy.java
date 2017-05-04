@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER PLATFORM GAPS
 	// WHEN FIRST MADE THEY END UP ON THE TITLE SCREEN AND THEY ALL GENERATE ON THE FIRST PLATFORM
-	private int x, y, w, h, hp, speed, spritecount, animatecount, movespeed ;
+	private int x, y, w, h, hp, speed, spritecount, animatecount, bx, bw, movespeed ;
 	private Platform plat ;
 	private final int type ;
 	private Batch batch ;
@@ -19,13 +19,16 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 	boolean leftright ; // true right, false left
 	boolean updown ; // true up, false down
 	
-	public Enemy (Batch batch, int t, int x, int y, int s, Platform p) {
+	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat) {
 		spritecount = 0 ;
 		type = t ;
 		speed = s ;
 		this.batch = batch ;
+		this.plat = plat ;
 		this.x = x ;
 		this.y = y ;
+		//this.bx = bx ; // boundary x
+		//this.bw = bw ; // boundary width
 		if (type == 0) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
 			spritesheet = new Texture  (Gdx.files.internal("sprites/walking.png")) ;
 			animatecount = 4 ;
@@ -233,7 +236,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 		}
 		if (type == 0) { // its the tree that walks based on boundaries
 			if (leftright) { // going right
-				if (!isOnPlat (x + (int) currentsprite.getWidth(), y)) {
+				if (x + w >= (int)plat.getX () + (int)plat.getWidth ()) {
 					moveLeft () ;
 				}
 				else {
@@ -241,7 +244,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 				}
 			}
 			else if (!leftright) {
-				if (!isOnPlat (x,y)) { // 100 is the floor
+				if (x <= (int) plat.getX ()) { // 100 is the floor
 					moveRight () ;
 				}
 				else {
@@ -274,12 +277,6 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
 		Rectangle logRect = new Rectangle(x, y, w, h);
 		return rect.overlaps(logRect);
-	}
-	
-	public boolean isOnPlat (int px, int py) {
-		Rectangle rect = new Rectangle(plat.getX(), plat.getY(), plat.getWidth(), plat.getHeight());
-		//Rectangle logRect = new Rectangle(x, y, w, h);
-		return rect.contains (px, py) ;
 	}
 	
 	public void hurt () { // make the sprite flicker when damage is taken
