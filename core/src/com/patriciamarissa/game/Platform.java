@@ -53,6 +53,7 @@ public class Platform {
 		if(x < 0 - platformSprite.getWidth()) {
 			x = rand.nextInt(200) + 1000;
 		}
+		//System.out.println (x) ;
 	}
 	
 	public void draw() {
