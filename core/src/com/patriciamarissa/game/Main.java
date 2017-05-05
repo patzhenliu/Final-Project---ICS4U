@@ -8,6 +8,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,9 +19,23 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+/* BIT MANIPULATION
+ * accessing pixel colors. use a pixmap.
+ * Pixmap mask ;
+ * mask = new Pixmap ("filename") ;
+ * int color = mask.getPixel (x, y) ;
+ * that'll be in rgba form
+ * int red = ( color >> 24 ) ;
+ * shift it over 24 bits
+ * int green = (color >> 16 ) & OxFf ;
+ * int blue = (color >> 8 ) & OxFf ;
+ * int alpha = color & OxFf ;
+ */
+
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Player player;
+	Pixmap mask ;
 	Background background, background2;
 	ArrayList <Platform> platforms;
 	ArrayList <Hole> holes;
@@ -29,7 +44,6 @@ public class Main extends ApplicationAdapter {
 	ShapeRenderer rend;
 	Texture [] nums;
 	int score;
-
 	int speed;
 
 	private Random rand = new Random(System.currentTimeMillis());
@@ -53,12 +67,13 @@ public class Main extends ApplicationAdapter {
 		background = new Background(batch, 0, 1920, 1080, speed);
 		background2 = new Background(batch, 1920, 1920, 1080, speed);
 		page = "START";
+		mask = new Pixmap (Gdx.files.internal("mask.png")) ;
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
 		loseImg = new Texture(Gdx.files.internal("loseImg.png"));
 		lifeImg = new Texture(Gdx.files.internal("lifeImg.png"));
 		pauseImg = new Texture(Gdx.files.internal("pause.png"));
 		platforms = new ArrayList <Platform> () ;
-		enemies = new Enemy [4] ;
+		enemies = new Enemy [5] ;
 		rand2 = new Random ();
 		rend = new ShapeRenderer ();
 		createPlatforms();
@@ -95,6 +110,10 @@ public class Main extends ApplicationAdapter {
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
 		}
+		platforms.add(new Platform(batch, speed, 440, 0));
+		for(int i = 1; i < platNum; i++) {	
+			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
+		}
 	}
 	
 	public void createHoles() {
@@ -109,18 +128,33 @@ public class Main extends ApplicationAdapter {
 	public void makeEnemies () {
 		// TEST Batch batch, int t, int x, int y, int s
 		for (int i = 0 ; i < enemies.length ; i ++) {
-			if (enemies [i] == null) {
+			//if (enemies [i] == null) {
+				int p = rand.nextInt (platforms.size ()) ;
+				int type = rand.nextInt (4) ;
+				Platform plat = platforms.get (p) ;
+				System.out.println ("PLATFORM" + p) ;
+				if (type != 3) {
+					enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getLength () - 100, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
+				}
+				else { // lion is always on floor
+					enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getLength () - 100, 100, speed, plat)) ;
+				}
+			//}
+		}
+	}
+	
+	public void makeEnemy (int index) {
+		// TEST Batch batch, int t, int x, int y, int s
 				int p = rand.nextInt (platforms.size ()) ;
 				int type = rand.nextInt (5) ;
 				Platform plat = platforms.get (p) ;
-				if (type != 3) { // lion always on floor
-					enemies [i] = (new Enemy (batch, type, plat.getWidth () - 100, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
+				System.out.println ("PLATFORM" + p) ;
+				if (type != 3) {
+					enemies [index] = (new Enemy (batch, type, rand.nextInt (500) + 1000, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
 				}
-				else {
-					enemies [i] = (new Enemy (batch, type, plat.getWidth () - 100, 100, speed, plat)) ;
+				else { // lion is always on floor
+					enemies [index] = (new Enemy (batch, type, rand.nextInt (500) + 1000, 100, speed, plat)) ;
 				}
-			}
-		}
 	}
 	
 	public void move() {
@@ -204,6 +238,9 @@ public class Main extends ApplicationAdapter {
 			//if (platforms.get(i).collideBottom(player)) {
 				//player.stopJump();
 			//}
+			if (player.getY () + player.getHeight () >= 600) {
+				player.stopJump () ;
+			}
 			if (platforms.get(i).collideTop(player)) {
 				isOnPlatform = true;
 				if (!player.isJumping()) {
@@ -230,10 +267,11 @@ public class Main extends ApplicationAdapter {
 			
 		}
 		
-		for (Enemy e : enemies) {
-			if (e.getX () + e.getWidth () <= 0) {
-				e = null ;
-				makeEnemies () ;
+		for (int i = 0 ; i < enemies.length ; i ++) {
+			if (enemies [i].getX () + enemies [i].getWidth () <= 0) {
+				System.out.println ("CHANGE") ;
+				enemies [i] = null ;
+				makeEnemy (i) ;
 			}
 		}
 		
@@ -373,6 +411,10 @@ public class Main extends ApplicationAdapter {
 		if (gameOver) {
 			player.resetLives();
 			score = 0;
+			for (int i = 0 ;  i < enemies.length ; i++) {
+				enemies [i] = null ;
+			}
+			makeEnemies () ;
 		}
 		else {
 			page = "GAME";
@@ -382,9 +424,6 @@ public class Main extends ApplicationAdapter {
     	player.setMoveSpeed(speed);
     	for (Platform p : platforms) {
 			p.setMoveSpeed(speed);
-		}
-		for (Enemy e : enemies) {
-			e.setSpeed(speed);
 		}
 	}
 	
@@ -411,18 +450,3 @@ public class Main extends ApplicationAdapter {
 		rend.dispose () ;
 	}
 }
-
-
-
-/* BIT MANIPULATION
- * accessing pixel colors. use a pixmap.
- * Pixmap mask ;
- * mask = new Pixmap ("filename") ;
- * int color = mask.getPixel (x, y) ;
- * that'll be in rgba form
- * int red = ( color >> 24 ) ;
- * shift it over 24 bits
- * int green = (color >> 16 ) & OxFf ;
- * int blue = (color >> 8 ) & OxFf ;
- * int alpha = color & OxFf ;
- */

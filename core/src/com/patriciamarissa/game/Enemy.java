@@ -1,14 +1,19 @@
 package com.patriciamarissa.game;
 
+import java.awt.Robot;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER PLATFORM GAPS
+public class Enemy { 
+	// BUGS: ENEMIES DONT SWITCH DIRECTION, THEY GET STUCK, SOMETIMES WALK OVER PLATFORM GAPS
 	// WHEN FIRST MADE THEY END UP ON THE TITLE SCREEN AND THEY ALL GENERATE ON THE FIRST PLATFORM
-	private int x, y, w, h, hp, speed, spritecount, animatecount, bx, bw, movespeed ;
+	// AGHHHHH LION AND GARGOYLE HAVE TO WATCH FOR HOLES
+	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox ;
 	private Platform plat ;
 	private final int type ;
 	private Batch batch ;
@@ -18,6 +23,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 	private Sprite [] deathSprs ; // not sprites since knowing their widths and height isnt necessary
 	boolean leftright ; // true right, false left
 	boolean updown ; // true up, false down
+	private Robot robot ; // taken from stack overflow
 	
 	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat) {
 		spritecount = 0 ;
@@ -25,6 +31,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 		speed = s ;
 		this.batch = batch ;
 		this.plat = plat ;
+		ox = plat.getX () ; // original x; the platform's x gets pushed to the other side sometimes
 		this.x = x ;
 		this.y = y ;
 		//this.bx = bx ; // boundary x
@@ -166,6 +173,8 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 	
 	public void moveWithPlat () {
 		x -= speed ;
+		ox -= speed ;
+		//System.out.println (ox) ;
 	}
 	
 	public void moveLeft() {
@@ -213,8 +222,27 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 	
 	public void move () { // oh god, still need to do actual animating
 		// TYPES 2 AND 4 DONT MOVE. TYPE 2 SHOOTS A LASER THO.
+		Color white = new Color (255,255,255, 255) ;
+		Color black = new Color (0,0,0, 255) ;
 		if (type == 3) {
-			moveLeft () ; // the lion is stuck on the floor, therefore will only go left
+			/*if (leftright) { // going right
+				java.awt.Color color = robot.getPixelColor(x + (int) currentsprite.getWidth () + 1, y - 5) ;
+				if (color == white) {
+					moveLeft () ;
+				}
+				else {
+					moveRight () ;
+				}
+			}
+			else if (!leftright) {
+				if (x <= ox) { // 100 is the floor
+					moveRight () ;
+				}
+				else {
+					moveLeft () ;
+				}
+			}*/
+			moveLeft () ;
 		}
 		if (type == 1) {
 			if (updown) { // going up
@@ -233,10 +261,19 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 					moveDown () ;
 				}
 			}
+			/* else if (!updown) {
+			 * 	java.awt.Color color = robot.getPixelColor(x, y - 1) ;
+				if ((color == white && y <= 0) || (color == black)) {
+					moveUp () ;
+				}
+				else {
+					moveDown () ;
+				}
+			 */
 		}
 		if (type == 0) { // its the tree that walks based on boundaries
 			if (leftright) { // going right
-				if (x + w >= (int)plat.getX () + (int)plat.getWidth ()) {
+				if (x + currentsprite.getWidth () >= ox + plat.getLength ()) {
 					moveLeft () ;
 				}
 				else {
@@ -244,7 +281,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 				}
 			}
 			else if (!leftright) {
-				if (x <= (int) plat.getX ()) { // 100 is the floor
+				if (x <= ox) { // 100 is the floor
 					moveRight () ;
 				}
 				else {
@@ -275,7 +312,7 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 	public boolean collide (Player player) { // NOT IN USE YET
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
-		Rectangle logRect = new Rectangle(x, y, w, h);
+		Rectangle logRect = new Rectangle(x, y, currentsprite.getWidth (), currentsprite.getHeight ());
 		return rect.overlaps(logRect);
 	}
 	
@@ -325,6 +362,6 @@ public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER
 	}
 	
 	public int getWidth () {
-		return w ;
+		return (int)currentsprite.getWidth () ;
 	}
 }
