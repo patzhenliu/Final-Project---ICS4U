@@ -22,6 +22,7 @@ public class Player {
 	
 	private int x;
 	private int y;
+	private int minX, maxX; //player boundaries
 	private int groundLvl;
 	private int jumpHeight;
 	private int lives;
@@ -68,6 +69,8 @@ public class Player {
 		}
 		x = 100;
 		y = 100;
+		minX = -100;
+		maxX = Gdx.graphics.getWidth();
 		speed = 10;
 		//lives = 3 ;
 		lives += powerups [1] ;
@@ -81,7 +84,9 @@ public class Player {
 	}
 	
 	public void moveLeft() {
-		x -= speed;
+		if (x - speed > minX) {
+			x -= speed;
+		}
 		if (spriteCount == 0) {
 			
 			spriteCount = sprites.length - 1;
@@ -92,7 +97,7 @@ public class Player {
 	}
 	
 	public void moveRight() {
-		if (x + speed < Gdx.graphics.getWidth()) {
+		if (x + speed < maxX) {
 			x += speed;
 		}
 		if (spriteCount == 0) {
@@ -210,6 +215,11 @@ public class Player {
 	
 	public int getWidth () {
 		return (int) currentSprite.getWidth () ;
+	}
+	
+	public void setBoundaries(int min, int max) {
+		minX = min;
+		maxX = max;
 	}
 	
 	public int getJumpHeight() { //not in use

@@ -19,7 +19,6 @@ public class Hole {
 		private int moveSpeed;
 		private int x;
 		private int y;
-		private int length;
 		private Random rand = new Random(System.currentTimeMillis() );
 		
 		/*private Rectangle platrect ;
@@ -34,10 +33,9 @@ public class Hole {
 			
 			x = prevX + rand.nextInt(200) + 100;
 			y = 0;
-			length = rand.nextInt(100) + 100;
 			holeImg = new Texture(Gdx.files.internal("hole.png"));
 			holeSprite = new Sprite(holeImg);
-			holeSprite.setSize(length, 120);
+			holeSprite.setSize(rand.nextInt(100) + 100, holeSprite.getHeight());
 			/*this.x = x ;
 			this.y = y ;
 			this.w = w ;
@@ -69,7 +67,7 @@ public class Hole {
 		public boolean collide(Player player){ ///should only be feet colliding not anything
 			Sprite playerSprite = player.getSprite();
 			Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
-			Rectangle holeRect = new Rectangle(holeSprite.getX(), holeSprite.getY(), holeSprite.getWidth(), holeSprite.getHeight() );
+			Rectangle holeRect = new Rectangle(holeSprite.getX(), holeSprite.getY(), holeSprite.getWidth(), 120);
 			return rect.overlaps(holeRect);
 		}
 		
@@ -79,10 +77,6 @@ public class Hole {
 		
 		public int getY() {
 			return y;
-		}
-		
-		public int getLength() {
-			return length;
 		}
 		
 		public int getWidth() {

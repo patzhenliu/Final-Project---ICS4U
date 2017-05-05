@@ -18,7 +18,6 @@ public class Platform {
 	private int moveSpeed;
 	private int x;
 	private int y;
-	private int length;
 	private Random rand = new Random(System.currentTimeMillis() );
 	
 	/*private Rectangle platrect ;
@@ -33,10 +32,9 @@ public class Platform {
 		
 		x = prevX + rand.nextInt(200) + 100;
 		this.y = y;
-		length = rand.nextInt(200) + 150;
 		platformImg = new Texture(Gdx.files.internal("platform.png"));
 		platformSprite = new Sprite(platformImg);
-		platformSprite.setSize(length, platformSprite.getHeight());
+		platformSprite.setSize(rand.nextInt(200) + 150, platformSprite.getHeight());
 		/*this.x = x ;
 		this.y = y ;
 		this.w = w ;
@@ -67,8 +65,8 @@ public class Platform {
 	
 	public boolean collideTop(Player player){ ///should only be feet colliding not anything
 		Sprite playerSprite = player.getSprite();
-		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY() + playerSprite.getHeight()/2, playerSprite.getWidth(), playerSprite.getHeight()/2);
-		Rectangle platformRect = new Rectangle(platformSprite.getX(), platformSprite.getY() + playerSprite.getHeight(), platformSprite.getWidth(), playerSprite.getHeight() );
+		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight()/2);
+		Rectangle platformRect = new Rectangle(platformSprite.getX(), platformSprite.getY() + platformSprite.getHeight(), platformSprite.getWidth(), playerSprite.getHeight() );
 		return rect.overlaps(platformRect);
 	}
 	
@@ -85,10 +83,6 @@ public class Platform {
 	
 	public int getY() {
 		return y;
-	}
-	
-	public int getLength() {
-		return length;
 	}
 	
 	public int getWidth() {

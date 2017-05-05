@@ -89,11 +89,11 @@ public class Main extends ApplicationAdapter {
 		int platNum = 4; 
 		platforms.add(new Platform(batch, speed, 200, 0));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
+			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
 		platforms.add(new Platform(batch, speed, 320, 0));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
+			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
 	}
 	
@@ -102,7 +102,7 @@ public class Main extends ApplicationAdapter {
 		int holeNum = 2; 
 		holes.add(new Hole(batch, speed, 500));
 		for(int i = 1; i < holeNum; i++) {	
-			holes.add(new Hole(batch, speed, holes.get(i - 1).getX() + holes.get(i-1).getLength()));
+			holes.add(new Hole(batch, speed, holes.get(i - 1).getX() + holes.get(i-1).getWidth()));
 		}
 	}
 	
@@ -223,9 +223,10 @@ public class Main extends ApplicationAdapter {
 		}
 			
 		for (int i = 0; i < holes.size(); i++) {
-			System.out.println(holes.get(i).collide(player));
+			//System.out.println(holes.get(i).collide(player));
 			if (holes.get(i).collide(player)) {
 				player.setGroundLvl(0);
+				player.setBoundaries(holes.get(i).getX() - player.getWidth()/2, holes.get(i).getX() + holes.get(i).getWidth()- player.getWidth()/2);
 			}
 			
 		}
@@ -252,6 +253,9 @@ public class Main extends ApplicationAdapter {
 		player.setMoveSpeed(speed);
 		for (Platform p : platforms) {
 			p.setMoveSpeed(speed);
+		}
+		for (Hole h : holes) {
+			h.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
 			e.setSpeed(speed);
@@ -382,6 +386,9 @@ public class Main extends ApplicationAdapter {
     	player.setMoveSpeed(speed);
     	for (Platform p : platforms) {
 			p.setMoveSpeed(speed);
+		}
+    	for (Hole h : holes) {
+			h.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
 			e.setSpeed(speed);
