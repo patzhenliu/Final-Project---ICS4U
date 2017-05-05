@@ -112,7 +112,7 @@ public class Main extends ApplicationAdapter {
 		}
 		platforms.add(new Platform(batch, speed, 440, 0));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getLength()));
+			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
 	}
 	
@@ -134,10 +134,10 @@ public class Main extends ApplicationAdapter {
 				Platform plat = platforms.get (p) ;
 				System.out.println ("PLATFORM" + p) ;
 				if (type != 3) {
-					enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getLength () - 100, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
+					enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth () - 100, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
 				}
 				else { // lion is always on floor
-					enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getLength () - 100, 100, speed, plat)) ;
+					enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth () - 100, 100, speed, plat)) ;
 				}
 			//}
 		}
@@ -261,6 +261,7 @@ public class Main extends ApplicationAdapter {
 			
 		for (int i = 0; i < holes.size(); i++) {
 			//System.out.println(holes.get(i).collide(player));
+			
 			if (holes.get(i).collide(player)) {
 				player.setGroundLvl(0);
 				player.setBoundaries(holes.get(i).getX() - player.getWidth()/2, holes.get(i).getX() + holes.get(i).getWidth()- player.getWidth()/2);
@@ -429,15 +430,14 @@ public class Main extends ApplicationAdapter {
     	for (Platform p : platforms) {
 			p.setMoveSpeed(speed);
 		}
-<<<<<<< HEAD
+
     	for (Hole h : holes) {
 			h.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
 			e.setSpeed(speed);
 		}
-=======
->>>>>>> marissa/master
+
 	}
 	
 	public void drawLives() {

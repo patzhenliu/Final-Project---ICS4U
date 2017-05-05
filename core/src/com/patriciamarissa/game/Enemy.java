@@ -273,7 +273,7 @@ public class Enemy {
 		}
 		if (type == 0) { // its the tree that walks based on boundaries
 			if (leftright) { // going right
-				if (x + currentsprite.getWidth () >= ox + plat.getLength ()) {
+				if (x + currentsprite.getWidth () >= ox + plat.getWidth ()) {
 					moveLeft () ;
 				}
 				else {
