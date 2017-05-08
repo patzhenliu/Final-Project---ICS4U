@@ -1,6 +1,7 @@
 package com.patriciamarissa.game;
 
 import java.awt.Robot;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -15,28 +16,34 @@ public class Enemy {
 	// AGHHHHH LION AND GARGOYLE HAVE TO WATCH FOR HOLES
 	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox ;
 	private Platform plat ;
-	private final int type ;
+	private final int type, tree, gargoyle, rock, golem, lion ;
 	private Batch batch ;
 	private Texture spritesheet ;
+	private Texture blank ;
 	private Sprite currentsprite ;
 	private Sprite [] sprites ;
 	private Sprite [] deathSprs ; // not sprites since knowing their widths and height isnt necessary
-	boolean leftright ; // true right, false left
-	boolean updown ; // true up, false down
-	private Robot robot ; // taken from stack overflow
+	private ArrayList <Laser> lasers ;
+	boolean right ; // true right, false left
+	boolean up ; // true up, false down
 	
 	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat) {
 		spritecount = 0 ;
-		type = t ;
+		tree = 1 ;
+		gargoyle = 2 ;
+		golem = 3 ;
+		lion = 4 ;
+		rock = 5 ;
+		type = t + 1 ;
+		//blank = new Texture (Gdx.files.internal("sprites/blank.png")) ;
 		speed = s ;
 		this.batch = batch ;
 		this.plat = plat ;
 		ox = plat.getX () ; // original x; the platform's x gets pushed to the other side sometimes
 		this.x = x ;
 		this.y = y ;
-		//this.bx = bx ; // boundary x
-		//this.bw = bw ; // boundary width
-		if (type == 0) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
+		lasers = new ArrayList <Laser> () ;
+		if (type == tree) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
 			spritesheet = new Texture  (Gdx.files.internal("sprites/walking.png")) ;
 			animatecount = 4 ;
 			sprites = new Sprite [4] ;
@@ -54,11 +61,11 @@ public class Enemy {
 			deathSprs [4] = new Sprite (spritesheet, 225, 289, 64, 69) ;
 			
 			hp = 1 ;
-			leftright = false ;
+			right = false ;
 			currentsprite = sprites [0] ;
 			movespeed = 4 ;
 		}
-		else if (type == 1) { // ENEMY TYPE 2: FLIES UP AND DOWN BETWEEN PLATS
+		else if (type == gargoyle) { // ENEMY TYPE 2: FLIES UP AND DOWN BETWEEN PLATS
 			spritesheet = new Texture  (Gdx.files.internal("sprites/flying.png")) ;
 			animatecount = 4 ;
 			sprites = new Sprite [4] ;
@@ -76,11 +83,11 @@ public class Enemy {
 			deathSprs [4] = new Sprite (spritesheet, 455, 394, 81, 144) ;
 			
 			hp = 1 ;
-			updown = false ;
+			up = false ;
 			currentsprite = sprites [0] ;
 			movespeed = 4 ;
 		}
-		else if (type == 2) { // ENEMY TYPE 3: ONLY SHOOTS STRAIGHT BEAM. STANDS STILL.
+		else if (type == golem) { // ENEMY TYPE 3: ONLY SHOOTS STRAIGHT BEAM. STANDS STILL.
 			spritesheet = new Texture  (Gdx.files.internal("sprites/fire laser.png")) ;
 			animatecount = 9 ;
 			sprites = new Sprite [9] ;
@@ -91,7 +98,7 @@ public class Enemy {
 			sprites [2] = new Sprite (spritesheet, 379, 552, 181, 152) ;
 			sprites [3] = new Sprite (spritesheet, 567, 552, 181, 152) ;
 			sprites [4] = new Sprite (spritesheet, 757, 552, 181, 152) ;
-			sprites [5] = new Sprite (spritesheet, 947, 552, 181, 152) ;
+			sprites [5] = new Sprite (spritesheet, 947, 552, 181, 152) ; // THE FIRING
 			sprites [6] = new Sprite (spritesheet, 1133, 523, 184, 181) ;
 			sprites [7] = new Sprite (spritesheet, 1323, 552, 181, 152) ;
 			sprites [8] = new Sprite (spritesheet, 1518, 552, 181, 152) ;
@@ -107,18 +114,18 @@ public class Enemy {
 			hp = 3 ;
 			currentsprite = sprites [0] ;
 		}
-		else if (type == 3) { // ENEMY TYPE 4: CHARGES TOWARDS PLAYER. JUST RUNS ON FLOOR-LEVEL.
+		else if (type == lion) { // ENEMY TYPE 4: CHARGES TOWARDS PLAYER. JUST RUNS ON FLOOR-LEVEL.
 			spritesheet = new Texture  (Gdx.files.internal("sprites/charging.png")) ;
 			animatecount = 6 ;
 			sprites = new Sprite [6] ;
 			deathSprs = new Sprite [10] ;
 			
-			sprites [0] = new Sprite (spritesheet, 29, 577, 162, 125) ;
-			sprites [1] = new Sprite (spritesheet, 207, 577, 162, 125) ;
-			sprites [2] = new Sprite (spritesheet, 376, 577, 162, 125) ;
-			sprites [3] = new Sprite (spritesheet, 545, 577, 162, 125) ;
-			sprites [4] = new Sprite (spritesheet, 727, 577, 162, 125) ;
-			sprites [5] = new Sprite (spritesheet, 917, 577, 162, 125) ;
+			sprites [5] = new Sprite (spritesheet, 29, 577, 162, 125) ;
+			sprites [4] = new Sprite (spritesheet, 207, 577, 162, 125) ;
+			sprites [3] = new Sprite (spritesheet, 376, 577, 162, 125) ;
+			sprites [2] = new Sprite (spritesheet, 545, 577, 162, 125) ;
+			sprites [1] = new Sprite (spritesheet, 727, 577, 162, 125) ;
+			sprites [0] = new Sprite (spritesheet, 917, 577, 162, 125) ;
 			
 			deathSprs [0] = new Sprite (spritesheet, 30, 1004, 165, 124) ;
 			deathSprs [1] = new Sprite (spritesheet, 196, 1004, 165, 124) ;
@@ -132,11 +139,11 @@ public class Enemy {
 			deathSprs [9] = new Sprite (spritesheet, 440, 1134, 155, 147) ;
 			
 			hp = 2 ;
-			leftright = false ;
+			right = false ;
 			currentsprite = sprites [0] ;
 			movespeed = 8 ;
 		}
-		else if (type == 4) { // ENEMY TYPE 5: JUST STANDS THERE. HAS TO BE SHOT A LOT. BETTER TO AVOID.
+		else if (type == rock) { // ENEMY TYPE 5: JUST STANDS THERE. HAS TO BE SHOT A LOT. BETTER TO AVOID.
 			spritesheet = new Texture  (Gdx.files.internal("sprites/stand still.png")) ;
 			animatecount = 0 ;
 			deathSprs = new Sprite [6] ;
@@ -160,14 +167,14 @@ public class Enemy {
 	}
 	
 	public void changeDirection() {
-		if (type != 2) {
+		if (type != gargoyle) {
 			for (Sprite i : sprites) {
 				i.flip(true,false);
 			}
-			leftright = !leftright ;
+			right = !right ;
 		}
 		else {
-			updown = !updown ;
+			up = !up ;
 		}
 	}
 	
@@ -178,23 +185,22 @@ public class Enemy {
 	}
 	
 	public void moveLeft() {
-		// maybe make the lion run faster?
 		x -= movespeed;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1;
-			if (leftright) {
+			if (right) {
 				changeDirection();
 			}
 		}
 	}
 	
 	public void moveRight() {
-		if (x + movespeed < Gdx.graphics.getWidth()) {
+		//if (x + movespeed < Gdx.graphics.getWidth()) {
 			x += movespeed;
-		}
+		//}
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1;
-			if (!leftright) {
+			if (!right) {
 				changeDirection();
 			}
 		}
@@ -204,7 +210,7 @@ public class Enemy {
 		y += movespeed ;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1 ;
-			if (!updown) {
+			if (!up) {
 				changeDirection () ;
 			}
 		}
@@ -214,80 +220,97 @@ public class Enemy {
 		y -= movespeed ;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1 ;
-			if (updown) {
+			if (up) {
 				changeDirection () ;
 			}
 		}
 	}
 	
-	public void move () { // oh god, still need to do actual animating
+	public void move (ArrayList <Hole> holes) {
 		// TYPES 2 AND 4 DONT MOVE. TYPE 2 SHOOTS A LASER THO.
-		Color white = new Color (255,255,255, 255) ;
-		Color black = new Color (0,0,0, 255) ;
-		if (type == 3) {
-			/*if (leftright) { // going right
-				java.awt.Color color = robot.getPixelColor(x + (int) currentsprite.getWidth () + 1, y - 5) ;
-				if (color == white) {
+		boolean tf = false ;
+		if (type == lion) {
+			if (right) { // going right
+				for (Hole h : holes) {
+					if (h.getOriginalX () > x + currentsprite.getWidth () && tf == false) {
+						moveRight () ;
+						tf = true ;
+					}
+				}
+				if (tf == false) {
 					moveLeft () ;
 				}
-				else {
+			}
+			else if (!right) { // going left
+				for (Hole h : holes) {
+					if (h.getOriginalX () + h.getWidth () < x && tf == false) {
+						moveLeft () ;
+						tf = true ;
+					}
+				}
+				if (tf == false) {
 					moveRight () ;
 				}
 			}
-			else if (!leftright) {
-				if (x <= ox) { // 100 is the floor
-					moveRight () ;
-				}
-				else {
-					moveLeft () ;
-				}
-			}*/
-			moveLeft () ;
+			//moveLeft () ;
 		}
-		if (type == 1) {
-			if (updown) { // going up
-				if (y >= 600 - currentsprite.getHeight ()) {
-					moveDown () ;
-				}
-				else {
-					moveUp () ;
-				}
-			}
-			else if (!updown) {
-				if (y <= 100) { // 100 is the floor
+		if (type == gargoyle) {
+			if (up) { // going up
+				if (y < 600 - currentsprite.getHeight ()) {
 					moveUp () ;
 				}
 				else {
 					moveDown () ;
 				}
 			}
-			/* else if (!updown) {
-			 * 	java.awt.Color color = robot.getPixelColor(x, y - 1) ;
-				if ((color == white && y <= 0) || (color == black)) {
+			else if (!up) { // going down
+				if (y - movespeed > 100) {
+					moveDown () ;
+					tf = true ;
+				}
+				if (tf == false) {
+					for (Hole h : holes) {
+						if (h.collide(currentsprite) && tf == false && y - movespeed > 0) {
+							moveDown () ;
+							tf = true ;
+						}
+					}
+				}
+				if (tf == false) {
 					moveUp () ;
 				}
-				else {
-					moveDown () ;
+			}
+		}
+		if (type == tree) { // its the tree that walks based on boundaries
+			if (right) { // going right
+				if (x + currentsprite.getWidth () + movespeed < ox + plat.getWidth ()) {
+					moveRight () ;
 				}
+				else {
+					moveLeft () ;
+				}
+<<<<<<< HEAD
 			 */
 		}
 		if (type == 0) { // its the tree that walks based on boundaries
 			if (leftright) { // going right
 				if (x + currentsprite.getWidth () >= ox + plat.getWidth
 						()) {
+=======
+			}
+			else if (!right) {
+				if (x - movespeed > ox) {
+>>>>>>> marissa/master
 					moveLeft () ;
 				}
 				else {
 					moveRight () ;
 				}
 			}
-			else if (!leftright) {
-				if (x <= ox) { // 100 is the floor
-					moveRight () ;
-				}
-				else {
-					moveLeft () ;
-				}
+		}
+		if (type == golem) {
+			if (spritecount == 0) {
+				spritecount = sprites.length - 1 ;
 			}
 		}
 		if (spritecount > 0) {
@@ -299,6 +322,10 @@ public class Enemy {
 			currentsprite = sprites[spritecount];
 		}
 		currentsprite.setPosition (x, y) ;
+		
+		if (type == golem && currentsprite == sprites [5]) {
+			shoot () ;
+		}
 	}
 	
 	public void die () {
@@ -317,12 +344,24 @@ public class Enemy {
 		return rect.overlaps(logRect);
 	}
 	
-	public void hurt () { // make the sprite flicker when damage is taken
-		
+	public void hurt (int damage) { // make the sprite flicker when damage is taken
+		hp -= damage ;
+		if (hp <= 0) {
+			die () ;
+		}
+		else {
+			batch.begin () ;
+			batch.draw (blank, x, y) ;
+			batch.end () ;
+		}
 	}
 	
 	public void shoot () {
-		
+		lasers.add (new Laser (1, x - 51, y + 100, speed, 1, batch)) ; // PLACEHOLDER X AND Y
+	}
+	
+	public void removeLaser (Laser l) {
+		lasers.remove (l) ;
 	}
 	
 	public boolean checkIfDead () {
@@ -338,8 +377,8 @@ public class Enemy {
 		return currentsprite ;
 	}
 	
-	public void loseHp (int power) {
-		hp -= power ;
+	public ArrayList <Laser> getLasers () {
+		return lasers ;
 	}
 	
 	public int getHp () {

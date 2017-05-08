@@ -269,7 +269,7 @@ public class Main extends ApplicationAdapter {
 			
 		}
 		
-		for (int i = 0 ; i < enemies.length ; i ++) {
+		for (int i = 0 ; i < enemies.length ; i ++) { // removing enemies that have gone off the left
 			if (enemies [i].getX () + enemies [i].getWidth () <= 0) {
 				System.out.println ("CHANGE") ;
 				enemies [i] = null ;
@@ -281,9 +281,15 @@ public class Main extends ApplicationAdapter {
 			movePlatforms();
 			moveHoles();
 			moveEnemies () ;
+			//updateLasers () ;
 			score += speed/2; //temp idk
 		}
 		move();
+		for (Enemy e : enemies) {
+			if (e.collide(player)) {
+				player.die () ;
+			}
+		}
 	}
 	
 	public void increaseSpeed (int s) {
@@ -404,8 +410,30 @@ public class Main extends ApplicationAdapter {
 	public void moveEnemies () {
 		for (Enemy e : enemies) {
 			e.moveWithPlat () ;
-			e.move () ;
+			e.move (holes) ;
 		}
+	}
+	
+	public void updateLasers () { // ADD! PLAYER! LASERS!
+		for (Enemy e : enemies) {
+			if (e.getType () == 3) { // a golem
+				ArrayList <Laser> elasers = e.getLasers () ;
+				if (elasers.size () > 0) {
+					for (Laser L : elasers) {
+						L.move () ;
+						L.draw () ;
+						if (L.collide (player)) {
+							L.doDamage (player) ;
+							e.removeLaser (L) ;
+						}
+						if (e.getX () + e.getSprite ().getWidth () <= 0) {
+							e.removeLaser (L) ;
+						}
+					}
+				}
+			}
+		}
+		// PLAYER LASERS TO BE ADDED
 	}
 	
 	public void reset(boolean gameOver) {

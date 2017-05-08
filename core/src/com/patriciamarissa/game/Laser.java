@@ -7,14 +7,17 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Laser {
 	private Batch batch ;
-	private int x, y, speed, power ;
+	private int x, y, speed, power, type ;
+	private final int GOOD, BAD ;
 	private Texture img ;
 	private Sprite laser ;
-	private boolean goodbad ; // good is true bad is false
 	
-	public Laser (boolean gb, int x, int y, int s, int p) {
-		goodbad = gb ;
-		if (goodbad == true) {
+	public Laser (int t, int x, int y, int s, int p, Batch b) {
+		batch = b ;
+		GOOD = 0 ;
+		BAD = 1 ;
+		type = t ;
+		if (type == BAD) {
 			img = new Texture ("enemy laser.png") ;
 		}
 		else {
@@ -28,12 +31,19 @@ public class Laser {
 	}
 	
 	public void move () {
-		if (goodbad == true) { // go right towards the enemy
-			x += speed ;
+		if (type == GOOD) { // go right towards the enemy
+			x += speed * 2 ;
 		}
 		else { // go left towards the user
-			x -= speed ;
+			x -= speed * 2 ;
 		}
+		laser.setPosition (x, y) ;
+	}
+	
+	public void draw () {
+		batch.begin () ;
+		batch.draw (laser, x, y) ;
+		batch.end () ;
 	}
 	
 	public boolean collide (Player player) {
@@ -55,6 +65,6 @@ public class Laser {
 	}
 	
 	public void doDamage (Enemy enemy) {
-		enemy.loseHp (power) ;
+		enemy.hurt (power) ;
 	}
 }
