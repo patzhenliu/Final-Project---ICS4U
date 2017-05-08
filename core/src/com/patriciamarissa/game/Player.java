@@ -67,8 +67,7 @@ public class Player {
 		if (!facingForwards) {
 			changeDirection();
 		}
-		x = 100;
-		y = 100;
+		resetPos();
 		minX = -100;
 		maxX = Gdx.graphics.getWidth();
 		speed = 10;
@@ -80,6 +79,12 @@ public class Player {
 		facingForwards = true;
 		isDead = false;
 		dyingSpeed = 20;
+		
+	}
+	
+	public void resetPos() {
+		x = 100;
+		y = 100;
 		currentSprite.setPosition(x, y);
 	}
 	
@@ -173,7 +178,7 @@ public class Player {
 				dyingSpeed--;
 				batch.begin();
 				batch.draw(deathImg, x, y);
-				batch.end();	
+				batch.end();
 			}
 			else {
 				reset();
