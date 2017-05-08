@@ -404,7 +404,7 @@ public class Main extends ApplicationAdapter {
 	public void moveEnemies () {
 		for (Enemy e : enemies) {
 			e.moveWithPlat () ;
-			e.move () ;
+			e.move (holes) ;
 		}
 	}
 	

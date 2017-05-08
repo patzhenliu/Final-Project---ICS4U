@@ -1,6 +1,7 @@
 package com.patriciamarissa.game;
 
 import java.awt.Robot;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -23,7 +24,6 @@ public class Enemy {
 	private Sprite [] deathSprs ; // not sprites since knowing their widths and height isnt necessary
 	boolean right ; // true right, false left
 	boolean up ; // true up, false down
-	private Robot robot ; // taken from stack overflow
 	
 	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat) {
 		spritecount = 0 ;
@@ -121,12 +121,12 @@ public class Enemy {
 			sprites = new Sprite [6] ;
 			deathSprs = new Sprite [10] ;
 			
-			sprites [0] = new Sprite (spritesheet, 29, 577, 162, 125) ;
-			sprites [1] = new Sprite (spritesheet, 207, 577, 162, 125) ;
-			sprites [2] = new Sprite (spritesheet, 376, 577, 162, 125) ;
-			sprites [3] = new Sprite (spritesheet, 545, 577, 162, 125) ;
-			sprites [4] = new Sprite (spritesheet, 727, 577, 162, 125) ;
-			sprites [5] = new Sprite (spritesheet, 917, 577, 162, 125) ;
+			sprites [5] = new Sprite (spritesheet, 29, 577, 162, 125) ;
+			sprites [4] = new Sprite (spritesheet, 207, 577, 162, 125) ;
+			sprites [3] = new Sprite (spritesheet, 376, 577, 162, 125) ;
+			sprites [2] = new Sprite (spritesheet, 545, 577, 162, 125) ;
+			sprites [1] = new Sprite (spritesheet, 727, 577, 162, 125) ;
+			sprites [0] = new Sprite (spritesheet, 917, 577, 162, 125) ;
 			
 			deathSprs [0] = new Sprite (spritesheet, 30, 1004, 165, 124) ;
 			deathSprs [1] = new Sprite (spritesheet, 196, 1004, 165, 124) ;
@@ -196,9 +196,9 @@ public class Enemy {
 	}
 	
 	public void moveRight() {
-		if (x + movespeed < Gdx.graphics.getWidth()) {
+		//if (x + movespeed < Gdx.graphics.getWidth()) {
 			x += movespeed;
-		}
+		//}
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1;
 			if (!right) {
@@ -227,30 +227,33 @@ public class Enemy {
 		}
 	}
 	
-	public void move () { // oh god, still need to do actual animating
+	public void move (ArrayList <Hole> holes) {
 		// TYPES 2 AND 4 DONT MOVE. TYPE 2 SHOOTS A LASER THO.
+		boolean tf = false ;
 		if (type == lion) {
-			/*if (right) { // going right
-				java.awt.Color current = robot.getPixelColor (x + (int) currentsprite.getWidth (), y - 5) ;
-				java.awt.Color upcoming = robot.getPixelColor(x + (int) currentsprite.getWidth () + 1, y - 5) ;
-				if (current == upcoming) {
-					moveRight () ;
+			if (right) { // going right
+				for (Hole h : holes) {
+					if (h.getOriginalX () > x + currentsprite.getWidth () && tf == false) {
+						moveRight () ;
+						tf = true ;
+					}
 				}
-				else {
+				if (tf == false) {
 					moveLeft () ;
 				}
 			}
 			else if (!right) { // going left
-				java.awt.Color current = robot.getPixelColor (x, y - 5) ;
-				java.awt.Color upcoming = robot.getPixelColor(x - 1, y - 5) ;
-				if (current == upcoming) {
-					moveLeft () ;
+				for (Hole h : holes) {
+					if (h.getOriginalX () + h.getWidth () < x && tf == false) {
+						moveLeft () ;
+						tf = true ;
+					}
 				}
-				else {
+				if (tf == false) {
 					moveRight () ;
 				}
-			}*/
-			moveLeft () ;
+			}
+			//moveLeft () ;
 		}
 		if (type == gargoyle) {
 			if (up) { // going up
@@ -262,26 +265,26 @@ public class Enemy {
 				}
 			}
 			else if (!up) { // going down
-				if (y > 100) { // 100 is the floor
+				if (y - movespeed > 100) {
 					moveDown () ;
+					tf = true ;
 				}
-				else {
+				if (tf == false) {
+					for (Hole h : holes) {
+						if (h.collide(currentsprite) && tf == false && y - movespeed > 0) {
+							moveDown () ;
+							tf = true ;
+						}
+					}
+				}
+				if (tf == false) {
 					moveUp () ;
 				}
 			}
-			/* else if (!updown) {
-			 * 	java.awt.Color color = robot.getPixelColor(x, y - 1) ;
-				if ((color == white && y <= 0) || (color == black)) {
-					moveUp () ;
-				}
-				else {
-					moveDown () ;
-				}
-			 */
 		}
 		if (type == tree) { // its the tree that walks based on boundaries
 			if (right) { // going right
-				if (x + currentsprite.getWidth () < ox + plat.getWidth ()) {
+				if (x + currentsprite.getWidth () + movespeed < ox + plat.getWidth ()) {
 					moveRight () ;
 				}
 				else {
@@ -289,7 +292,7 @@ public class Enemy {
 				}
 			}
 			else if (!right) {
-				if (x > ox) {
+				if (x - movespeed > ox) {
 					moveLeft () ;
 				}
 				else {
