@@ -161,6 +161,7 @@ public class Enemy {
 	}
 	
 	public void draw() {
+		currentsprite.setPosition(x,y); //:PP
 		batch.begin();
 		currentsprite.draw(batch);
 		batch.end();
@@ -289,18 +290,18 @@ public class Enemy {
 				else {
 					moveLeft () ;
 				}
-<<<<<<< HEAD
-			 */
+
+			 
 		}
 		if (type == 0) { // its the tree that walks based on boundaries
-			if (leftright) { // going right
+			if (right) { // going right
 				if (x + currentsprite.getWidth () >= ox + plat.getWidth
 						()) {
-=======
+
 			}
 			else if (!right) {
 				if (x - movespeed > ox) {
->>>>>>> marissa/master
+
 					moveLeft () ;
 				}
 				else {
@@ -326,6 +327,8 @@ public class Enemy {
 		if (type == golem && currentsprite == sprites [5]) {
 			shoot () ;
 		}
+		}
+	}
 	}
 	
 	public void die () {

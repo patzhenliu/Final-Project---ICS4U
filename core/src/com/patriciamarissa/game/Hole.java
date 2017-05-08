@@ -31,7 +31,7 @@ public class Hole {
 			this.batch = batch;
 			this.moveSpeed = moveSpeed;
 			
-			x = prevX + rand.nextInt(200) + 100;
+			randPosition(prevX);
 			originalx = x ;
 			y = 0;
 			holeImg = new Texture(Gdx.files.internal("hole.png"));
@@ -46,8 +46,8 @@ public class Hole {
 			plat = new Sprite (platimg) ;*/
 		}
 		
-		public void randPosition() { //does nothing
-			return;
+		public void randPosition(int prevX) { //does nothing
+			x = prevX + rand.nextInt(200) + 150;
 		}
 		
 		public void move() {

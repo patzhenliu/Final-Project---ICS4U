@@ -287,7 +287,8 @@ public class Main extends ApplicationAdapter {
 		move();
 		for (Enemy e : enemies) {
 			if (e.collide(player)) {
-				player.die () ;
+				//player.die () ;
+				e.die();
 			}
 		}
 	}
@@ -414,6 +415,33 @@ public class Main extends ApplicationAdapter {
 		}
 	}
 	
+	public void generateCourse() {
+		randomizePlatforms();
+		randomizeHoles();
+	}
+	
+	public void randomizePlatforms() {
+		platforms.get(0).randPosition(0);
+		for (int i = 1; i < 4; i++) {
+			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth());
+		}
+		platforms.get(4).randPosition(0);
+		for (int i = 5; i < 8; i++) {
+			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth());
+		}
+		platforms.get(8).randPosition(0);
+		for (int i = 9; i < 12; i++) {
+			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth());
+		}
+	}
+	
+	public void randomizeHoles() {
+		holes.get(0).randPosition(0);
+		for (int i = 1; i < holes.size(); i++) {
+			holes.get(i).randPosition(holes.get(i-1).getX() + holes.get(i-1).getWidth());
+		}
+	}
+	
 	public void updateLasers () { // ADD! PLAYER! LASERS!
 		for (Enemy e : enemies) {
 			if (e.getType () == 3) { // a golem
@@ -441,6 +469,7 @@ public class Main extends ApplicationAdapter {
 		background2.setX(1920);
 		player.reset();
 		player.draw();
+		generateCourse(); //change platform and hole positions after death
 		if (gameOver) {
 			player.resetLives();
 			score = 0;
