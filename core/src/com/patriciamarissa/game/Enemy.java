@@ -19,9 +19,11 @@ public class Enemy {
 	private final int type, tree, gargoyle, rock, golem, lion ;
 	private Batch batch ;
 	private Texture spritesheet ;
+	private Texture blank ;
 	private Sprite currentsprite ;
 	private Sprite [] sprites ;
 	private Sprite [] deathSprs ; // not sprites since knowing their widths and height isnt necessary
+	private ArrayList <Laser> lasers ;
 	boolean right ; // true right, false left
 	boolean up ; // true up, false down
 	
@@ -33,17 +35,14 @@ public class Enemy {
 		lion = 4 ;
 		rock = 5 ;
 		type = t + 1 ;
-		if (type == lion) {
-			System.out.println ("LION") ;
-		}
+		//blank = new Texture (Gdx.files.internal("sprites/blank.png")) ;
 		speed = s ;
 		this.batch = batch ;
 		this.plat = plat ;
 		ox = plat.getX () ; // original x; the platform's x gets pushed to the other side sometimes
 		this.x = x ;
 		this.y = y ;
-		//this.bx = bx ; // boundary x
-		//this.bw = bw ; // boundary width
+		lasers = new ArrayList <Laser> () ;
 		if (type == tree) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
 			spritesheet = new Texture  (Gdx.files.internal("sprites/walking.png")) ;
 			animatecount = 4 ;
@@ -99,7 +98,7 @@ public class Enemy {
 			sprites [2] = new Sprite (spritesheet, 379, 552, 181, 152) ;
 			sprites [3] = new Sprite (spritesheet, 567, 552, 181, 152) ;
 			sprites [4] = new Sprite (spritesheet, 757, 552, 181, 152) ;
-			sprites [5] = new Sprite (spritesheet, 947, 552, 181, 152) ;
+			sprites [5] = new Sprite (spritesheet, 947, 552, 181, 152) ; // THE FIRING
 			sprites [6] = new Sprite (spritesheet, 1133, 523, 184, 181) ;
 			sprites [7] = new Sprite (spritesheet, 1323, 552, 181, 152) ;
 			sprites [8] = new Sprite (spritesheet, 1518, 552, 181, 152) ;
@@ -300,6 +299,11 @@ public class Enemy {
 				}
 			}
 		}
+		if (type == golem) {
+			if (spritecount == 0) {
+				spritecount = sprites.length - 1 ;
+			}
+		}
 		if (spritecount > 0) {
 			animatecount--;
 			if (animatecount == 0) {
@@ -309,6 +313,10 @@ public class Enemy {
 			currentsprite = sprites[spritecount];
 		}
 		currentsprite.setPosition (x, y) ;
+		
+		if (type == golem && currentsprite == sprites [5]) {
+			shoot () ;
+		}
 	}
 	
 	public void die () {
@@ -327,12 +335,24 @@ public class Enemy {
 		return rect.overlaps(logRect);
 	}
 	
-	public void hurt () { // make the sprite flicker when damage is taken
-		// SOMETHING SOMETHING ANIMATION
+	public void hurt (int damage) { // make the sprite flicker when damage is taken
+		hp -= damage ;
+		if (hp <= 0) {
+			die () ;
+		}
+		else {
+			batch.begin () ;
+			batch.draw (blank, x, y) ;
+			batch.end () ;
+		}
 	}
 	
 	public void shoot () {
-		// ugh call laser class idk
+		lasers.add (new Laser (1, x - 51, y + 100, speed, 1, batch)) ; // PLACEHOLDER X AND Y
+	}
+	
+	public void removeLaser (Laser l) {
+		lasers.remove (l) ;
 	}
 	
 	public boolean checkIfDead () {
@@ -348,8 +368,8 @@ public class Enemy {
 		return currentsprite ;
 	}
 	
-	public void loseHp (int power) {
-		hp -= power ;
+	public ArrayList <Laser> getLasers () {
+		return lasers ;
 	}
 	
 	public int getHp () {
