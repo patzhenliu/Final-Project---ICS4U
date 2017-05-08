@@ -290,14 +290,6 @@ public class Enemy {
 				else {
 					moveLeft () ;
 				}
-
-			 
-		}
-		if (type == 0) { // its the tree that walks based on boundaries
-			if (right) { // going right
-				if (x + currentsprite.getWidth () >= ox + plat.getWidth
-						()) {
-
 			}
 			else if (!right) {
 				if (x - movespeed > ox) {
@@ -327,8 +319,6 @@ public class Enemy {
 		if (type == golem && currentsprite == sprites [5]) {
 			shoot () ;
 		}
-		}
-	}
 	}
 	
 	public void die () {
