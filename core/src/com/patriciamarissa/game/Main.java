@@ -128,18 +128,16 @@ public class Main extends ApplicationAdapter {
 	public void makeEnemies () {
 		// TEST Batch batch, int t, int x, int y, int s
 		for (int i = 0 ; i < enemies.length ; i ++) {
-			//if (enemies [i] == null) {
-				int p = rand.nextInt (platforms.size ()) ;
-				int type = rand.nextInt (4) ;
-				Platform plat = platforms.get (p) ;
-				System.out.println ("PLATFORM" + p) ;
-				if (type != 3) {
-					enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth () - 100, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
-				}
-				else { // lion is always on floor
-					enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth () - 100, 100, speed, plat)) ;
-				}
-			//}
+			int p = rand.nextInt (platforms.size ()) ;
+			int type = rand.nextInt (4) ;
+			Platform plat = platforms.get (p) ;
+			System.out.println ("PLATFORM" + p) ;
+			if (type != 3) {
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth () - 100, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
+			}
+			else { // lion is always on floor
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth () - 100, 100, speed, plat)) ;
+			}
 		}
 	}
 	
@@ -270,7 +268,7 @@ public class Main extends ApplicationAdapter {
 		}
 		
 		for (int i = 0 ; i < enemies.length ; i ++) { // removing enemies that have gone off the left
-			if (enemies [i].getX () + enemies [i].getWidth () <= 0) {
+			if (enemies [i].getX () + enemies [i].getWidth () <= 0 || enemies [i].getHp () <= 0) {
 				System.out.println ("CHANGE") ;
 				enemies [i] = null ;
 				makeEnemy (i) ;
@@ -288,7 +286,7 @@ public class Main extends ApplicationAdapter {
 		for (Enemy e : enemies) {
 			if (e.collide(player)) {
 				//player.die () ;
-				e.die();
+				e.loseHp(10); // just to ensure they die
 			}
 		}
 	}

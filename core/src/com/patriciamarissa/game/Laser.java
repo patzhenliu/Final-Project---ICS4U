@@ -65,6 +65,6 @@ public class Laser {
 	}
 	
 	public void doDamage (Enemy enemy) {
-		enemy.hurt (power) ;
+		enemy.loseHp (power) ;
 	}
 }

@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 public class Enemy { 
 	// BUGS: ENEMIES DONT SWITCH DIRECTION, THEY GET STUCK, SOMETIMES WALK OVER PLATFORM GAPS
@@ -71,10 +73,10 @@ public class Enemy {
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
 			
-			sprites [0] = new Sprite (spritesheet, 5, 10, 79, 114) ;
-			sprites [1] = new Sprite (spritesheet, 102, 46, 81, 78) ;
-			sprites [2] = new Sprite (spritesheet, 205, 45, 90, 80) ;
-			sprites [3] = new Sprite (spritesheet, 311, 31, 103, 92) ;
+			sprites [3] = new Sprite (spritesheet, 5, 10, 79, 114) ;
+			sprites [2] = new Sprite (spritesheet, 102, 46, 81, 78) ;
+			sprites [1] = new Sprite (spritesheet, 205, 45, 90, 80) ;
+			sprites [0] = new Sprite (spritesheet, 311, 31, 103, 92) ;
 			
 			deathSprs [0] = new Sprite (spritesheet, 8, 409, 91, 100) ;
 			deathSprs [1] = new Sprite (spritesheet, 116, 372, 101, 136) ;
@@ -93,15 +95,15 @@ public class Enemy {
 			sprites = new Sprite [9] ;
 			deathSprs = new Sprite [7] ;
 
-			sprites [0] = new Sprite (spritesheet, 0, 552, 181, 152) ;
-			sprites [1] = new Sprite (spritesheet, 187, 552, 181, 152) ;
-			sprites [2] = new Sprite (spritesheet, 379, 552, 181, 152) ;
-			sprites [3] = new Sprite (spritesheet, 567, 552, 181, 152) ;
+			sprites [8] = new Sprite (spritesheet, 0, 552, 181, 152) ;
+			sprites [7] = new Sprite (spritesheet, 187, 552, 181, 152) ;
+			sprites [6] = new Sprite (spritesheet, 379, 552, 181, 152) ;
+			sprites [5] = new Sprite (spritesheet, 567, 552, 181, 152) ;
 			sprites [4] = new Sprite (spritesheet, 757, 552, 181, 152) ;
-			sprites [5] = new Sprite (spritesheet, 947, 552, 181, 152) ; // THE FIRING
-			sprites [6] = new Sprite (spritesheet, 1133, 523, 184, 181) ;
-			sprites [7] = new Sprite (spritesheet, 1323, 552, 181, 152) ;
-			sprites [8] = new Sprite (spritesheet, 1518, 552, 181, 152) ;
+			sprites [3] = new Sprite (spritesheet, 947, 552, 181, 152) ; // THE FIRING
+			sprites [2] = new Sprite (spritesheet, 1133, 523, 184, 181) ;
+			sprites [1] = new Sprite (spritesheet, 1323, 552, 181, 152) ;
+			sprites [0] = new Sprite (spritesheet, 1518, 552, 181, 152) ;
 
 			deathSprs [0] = new Sprite (spritesheet, 0, 727, 204, 158) ;
 			deathSprs [1] = new Sprite (spritesheet, 212, 727, 237, 158) ;
@@ -196,9 +198,7 @@ public class Enemy {
 	}
 	
 	public void moveRight() {
-		//if (x + movespeed < Gdx.graphics.getWidth()) {
-			x += movespeed;
-		//}
+		x += movespeed;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1;
 			if (!right) {
@@ -337,7 +337,7 @@ public class Enemy {
 		return rect.overlaps(logRect);
 	}
 	
-	public void hurt (int damage) { // make the sprite flicker when damage is taken
+	public void loseHp (int damage) { // make the sprite flicker when damage is taken
 		hp -= damage ;
 		if (hp <= 0) {
 			die () ;
@@ -355,15 +355,6 @@ public class Enemy {
 	
 	public void removeLaser (Laser l) {
 		lasers.remove (l) ;
-	}
-	
-	public boolean checkIfDead () {
-		if (hp <= 0) {
-			return true ;
-		}
-		else {
-			return false ;
-		}
 	}
 	
 	public Sprite getSprite () {
