@@ -16,7 +16,7 @@ public class Enemy {
 	// BUGS: ENEMIES DONT SWITCH DIRECTION, THEY GET STUCK, SOMETIMES WALK OVER PLATFORM GAPS
 	// WHEN FIRST MADE THEY END UP ON THE TITLE SCREEN AND THEY ALL GENERATE ON THE FIRST PLATFORM
 	// AGHHHHH LION AND GARGOYLE HAVE TO WATCH FOR HOLES
-	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox ;
+	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
 	private Platform plat ;
 	private final int type, tree, gargoyle, rock, golem, lion ;
 	private Batch batch ;
@@ -28,8 +28,11 @@ public class Enemy {
 	private ArrayList <Laser> lasers ;
 	boolean right ; // true right, false left
 	boolean up ; // true up, false down
+	boolean dying ;
 	
 	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat) {
+		dying = false ;
+		deathcount = 0 ;
 		spritecount = 0 ;
 		tree = 1 ;
 		gargoyle = 2 ;
@@ -323,14 +326,39 @@ public class Enemy {
 	
 	public void die () {
 		//dying "animation"
-		batch.begin () ;
+		/*batch.begin () ;
 		for (Sprite i : deathSprs) {
 			batch.draw(i, x, y) ;
 		}
-		batch.end () ;
+		batch.end () ;*/
+		dying = true ; // COMMENCE THE DYING ANIMATION
+		spritecount = deathSprs.length - 1 ;
+		currentsprite = deathSprs [0] ;
 	}
 	
-	public boolean collide (Player player) { // NOT IN USE YET
+	public void animateDeath () {
+		if (spritecount > 0) {
+			animatecount--;
+			if (animatecount == 0) {
+				spritecount--;
+				deathcount ++ ;
+				animatecount = speed;
+			}
+			currentsprite = deathSprs[spritecount];
+		}
+		currentsprite.setPosition (x, y) ;
+	}
+	
+	public boolean isDead () { // once it finishes the death animation cycle, officially pronounce it as dead
+		if (deathcount == deathSprs.length) {
+			return true ;
+		}
+		else {
+			return false ;
+		}
+	}
+	
+	public boolean collide (Player player) {
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
 		Rectangle logRect = new Rectangle(x, y, currentsprite.getWidth (), currentsprite.getHeight ());

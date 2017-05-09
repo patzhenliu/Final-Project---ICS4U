@@ -267,8 +267,8 @@ public class Main extends ApplicationAdapter {
 			
 		}
 		
-		for (int i = 0 ; i < enemies.length ; i ++) { // removing enemies that have gone off the left
-			if (enemies [i].getX () + enemies [i].getWidth () <= 0 || enemies [i].getHp () <= 0) {
+		for (int i = 0 ; i < enemies.length ; i ++) { // removing enemies that have gone off the left or finished dying
+			if (enemies [i].getX () + enemies [i].getWidth () <= 0 || enemies [i].isDead () == true) {
 				System.out.println ("CHANGE") ;
 				enemies [i] = null ;
 				makeEnemy (i) ;
@@ -284,7 +284,7 @@ public class Main extends ApplicationAdapter {
 		}
 		move();
 		for (Enemy e : enemies) {
-			if (e.collide(player)) {
+			if (e.collide(player) && !e.dying) {
 				//player.die () ;
 				e.loseHp(10); // just to ensure they die
 			}
@@ -409,7 +409,12 @@ public class Main extends ApplicationAdapter {
 	public void moveEnemies () {
 		for (Enemy e : enemies) {
 			e.moveWithPlat () ;
-			e.move (holes) ;
+			if (!e.dying) {
+				e.move (holes) ;
+			}
+			else {
+				e.animateDeath () ;
+			}
 		}
 	}
 	
