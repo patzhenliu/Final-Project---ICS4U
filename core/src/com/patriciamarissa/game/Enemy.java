@@ -13,9 +13,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class Enemy { 
-	// BUGS: ENEMIES DONT SWITCH DIRECTION, THEY GET STUCK, SOMETIMES WALK OVER PLATFORM GAPS
-	// WHEN FIRST MADE THEY END UP ON THE TITLE SCREEN AND THEY ALL GENERATE ON THE FIRST PLATFORM
-	// AGHHHHH LION AND GARGOYLE HAVE TO WATCH FOR HOLES
+	// BUGS: ENEMIES GET STUCK, SOMETIMES WALK OVER PLATFORM GAPS
 	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
 	private Platform plat ;
 	private final int type, tree, gargoyle, rock, golem, lion ;
@@ -41,7 +39,6 @@ public class Enemy {
 		lion = 4 ;
 		rock = 5 ;
 		type = t + 1 ;
-		//blank = new Texture (Gdx.files.internal("sprites/blank.png")) ;
 		speed = s ;
 		this.batch = batch ;
 		this.plat = plat ;
@@ -51,7 +48,6 @@ public class Enemy {
 		lasers = new ArrayList <Laser> () ;
 		if (type == tree) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
 			spritesheet = new Texture  (Gdx.files.internal("sprites/walking.png")) ;
-			//animatecount = 4 ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
 			
@@ -73,7 +69,6 @@ public class Enemy {
 		}
 		else if (type == gargoyle) { // ENEMY TYPE 2: FLIES UP AND DOWN BETWEEN PLATS
 			spritesheet = new Texture  (Gdx.files.internal("sprites/flying.png")) ;
-			//animatecount = 4 ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
 			
@@ -95,7 +90,6 @@ public class Enemy {
 		}
 		else if (type == golem) { // ENEMY TYPE 3: ONLY SHOOTS STRAIGHT BEAM. STANDS STILL.
 			spritesheet = new Texture  (Gdx.files.internal("sprites/fire laser.png")) ;
-			//animatecount = 9 ;
 			sprites = new Sprite [9] ;
 			deathSprs = new Sprite [7] ;
 
@@ -122,7 +116,6 @@ public class Enemy {
 		}
 		else if (type == lion) { // ENEMY TYPE 4: CHARGES TOWARDS PLAYER. JUST RUNS ON FLOOR-LEVEL.
 			spritesheet = new Texture  (Gdx.files.internal("sprites/charging.png")) ;
-			//animatecount = 6 ;
 			sprites = new Sprite [6] ;
 			deathSprs = new Sprite [10] ;
 			
@@ -188,7 +181,6 @@ public class Enemy {
 	public void moveWithPlat () {
 		x -= speed ;
 		ox -= speed ;
-		//System.out.println (ox) ;
 	}
 	
 	public void moveLeft() {
@@ -232,7 +224,7 @@ public class Enemy {
 	}
 	
 	public void move (ArrayList <Hole> holes) {
-		// TYPES 2 AND 4 DONT MOVE. TYPE 2 SHOOTS A LASER THO.
+		// the golem and the rock don't move, but the golem does shoot a laser.
 		boolean tf = false ;
 		if (type == lion) {
 			if (right) { // going right
@@ -257,7 +249,6 @@ public class Enemy {
 					moveRight () ;
 				}
 			}
-			//moveLeft () ;
 		}
 		if (type == gargoyle) {
 			if (up) { // going up
@@ -326,12 +317,6 @@ public class Enemy {
 	}
 	
 	public void die () {
-		//dying "animation"
-		/*batch.begin () ;
-		for (Sprite i : deathSprs) {
-			batch.draw(i, x, y) ;
-		}
-		batch.end () ;*/
 		dying = true ; // COMMENCE THE DYING ANIMATION
 		spritecount = deathSprs.length - 1 ;
 		animatecount = 3 ;
