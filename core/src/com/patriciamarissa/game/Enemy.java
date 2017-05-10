@@ -34,6 +34,7 @@ public class Enemy {
 		dying = false ;
 		deathcount = 0 ;
 		spritecount = 0 ;
+		animatecount = 3 ;
 		tree = 1 ;
 		gargoyle = 2 ;
 		golem = 3 ;
@@ -50,7 +51,7 @@ public class Enemy {
 		lasers = new ArrayList <Laser> () ;
 		if (type == tree) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
 			spritesheet = new Texture  (Gdx.files.internal("sprites/walking.png")) ;
-			animatecount = 4 ;
+			//animatecount = 4 ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
 			
@@ -59,11 +60,11 @@ public class Enemy {
 			sprites [2] = new Sprite (spritesheet, 144, 81, 71, 77) ;
 			sprites [3] = new Sprite (spritesheet, 220, 82, 78, 77) ;
 			
-			deathSprs [0] = new Sprite (spritesheet, 0, 162, 64, 96) ;
-			deathSprs [1] = new Sprite (spritesheet, 0, 263, 66, 97) ;
+			deathSprs [4] = new Sprite (spritesheet, 0, 162, 64, 96) ;
+			deathSprs [3] = new Sprite (spritesheet, 0, 263, 66, 97) ;
 			deathSprs [2] = new Sprite (spritesheet, 77, 265, 62, 95) ;
-			deathSprs [3] = new Sprite (spritesheet, 150, 272, 66, 87) ;
-			deathSprs [4] = new Sprite (spritesheet, 225, 289, 64, 69) ;
+			deathSprs [1] = new Sprite (spritesheet, 150, 272, 66, 87) ;
+			deathSprs [0] = new Sprite (spritesheet, 225, 289, 64, 69) ;
 			
 			hp = 1 ;
 			right = false ;
@@ -72,7 +73,7 @@ public class Enemy {
 		}
 		else if (type == gargoyle) { // ENEMY TYPE 2: FLIES UP AND DOWN BETWEEN PLATS
 			spritesheet = new Texture  (Gdx.files.internal("sprites/flying.png")) ;
-			animatecount = 4 ;
+			//animatecount = 4 ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
 			
@@ -81,11 +82,11 @@ public class Enemy {
 			sprites [1] = new Sprite (spritesheet, 205, 45, 90, 80) ;
 			sprites [0] = new Sprite (spritesheet, 311, 31, 103, 92) ;
 			
-			deathSprs [0] = new Sprite (spritesheet, 8, 409, 91, 100) ;
-			deathSprs [1] = new Sprite (spritesheet, 116, 372, 101, 136) ;
+			deathSprs [4] = new Sprite (spritesheet, 8, 409, 91, 100) ;
+			deathSprs [3] = new Sprite (spritesheet, 116, 372, 101, 136) ;
 			deathSprs [2] = new Sprite (spritesheet, 245, 364, 81, 144) ;
-			deathSprs [3] = new Sprite (spritesheet, 352, 355, 81, 136) ;
-			deathSprs [4] = new Sprite (spritesheet, 455, 394, 81, 144) ;
+			deathSprs [1] = new Sprite (spritesheet, 352, 355, 81, 136) ;
+			deathSprs [0] = new Sprite (spritesheet, 455, 394, 81, 144) ;
 			
 			hp = 1 ;
 			up = false ;
@@ -94,7 +95,7 @@ public class Enemy {
 		}
 		else if (type == golem) { // ENEMY TYPE 3: ONLY SHOOTS STRAIGHT BEAM. STANDS STILL.
 			spritesheet = new Texture  (Gdx.files.internal("sprites/fire laser.png")) ;
-			animatecount = 9 ;
+			//animatecount = 9 ;
 			sprites = new Sprite [9] ;
 			deathSprs = new Sprite [7] ;
 
@@ -108,20 +109,20 @@ public class Enemy {
 			sprites [1] = new Sprite (spritesheet, 1323, 552, 181, 152) ;
 			sprites [0] = new Sprite (spritesheet, 1518, 552, 181, 152) ;
 
-			deathSprs [0] = new Sprite (spritesheet, 0, 727, 204, 158) ;
-			deathSprs [1] = new Sprite (spritesheet, 212, 727, 237, 158) ;
-			deathSprs [2] = new Sprite (spritesheet, 416, 727, 228, 158) ;
+			deathSprs [6] = new Sprite (spritesheet, 0, 727, 204, 158) ;
+			deathSprs [5] = new Sprite (spritesheet, 212, 727, 237, 158) ;
+			deathSprs [4] = new Sprite (spritesheet, 416, 727, 228, 158) ;
 			deathSprs [3] = new Sprite (spritesheet, 712, 727, 224, 158) ;
-			deathSprs [4] = new Sprite (spritesheet, 956, 727, 222, 158) ;
-			deathSprs [5] = new Sprite (spritesheet, 1197, 727, 222, 158) ;
-			deathSprs [6] = new Sprite (spritesheet, 1437, 727, 222, 158) ;
+			deathSprs [2] = new Sprite (spritesheet, 956, 727, 222, 158) ;
+			deathSprs [1] = new Sprite (spritesheet, 1197, 727, 222, 158) ;
+			deathSprs [0] = new Sprite (spritesheet, 1437, 727, 222, 158) ;
 			
 			hp = 3 ;
 			currentsprite = sprites [0] ;
 		}
 		else if (type == lion) { // ENEMY TYPE 4: CHARGES TOWARDS PLAYER. JUST RUNS ON FLOOR-LEVEL.
 			spritesheet = new Texture  (Gdx.files.internal("sprites/charging.png")) ;
-			animatecount = 6 ;
+			//animatecount = 6 ;
 			sprites = new Sprite [6] ;
 			deathSprs = new Sprite [10] ;
 			
@@ -132,16 +133,16 @@ public class Enemy {
 			sprites [1] = new Sprite (spritesheet, 727, 577, 162, 125) ;
 			sprites [0] = new Sprite (spritesheet, 917, 577, 162, 125) ;
 			
-			deathSprs [0] = new Sprite (spritesheet, 30, 1004, 165, 124) ;
-			deathSprs [1] = new Sprite (spritesheet, 196, 1004, 165, 124) ;
-			deathSprs [2] = new Sprite (spritesheet, 371, 1004, 165, 124) ;
-			deathSprs [3] = new Sprite (spritesheet, 540, 1004, 165, 124) ;
-			deathSprs [4] = new Sprite (spritesheet, 710, 1004, 165, 124) ;
-			deathSprs [5] = new Sprite (spritesheet, 882, 1004, 165, 124) ;
-			deathSprs [6] = new Sprite (spritesheet, 30, 1169, 165, 124) ;
-			deathSprs [7] = new Sprite (spritesheet, 179, 1169, 159, 124) ;
-			deathSprs [8] = new Sprite (spritesheet, 320, 1169, 165, 124) ;
-			deathSprs [9] = new Sprite (spritesheet, 440, 1134, 155, 147) ;
+			deathSprs [9] = new Sprite (spritesheet, 30, 1004, 165, 124) ;
+			deathSprs [8] = new Sprite (spritesheet, 196, 1004, 165, 124) ;
+			deathSprs [7] = new Sprite (spritesheet, 371, 1004, 165, 124) ;
+			deathSprs [6] = new Sprite (spritesheet, 540, 1004, 165, 124) ;
+			deathSprs [5] = new Sprite (spritesheet, 710, 1004, 165, 124) ;
+			deathSprs [4] = new Sprite (spritesheet, 882, 1004, 165, 124) ;
+			deathSprs [3] = new Sprite (spritesheet, 30, 1169, 165, 124) ;
+			deathSprs [2] = new Sprite (spritesheet, 179, 1169, 159, 124) ;
+			deathSprs [1] = new Sprite (spritesheet, 320, 1169, 165, 124) ;
+			deathSprs [0] = new Sprite (spritesheet, 440, 1134, 155, 147) ;
 			
 			hp = 2 ;
 			right = false ;
@@ -153,12 +154,12 @@ public class Enemy {
 			animatecount = 0 ;
 			deathSprs = new Sprite [6] ;
 			
-			deathSprs [0] = new Sprite (spritesheet, 6, 776, 159, 100) ;
-			deathSprs [1] = new Sprite (spritesheet, 191, 776, 159, 100) ;
-			deathSprs [2] = new Sprite (spritesheet, 364, 776, 159, 100) ;
-			deathSprs [3] = new Sprite (spritesheet, 553, 776, 159, 100) ;
-			deathSprs [4] = new Sprite (spritesheet, 746, 776, 159, 100) ;
-			deathSprs [5] = new Sprite (spritesheet, 956, 776, 159, 100) ;
+			deathSprs [5] = new Sprite (spritesheet, 6, 776, 159, 100) ;
+			deathSprs [4] = new Sprite (spritesheet, 191, 776, 159, 100) ;
+			deathSprs [3] = new Sprite (spritesheet, 364, 776, 159, 100) ;
+			deathSprs [2] = new Sprite (spritesheet, 553, 776, 159, 100) ;
+			deathSprs [1] = new Sprite (spritesheet, 746, 776, 159, 100) ;
+			deathSprs [0] = new Sprite (spritesheet, 956, 776, 159, 100) ;
 			
 			currentsprite = new Sprite (spritesheet, 3, 10, 128, 116) ;
 			hp = 5 ;
@@ -313,7 +314,7 @@ public class Enemy {
 			animatecount--;
 			if (animatecount == 0) {
 				spritecount--;
-				animatecount = speed;
+				animatecount = 3;
 			}
 			currentsprite = sprites[spritecount];
 		}
@@ -333,6 +334,7 @@ public class Enemy {
 		batch.end () ;*/
 		dying = true ; // COMMENCE THE DYING ANIMATION
 		spritecount = deathSprs.length - 1 ;
+		animatecount = 3 ;
 		currentsprite = deathSprs [0] ;
 	}
 	
@@ -342,7 +344,7 @@ public class Enemy {
 			if (animatecount == 0) {
 				spritecount--;
 				deathcount ++ ;
-				animatecount = speed;
+				animatecount = 3;
 			}
 			currentsprite = deathSprs[spritecount];
 		}
@@ -350,7 +352,7 @@ public class Enemy {
 	}
 	
 	public boolean isDead () { // once it finishes the death animation cycle, officially pronounce it as dead
-		if (deathcount == deathSprs.length) {
+		if (deathcount == deathSprs.length - 1) {
 			return true ;
 		}
 		else {
