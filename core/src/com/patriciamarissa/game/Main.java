@@ -64,8 +64,8 @@ public class Main extends ApplicationAdapter {
 		
 		batch = new SpriteBatch();
 		player = new Player(batch, speed);
-		background = new Background(batch, 0, 1920, 1080, speed);
-		background2 = new Background(batch, 1920, 1920, 1080, speed);
+		background = new Background(batch, 0, 1659, 500, speed);
+		background2 = new Background(batch, 1659, 1659, 500, speed);
 		page = "START";
 		mask = new Pixmap (Gdx.files.internal("mask.png")) ;
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
@@ -256,6 +256,12 @@ public class Main extends ApplicationAdapter {
 			//background.stop();
 			//platforms.stop();
 		}
+		
+		/*for (Enemy e: enemies) {
+			if (!e.isOnPlatform()) {
+				
+			}
+		}*/
 			
 		for (int i = 0; i < holes.size(); i++) {
 			//System.out.println(holes.get(i).collide(player));
@@ -326,8 +332,8 @@ public class Main extends ApplicationAdapter {
 		
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//background.draw();
-		//background2.draw();
+		background.draw();
+		background2.draw();
 		drawPlatforms();
 		drawFloor () ;
 		drawHoles();

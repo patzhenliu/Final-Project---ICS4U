@@ -352,6 +352,10 @@ public class Enemy {
 		return rect.overlaps(logRect);
 	}
 	
+	public boolean isOnPlatform() {
+		return plat.collideTop(currentsprite);
+	}
+	
 	public void loseHp (int damage) { // make the sprite flicker when damage is taken
 		hp -= damage ;
 		if (hp <= 0) {
@@ -402,5 +406,9 @@ public class Enemy {
 	
 	public int getWidth () {
 		return (int)currentsprite.getWidth () ;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
 	}
 }

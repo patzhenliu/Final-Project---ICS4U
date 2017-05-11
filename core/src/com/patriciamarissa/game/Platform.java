@@ -71,6 +71,13 @@ public class Platform {
 		return rect.overlaps(platformRect);
 	}
 	
+	public boolean collideTop(Sprite sprite){ ///should only be feet colliding not anything
+		Sprite playerSprite = sprite;
+		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight()/2);
+		Rectangle platformRect = new Rectangle(platformSprite.getX(), platformSprite.getY() + platformSprite.getHeight(), platformSprite.getWidth(), playerSprite.getHeight() );
+		return rect.overlaps(platformRect);
+	}
+	
 	public boolean collideBottom(Player player){ ///hitting bottom of platform - trial and erroring stuff rn
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY() + playerSprite.getHeight(), playerSprite.getWidth(), playerSprite.getHeight());
