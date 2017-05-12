@@ -19,19 +19,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-/* BIT MANIPULATION
- * accessing pixel colors. use a pixmap.
- * Pixmap mask ;
- * mask = new Pixmap ("filename") ;
- * int color = mask.getPixel (x, y) ;
- * that'll be in rgba form
- * int red = ( color >> 24 ) ;
- * shift it over 24 bits
- * int green = (color >> 16 ) & OxFf ;
- * int blue = (color >> 8 ) & OxFf ;
- * int alpha = color & OxFf ;
- */
-
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Player player;
@@ -133,26 +120,34 @@ public class Main extends ApplicationAdapter {
 			Platform plat = platforms.get (p) ;
 			System.out.println ("PLATFORM" + p) ;
 			if (type != 3) {
-				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth () - 100, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat)) ;
 			}
 			else { // lion is always on floor
-				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth () - 100, 100, speed, plat)) ;
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat)) ;
 			}
 		}
 	}
 	
 	public void makeEnemy (int index) {
 		// TEST Batch batch, int t, int x, int y, int s
-				int p = rand.nextInt (platforms.size ()) ;
-				int type = rand.nextInt (5) ;
-				Platform plat = platforms.get (p) ;
-				System.out.println ("PLATFORM" + p) ;
-				if (type != 3) {
-					enemies [index] = (new Enemy (batch, type, rand.nextInt (500) + 1000, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
-				}
-				else { // lion is always on floor
-					enemies [index] = (new Enemy (batch, type, rand.nextInt (500) + 1000, 100, speed, plat)) ;
-				}
+		/*ArrayList <Platform> viables = new ArrayList <Platform> () ;
+		for (Platform p : platforms) { // only make it possible to go on a platform that's offscreen.
+			if (p.getX () >= 1000) {
+				viables.add (p) ;
+			}
+		}*/
+		// FIX THE X SO IT DOESNT CLIP PAST THE PLATFORM
+		int p = rand.nextInt (platforms.size ()) ;
+		int type = rand.nextInt (5) ;
+		Platform plat = platforms.get (p) ;
+		System.out.println ("PLATFORM" + p) ;
+		if (type != 3) {
+			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
+		}
+		else { // lion is always on floor
+			// CHANGE THE X SO IT AVOIDS THE HOLES
+			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, 100, speed, plat)) ;
+		}
 	}
 	
 	public void move() {
@@ -256,12 +251,6 @@ public class Main extends ApplicationAdapter {
 			//background.stop();
 			//platforms.stop();
 		}
-		
-		/*for (Enemy e: enemies) {
-			if (!e.isOnPlatform()) {
-				
-			}
-		}*/
 			
 		for (int i = 0; i < holes.size(); i++) {
 			//System.out.println(holes.get(i).collide(player));
@@ -427,6 +416,7 @@ public class Main extends ApplicationAdapter {
 	public void generateCourse() {
 		randomizePlatforms();
 		randomizeHoles();
+		randomizeEnemies () ;
 	}
 	
 	public void randomizePlatforms() {
@@ -449,6 +439,13 @@ public class Main extends ApplicationAdapter {
 		for (int i = 1; i < holes.size(); i++) {
 			holes.get(i).randPosition(holes.get(i-1).getX() + holes.get(i-1).getWidth());
 		}
+	}
+	
+	public void randomizeEnemies () {
+		for (int i = 0 ; i < enemies.length ; i ++) {
+			enemies [i] = null ;
+		}
+		makeEnemies () ;
 	}
 	
 	public void updateLasers () { // ADD! PLAYER! LASERS!

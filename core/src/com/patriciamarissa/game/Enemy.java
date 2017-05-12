@@ -13,7 +13,11 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class Enemy { 
-	// BUGS: ENEMIES GET STUCK, SOMETIMES WALK OVER PLATFORM GAPS
+	// BUGS: ENEMIES GET STUCK.
+	// SOMETIMES WALK OVER PLATFORM GAPS.
+	// SPAWN WITH PIECES OFF THE PLATFORM.
+	// GARGOYLES CLIP THROUGH THE GROUND.
+	// LASERS CRASH.
 	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
 	private Platform plat ;
 	private final int type, tree, gargoyle, rock, golem, lion ;
@@ -43,7 +47,7 @@ public class Enemy {
 		this.batch = batch ;
 		this.plat = plat ;
 		ox = plat.getX () ; // original x; the platform's x gets pushed to the other side sometimes
-		this.x = x ;
+		//this.x = x ;
 		this.y = y ;
 		lasers = new ArrayList <Laser> () ;
 		if (type == tree) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
@@ -157,6 +161,7 @@ public class Enemy {
 			currentsprite = new Sprite (spritesheet, 3, 10, 128, 116) ;
 			hp = 5 ;
 		}
+		this.x = x - (int) currentsprite.getWidth () ;
 	}
 	
 	public void draw() {
