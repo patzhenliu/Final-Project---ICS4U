@@ -12,11 +12,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-public class Enemy { 
-	// BUGS: ENEMIES GET STUCK.
+public class Enemy {
 	// SOMETIMES WALK OVER PLATFORM GAPS.
 	// SPAWN WITH PIECES OFF THE PLATFORM.
-	// GARGOYLES CLIP THROUGH THE GROUND.
 	// LASERS CRASH.
 	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
 	private Platform plat ;
@@ -48,7 +46,6 @@ public class Enemy {
 		speed = s ;
 		this.batch = batch ;
 		this.plat = plat ;
-		//this.x = x ;
 		this.y = y ;
 		holes = h ;
 		lasers = new ArrayList <Laser> () ;
@@ -200,13 +197,14 @@ public class Enemy {
 			maxY = 100 ;
 		}
 		else {
+			boolean overhole = false ;
 			maxY = 600 - (int) currentsprite.getHeight () ;
 			for (int i = 0 ; i < holes.size () ; i++) {
 				if (holes.get(i).isAligned (currentsprite, minX)) {
-					minY = 0 ;
+					overhole = true ;
 				}
 			}
-			if (minY != 0) {
+			if (!overhole) {
 				minY = 100 ;
 			}
 		}
@@ -241,8 +239,7 @@ public class Enemy {
 		if (type == tree) {
 			maxX = minX + plat.getWidth () - (int) currentsprite.getWidth () ;
 		}
-		if (type == lion && maxX == 1000) {
-			// if there wasn't a hole on the right, need to check if a new hole has appeared.
+		if (type == lion && maxX == 1000) { // if there wasn't a hole on the right, need to check if a new hole has appeared.
 			boolean onright = false ;
 			for (int i = 0 ; i < holes.size () ; i++) {
 				if (holes.get(i).getX () >= this.x + currentsprite.getWidth () && (onright == false || maxX > holes.get(i).getX ())) {
@@ -297,9 +294,7 @@ public class Enemy {
 		}
 	}
 	
-	public void move () {
-		// the golem and the rock don't move, but the golem does shoot a laser.
-		//boolean tf = false ;
+	public void move () { // the golem and the rock don't move, but the golem does shoot a laser.
 		if (type == lion || type == tree) {
 			if (right) { // going right
 				if (currentsprite.getX () + currentsprite.getWidth () < maxX) {
