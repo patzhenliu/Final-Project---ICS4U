@@ -18,9 +18,8 @@ public class Platform {
 	private int moveSpeed;
 	private int x;
 	private int y;
-	private int length;
-	private int width;
-	private Random rand = new Random(System.currentTimeMillis() );
+	private Random rand = new Random(System.currentTimeMillis());
+	private int width, length;
 	
 	/*private Rectangle platrect ;
 	private final int y, w, h ;

@@ -24,6 +24,7 @@ public class Main extends ApplicationAdapter {
 	Player player;
 	Pixmap mask ;
 	Background background, background2;
+	Floor floor, floor2;
 	ArrayList <Platform> platforms;
 	ArrayList <Hole> holes;
 	Enemy [] enemies;
@@ -51,10 +52,14 @@ public class Main extends ApplicationAdapter {
 		
 		batch = new SpriteBatch();
 		player = new Player(batch, speed);
-		background = new Background(batch, 0, 1991, 600, speed);
-		background2 = new Background(batch, 1991, 1991, 600, speed);
+		background = new Background(batch, 0, 3430, 600, speed);
+		background2 = new Background(batch, 3430, 3430, 600, speed);
 		background.stop();
 		background2.stop();
+		floor = new Floor(batch, 0, 3408, 100, speed);
+		floor2 = new Floor(batch, 3408, 3408, 100, speed);
+		floor.stop();
+		floor2.stop();
 		page = "START";
 		mask = new Pixmap (Gdx.files.internal("mask.png")) ;
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
@@ -280,6 +285,8 @@ public class Main extends ApplicationAdapter {
 			moveEnemies () ;
 			background.start();
 			background2.start();
+			floor.start();
+			floor2.start();
 			//updateLasers () ;
 			score += speed/2; //temp idk
 		}
@@ -296,6 +303,8 @@ public class Main extends ApplicationAdapter {
 		speed += s;
 		player.setSpeed(player.getSpeed() + s);
 		player.setMoveSpeed(speed);
+		floor.setMoveSpeed(speed);
+		floor2.setMoveSpeed(speed); //ignore that gap in the floor its not important
 		for (Platform p : platforms) {
 			p.setMoveSpeed(speed);
 		}
@@ -329,6 +338,8 @@ public class Main extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		background.draw();
 		background2.draw();
+		floor.draw();
+		floor2.draw();
 		drawPlatforms();
 		//drawFloor () ;
 		drawHoles();
@@ -478,11 +489,15 @@ public class Main extends ApplicationAdapter {
 	
 	public void reset(boolean gameOver) {
 		background.setX(0);
-		background2.setX(1920);
+		background2.setX(3430);
+		floor.setX(0);
+		floor2.setX(3408);
 		player.reset();
 		player.draw();
 		background.stop();
     	background2.stop();
+    	floor.stop();
+    	floor2.stop();
 		generateCourse(); //change platform and hole positions after death
 		if (gameOver) {
 			player.resetLives();
@@ -498,6 +513,8 @@ public class Main extends ApplicationAdapter {
 		isMoving = false;
     	speed = 2;
     	
+    	floor.setMoveSpeed(speed);
+    	floor2.setMoveSpeed(speed);
     	player.setMoveSpeed(speed);
     	for (Platform p : platforms) {
 			p.setMoveSpeed(speed);

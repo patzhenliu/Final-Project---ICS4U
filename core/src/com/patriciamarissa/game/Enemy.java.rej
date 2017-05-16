@@ -1,11 +1,13 @@
 diff a/core/src/com/patriciamarissa/game/Enemy.java b/core/src/com/patriciamarissa/game/Enemy.java	(rejected hunks)
-@@ -8,7 +8,8 @@
- 
- public class Enemy { // BUGS: ENEMIES DONT SWITCH DIRECTION, SOMETIMES WALK OVER PLATFORM GAPS
- 	// WHEN FIRST MADE THEY END UP ON THE TITLE SCREEN AND THEY ALL GENERATE ON THE FIRST PLATFORM
--	private int x, y, w, h, hp, speed, spritecount, animatecount, bx, bw, movespeed ;
-+	private int x, y, w, h, hp, speed, spritecount, animatecount, movespeed ;
-+	private Platform plat ;
- 	private final int type ;
+@@ -16,9 +16,10 @@
+ 	// BUGS: ENEMIES GET STUCK.
+ 	// SOMETIMES WALK OVER PLATFORM GAPS.
+ 	// SPAWN WITH PIECES OFF THE PLATFORM.
++	// OFFSCREEN, JUST SPAWN COMPLETELY OFF A PLATFORM.
+ 	// GARGOYLES CLIP THROUGH THE GROUND.
+ 	// LASERS CRASH.
+-	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
++	private int x, y, hp, speed, spritecount, animatecount, movespeed, deathcount, minX, maxX, minY, maxY ;
+ 	private Platform plat ;
+ 	private final int type, tree, gargoyle, rock, golem, lion ;
  	private Batch batch ;
- 	private Texture spritesheet ;

@@ -16,10 +16,9 @@ public class Enemy {
 	// BUGS: ENEMIES GET STUCK.
 	// SOMETIMES WALK OVER PLATFORM GAPS.
 	// SPAWN WITH PIECES OFF THE PLATFORM.
-	// OFFSCREEN, JUST SPAWN COMPLETELY OFF A PLATFORM.
 	// GARGOYLES CLIP THROUGH THE GROUND.
 	// LASERS CRASH.
-	private int x, y, hp, speed, spritecount, animatecount, movespeed, deathcount, minX, maxX, minY, maxY ;
+	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
 	private Platform plat ;
 	private final int type, tree, gargoyle, rock, golem, lion ;
 	private Batch batch ;
@@ -33,6 +32,7 @@ public class Enemy {
 	boolean right ; // true right, false left
 	boolean up ; // true up, false down
 	boolean dying ;
+	private int minX, maxX, minY, maxY;
 	
 	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat, ArrayList <Hole> h) {
 		dying = false ;
