@@ -18,7 +18,8 @@ public class Enemy {
 	// LASERS CRASH.
 	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
 	private Platform plat ;
-	private final int type, tree, gargoyle, rock, golem, lion ;
+	private final int type, tree, gargoyle, golem, lion ;
+	// private final int rock ;
 	private Batch batch ;
 	private Texture spritesheet ;
 	private Texture blank ;
@@ -41,7 +42,7 @@ public class Enemy {
 		gargoyle = 2 ;
 		golem = 3 ;
 		lion = 4 ;
-		rock = 5 ;
+		//rock = 5 ;
 		type = t + 1 ;
 		speed = s ;
 		this.batch = batch ;
@@ -49,7 +50,7 @@ public class Enemy {
 		this.y = y ;
 		holes = h ;
 		lasers = new ArrayList <Laser> () ;
-		if (type == tree) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
+		if (type == tree) { // stays still on the platform?
 			spritesheet = new Texture  (Gdx.files.internal("sprites/walking.png")) ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
@@ -115,6 +116,7 @@ public class Enemy {
 			deathSprs [0] = new Sprite (spritesheet, 1437, 727, 222, 158) ;
 			
 			hp = 3 ;
+			animatecount = 5 ;
 			currentsprite = sprites [0] ;
 		}
 		else if (type == lion) { // ENEMY TYPE 4: CHARGES TOWARDS PLAYER. JUST RUNS ON FLOOR-LEVEL.
@@ -145,7 +147,7 @@ public class Enemy {
 			currentsprite = sprites [0] ;
 			movespeed = 8 ;
 		}
-		else if (type == rock) { // ENEMY TYPE 5: JUST STANDS THERE. HAS TO BE SHOT A LOT. BETTER TO AVOID.
+		/*else if (type == rock) { // ENEMY TYPE 5: JUST STANDS THERE. HAS TO BE SHOT A LOT. BETTER TO AVOID.
 			spritesheet = new Texture  (Gdx.files.internal("sprites/stand still.png")) ;
 			animatecount = 0 ;
 			deathSprs = new Sprite [6] ;
@@ -159,14 +161,14 @@ public class Enemy {
 			
 			currentsprite = new Sprite (spritesheet, 3, 10, 128, 116) ;
 			hp = 5 ;
-		}
-		this.x = x - (int) currentsprite.getWidth () ;
+		}*/
+		this.x = x - (int) currentsprite.getWidth ()/2 ;
 		
-		if (type != lion) {
+		if (type != lion) { // it either doesn't move on the x axis or it's a tree.
 			minX = plat.getX () ;
 			maxX = plat.getX () + plat.getWidth () ;
 		}
-		else {
+		else { // it's a lion.
 			boolean onleft = false ;
 			boolean onright = false ;
 			for (int i = 0 ; i < holes.size () ; i++) {
@@ -192,11 +194,11 @@ public class Enemy {
 				minX = 0 ;
 			}
 		}
-		if (type != gargoyle) {
+		if (type != gargoyle) { // the y vals of any enemy besides the gargoyles do not matter.
 			minY = 100 ;
 			maxY = 100 ;
 		}
-		else {
+		else { // it's a gargoyle.
 			boolean overhole = false ;
 			maxY = 600 - (int) currentsprite.getHeight () ;
 			for (int i = 0 ; i < holes.size () ; i++) {
@@ -295,7 +297,7 @@ public class Enemy {
 	}
 	
 	public void move () { // the golem and the rock don't move, but the golem does shoot a laser.
-		if (type == lion || type == tree) {
+		if (type == lion || type == tree) { // or if type == tree
 			if (right) { // going right
 				if (currentsprite.getX () + currentsprite.getWidth () < maxX) {
 					moveRight () ;
@@ -340,7 +342,12 @@ public class Enemy {
 			animatecount--;
 			if (animatecount == 0) {
 				spritecount--;
-				animatecount = 3;
+				if (type != golem) {
+					animatecount = 3;
+				}
+				else {
+					animatecount = 5 ;
+				}
 			}
 			currentsprite = sprites[spritecount];
 		}

@@ -113,11 +113,24 @@ public class Platform {
 		return (int) platformSprite.getHeight();
 	}
 	
+	public int getMiddle () {
+		return (x + width)/2 ;
+	}
+	
 	public void setMoveSpeed (int moveSpeed) {
 		this.moveSpeed = moveSpeed ;
 	}
 	
 	public void addSpeed (int s) {
 		moveSpeed += s ;
+	}
+	
+	public boolean offRight () {
+		if (x >= 1000) {
+			return true ;
+		}
+		else {
+			return false ;
+		}
 	}
 }
