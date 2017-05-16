@@ -120,10 +120,11 @@ public class Main extends ApplicationAdapter {
 			Platform plat = platforms.get (p) ;
 			System.out.println ("PLATFORM" + p) ;
 			if (type != 3) {
-				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat)) ;
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
 			}
 			else { // lion is always on floor
-				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat)) ;
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
+				// player.setBoundaries(holes.get(i).getX() - player.getWidth()/2, holes.get(i).getX() + holes.get(i).getWidth()- player.getWidth()/2);
 			}
 		}
 	}
@@ -142,11 +143,11 @@ public class Main extends ApplicationAdapter {
 		Platform plat = platforms.get (p) ;
 		System.out.println ("PLATFORM" + p) ;
 		if (type != 3) {
-			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, plat.getY () + plat.getHeight () - 1, speed, plat)) ;
+			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
 		}
 		else { // lion is always on floor
 			// CHANGE THE X SO IT AVOIDS THE HOLES
-			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, 100, speed, plat)) ;
+			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, 100, speed, plat, holes)) ;
 		}
 	}
 	
@@ -405,7 +406,7 @@ public class Main extends ApplicationAdapter {
 		for (Enemy e : enemies) {
 			e.moveWithPlat () ;
 			if (!e.dying) {
-				e.move (holes) ;
+				e.move () ;
 			}
 			else {
 				e.animateDeath () ;

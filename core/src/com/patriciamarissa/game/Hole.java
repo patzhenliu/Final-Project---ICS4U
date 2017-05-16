@@ -17,7 +17,7 @@ public class Hole {
 		private Texture holeImg;
 		private Sprite holeSprite;
 		private int moveSpeed;
-		private int x, originalx;
+		private int x ;
 		private int y;
 		private Random rand = new Random(System.currentTimeMillis() );
 		
@@ -32,7 +32,7 @@ public class Hole {
 			this.moveSpeed = moveSpeed;
 			
 			randPosition(prevX);
-			originalx = x ;
+			// originalx = x ;
 			y = 0;
 			holeImg = new Texture(Gdx.files.internal("hole.png"));
 			holeSprite = new Sprite(holeImg);
@@ -52,7 +52,7 @@ public class Hole {
 		
 		public void move() {
 			x -= moveSpeed;
-			originalx -= moveSpeed ;
+			// originalx -= moveSpeed ;
 			if(x < 0 - holeSprite.getWidth()) {
 				x = rand.nextInt(200) + 1000;
 			}
@@ -73,10 +73,21 @@ public class Hole {
 			return rect.overlaps(holeRect);
 		}
 		
-		public boolean collide(Sprite enemySprite){ ///should only be feet colliding not anything
-			Rectangle rect = new Rectangle(enemySprite.getX(), enemySprite.getY(), enemySprite.getWidth(), enemySprite.getHeight());
+		public boolean collide(Sprite enemySprite, float ey){ ///should only be feet colliding not anything
+			Rectangle rect = new Rectangle(enemySprite.getX(), ey, enemySprite.getWidth(), enemySprite.getHeight());
 			Rectangle holeRect = new Rectangle(holeSprite.getX(), holeSprite.getY(), holeSprite.getWidth(), 120);
 			return rect.overlaps(holeRect);
+			// enemy y isn't enemy.getY () because the lion's y is adjusted for this collide.
+		}
+		
+		public boolean isAligned (Sprite enemySprite, float ex) {
+			// checking to see if the gargoyle fits completely in the hole
+			if (x <= (int) ex && x + getWidth () >= (int) ex + (int) enemySprite.getWidth ()) {
+				return true ;
+			}
+			else {
+				return false ;
+			}
 		}
 		
 		public int getX() {
@@ -87,9 +98,9 @@ public class Hole {
 			return y;
 		}
 		
-		public int getOriginalX () {
+		/*public int getOriginalX () {
 			return originalx ;
-		}
+		}*/
 		
 		public int getWidth() {
 			return (int) holeSprite.getWidth () ;

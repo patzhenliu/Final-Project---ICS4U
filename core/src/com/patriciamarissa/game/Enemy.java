@@ -16,9 +16,10 @@ public class Enemy {
 	// BUGS: ENEMIES GET STUCK.
 	// SOMETIMES WALK OVER PLATFORM GAPS.
 	// SPAWN WITH PIECES OFF THE PLATFORM.
+	// OFFSCREEN, JUST SPAWN COMPLETELY OFF A PLATFORM.
 	// GARGOYLES CLIP THROUGH THE GROUND.
 	// LASERS CRASH.
-	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
+	private int x, y, hp, speed, spritecount, animatecount, movespeed, deathcount, minX, maxX, minY, maxY ;
 	private Platform plat ;
 	private final int type, tree, gargoyle, rock, golem, lion ;
 	private Batch batch ;
@@ -28,11 +29,12 @@ public class Enemy {
 	private Sprite [] sprites ;
 	private Sprite [] deathSprs ; // not sprites since knowing their widths and height isnt necessary
 	private ArrayList <Laser> lasers ;
+	private ArrayList <Hole> holes ;
 	boolean right ; // true right, false left
 	boolean up ; // true up, false down
 	boolean dying ;
 	
-	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat) {
+	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat, ArrayList <Hole> h) {
 		dying = false ;
 		deathcount = 0 ;
 		spritecount = 0 ;
@@ -46,9 +48,9 @@ public class Enemy {
 		speed = s ;
 		this.batch = batch ;
 		this.plat = plat ;
-		ox = plat.getX () ; // original x; the platform's x gets pushed to the other side sometimes
 		//this.x = x ;
 		this.y = y ;
+		holes = h ;
 		lasers = new ArrayList <Laser> () ;
 		if (type == tree) { // ENEMY TYPE 1: ONLY WALKS AROUND ON A PLATFORM
 			spritesheet = new Texture  (Gdx.files.internal("sprites/walking.png")) ;
@@ -162,6 +164,52 @@ public class Enemy {
 			hp = 5 ;
 		}
 		this.x = x - (int) currentsprite.getWidth () ;
+		
+		if (type != lion) {
+			minX = plat.getX () ;
+			maxX = plat.getX () + plat.getWidth () ;
+		}
+		else {
+			boolean onleft = false ;
+			boolean onright = false ;
+			for (int i = 0 ; i < holes.size () ; i++) {
+				if (holes.get(i).getX () >= this.x + currentsprite.getWidth () && (onright == false || maxX > holes.get(i).getX ())) {
+					// if there's a hole on the right, register its x as the right boundary.
+					// if there's another hole on the right but one's already been registered, check the registered one.
+					// use the closer hole as the boundary.
+					maxX = holes.get(i).getX () ;
+					onright = true ;
+				}
+				if (holes.get(i).getX () + holes.get(i).getWidth () <= this.x && (onleft == false || minX < holes.get(i).getX () + holes.get(i).getWidth ())) {
+					// if there's a hole on the left, register its x as the right boundary.
+					// if there's another hole on the left but one's already been registered, check the registered one.
+					// use the closer hole as the boundary.
+					minX = holes.get(i).getX () + holes.get(i).getWidth () ;
+					onleft = true ;
+				}
+			}
+			if (onright == false) { // no holes on the right.
+				maxX = 1000 ;
+			}
+			if (onleft == false) { // no holes on the left.
+				minX = 0 ;
+			}
+		}
+		if (type != gargoyle) {
+			minY = 100 ;
+			maxY = 100 ;
+		}
+		else {
+			maxY = 600 - (int) currentsprite.getHeight () ;
+			for (int i = 0 ; i < holes.size () ; i++) {
+				if (holes.get(i).isAligned (currentsprite, minX)) {
+					minY = 0 ;
+				}
+			}
+			if (minY != 0) {
+				minY = 100 ;
+			}
+		}
 	}
 	
 	public void draw() {
@@ -185,7 +233,28 @@ public class Enemy {
 	
 	public void moveWithPlat () {
 		x -= speed ;
-		ox -= speed ;
+		updateBoundaries () ;
+	}
+	
+	public void updateBoundaries () {
+		minX -= speed ;
+		if (type == tree) {
+			maxX = minX + plat.getWidth () - (int) currentsprite.getWidth () ;
+		}
+		if (type == lion && maxX == 1000) {
+			// if there wasn't a hole on the right, need to check if a new hole has appeared.
+			boolean onright = false ;
+			for (int i = 0 ; i < holes.size () ; i++) {
+				if (holes.get(i).getX () >= this.x + currentsprite.getWidth () && (onright == false || maxX > holes.get(i).getX ())) {
+					maxX = holes.get(i).getX () ;
+					onright = true ;
+				}
+			}
+		}
+		else {
+			maxX -= speed ;
+		}
+		maxY = 600 - (int) currentsprite.getHeight () ;
 	}
 	
 	public void moveLeft() {
@@ -228,36 +297,30 @@ public class Enemy {
 		}
 	}
 	
-	public void move (ArrayList <Hole> holes) {
+	public void move () {
 		// the golem and the rock don't move, but the golem does shoot a laser.
-		boolean tf = false ;
-		if (type == lion) {
+		//boolean tf = false ;
+		if (type == lion || type == tree) {
 			if (right) { // going right
-				for (Hole h : holes) {
-					if (h.getOriginalX () > x + currentsprite.getWidth () && tf == false) {
-						moveRight () ;
-						tf = true ;
-					}
+				if (currentsprite.getX () + currentsprite.getWidth () < maxX) {
+					moveRight () ;
 				}
-				if (tf == false) {
+				else {
 					moveLeft () ;
 				}
 			}
 			else if (!right) { // going left
-				for (Hole h : holes) {
-					if (h.getOriginalX () + h.getWidth () < x && tf == false) {
-						moveLeft () ;
-						tf = true ;
-					}
+				if (x - movespeed > minX) {
+					moveLeft () ;
 				}
-				if (tf == false) {
+				else {
 					moveRight () ;
 				}
 			}
 		}
 		if (type == gargoyle) {
 			if (up) { // going up
-				if (y < 600 - currentsprite.getHeight ()) {
+				if (y < maxY) {
 					moveUp () ;
 				}
 				else {
@@ -265,39 +328,11 @@ public class Enemy {
 				}
 			}
 			else if (!up) { // going down
-				if (y - movespeed > 100) {
-					moveDown () ;
-					tf = true ;
-				}
-				if (tf == false) {
-					for (Hole h : holes) {
-						if (h.collide(currentsprite) && tf == false && y - movespeed > 0) {
-							moveDown () ;
-							tf = true ;
-						}
-					}
-				}
-				if (tf == false) {
+				if (y - movespeed > minY) {
+					moveDown ()  ;
+				}	
+				else {
 					moveUp () ;
-				}
-			}
-		}
-		if (type == tree) { // its the tree that walks based on boundaries
-			if (right) { // going right
-				if (x + currentsprite.getWidth () + movespeed < ox + plat.getWidth ()) {
-					moveRight () ;
-				}
-				else {
-					moveLeft () ;
-				}
-			}
-			else if (!right) {
-				if (x - movespeed > ox) {
-
-					moveLeft () ;
-				}
-				else {
-					moveRight () ;
 				}
 			}
 		}
@@ -415,5 +450,10 @@ public class Enemy {
 	
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public void setBoundaries(int min, int max) {
+		minX = min;
+		maxX = max;
 	}
 }
