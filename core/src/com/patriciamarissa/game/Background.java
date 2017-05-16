@@ -23,7 +23,7 @@ public class Background {
 		this.moveSpeed = moveSpeed;
 		
 		backgroundImg = new Texture(Gdx.files.internal("background.png"));
-		background = new TextureRegion(backgroundImg, 0, 200, width, height);
+		background = new TextureRegion(backgroundImg, 0, 100, width, height);
 		
 		this.x = x;
 		int y = Gdx.graphics.getHeight();

@@ -51,8 +51,10 @@ public class Main extends ApplicationAdapter {
 		
 		batch = new SpriteBatch();
 		player = new Player(batch, speed);
-		background = new Background(batch, 0, 1659, 500, speed);
-		background2 = new Background(batch, 1659, 1659, 500, speed);
+		background = new Background(batch, 0, 1991, 600, speed);
+		background2 = new Background(batch, 1991, 1991, 600, speed);
+		background.stop();
+		background2.stop();
 		page = "START";
 		mask = new Pixmap (Gdx.files.internal("mask.png")) ;
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
@@ -237,6 +239,7 @@ public class Main extends ApplicationAdapter {
 			}
 			if (platforms.get(i).collideTop(player)) {
 				isOnPlatform = true;
+				//System.out.println(platforms.get(i).getWidth());
 				if (!player.isJumping()) {
 					player.setGroundLvl(platforms.get(i).getY() + platforms.get(i).getHeight());
 				}	
@@ -275,6 +278,8 @@ public class Main extends ApplicationAdapter {
 			movePlatforms();
 			moveHoles();
 			moveEnemies () ;
+			background.start();
+			background2.start();
 			//updateLasers () ;
 			score += speed/2; //temp idk
 		}
@@ -325,7 +330,7 @@ public class Main extends ApplicationAdapter {
 		background.draw();
 		background2.draw();
 		drawPlatforms();
-		drawFloor () ;
+		//drawFloor () ;
 		drawHoles();
 		drawEnemies () ;
 		player.draw();
@@ -476,6 +481,8 @@ public class Main extends ApplicationAdapter {
 		background2.setX(1920);
 		player.reset();
 		player.draw();
+		background.stop();
+    	background2.stop();
 		generateCourse(); //change platform and hole positions after death
 		if (gameOver) {
 			player.resetLives();
@@ -490,6 +497,7 @@ public class Main extends ApplicationAdapter {
 		}
 		isMoving = false;
     	speed = 2;
+    	
     	player.setMoveSpeed(speed);
     	for (Platform p : platforms) {
 			p.setMoveSpeed(speed);
