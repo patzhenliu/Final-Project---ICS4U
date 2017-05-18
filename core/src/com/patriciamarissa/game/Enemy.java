@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 public class Enemy {
 	// LION IS WALKIN OVER GAPS AGAIN. GARGOYLE'S NOT GOIN DOWN HOLES.
-	// SPAWN WITH PIECES OFF THE PLATFORM.
+	// THE TREE STUMPS ARE GETTING STUCK IN THEIR MOVEMENT AGAIN AND I AM DYING.
 	// LASERS CRASH.
 	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
 	private Platform plat ;
@@ -239,12 +239,11 @@ public class Enemy {
 				this.x = x ;
 			}
 		}*/
-		if (type == golem) { // TEMP
-			// EACH ARM IS ABOUT 45 PX
-			this.x = x - 45 ;
+		if (type == golem) { // this seems to center them. mostly.
+			this.x = x - 150 ;
 		}
-		if (type == tree) { // TEMP
-			this.x = x - 80 ;
+		if (type == tree) {
+			this.x = x - 40 ;
 		}
 	}
 	
