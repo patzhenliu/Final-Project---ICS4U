@@ -125,39 +125,30 @@ public class Main extends ApplicationAdapter {
 			int p = rand.nextInt (platforms.size ()) ;
 			int type = rand.nextInt (4) ;
 			Platform plat = platforms.get (p) ;
-			System.out.println ("PLATFORM" + p) ;
+			if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
+				type = 0 ;
+			}
 			if (type != 3) {
-				enemies [i] = (new Enemy (batch, type, plat.getMiddle (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
 			}
 			else { // lion is always on floor
-				enemies [i] = (new Enemy (batch, type, plat.getMiddle (), 100, speed, plat, holes)) ;
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
 				// player.setBoundaries(holes.get(i).getX() - player.getWidth()/2, holes.get(i).getX() + holes.get(i).getWidth()- player.getWidth()/2);
 			}
 		}
 	}
 	
 	public void makeEnemy (int index, Platform plat) {
-		// TEST Batch batch, int t, int x, int y, int s
-		/*ArrayList <Platform> viables = new ArrayList <Platform> () ;
-		for (Platform p : platforms) { // only make it possible to go on a platform that's offscreen.
-			if (p.getX () >= 1000) {
-				viables.add (p) ;
-			}
-		}*/
-		// FIX THE X SO IT DOESNT CLIP PAST THE PLATFORM
-		//int p = rand.nextInt (platforms.size ()) ;
 		int type = rand.nextInt (4) ;
-		//Platform plat = platforms.get (p) ;
-		//System.out.println ("PLATFORM" + p) ;
-		if (type == 2 && plat.getWidth () < 100) { // only make it a golem if the platform is large enough for the feet.
+		if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
 			type = 0 ;
 		}
-		if (type != 3) {
-			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
+		if (type != 3) { // rand.nextInt (300) + 1200
+			enemies [index] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
 		}
 		else { // lion is always on floor
 			// CHANGE THE X SO IT AVOIDS THE HOLES
-			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, 100, speed, plat, holes)) ;
+			enemies [index] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
 		}
 	}
 	

@@ -81,12 +81,24 @@ public class Hole {
 		}
 		
 		public boolean isAligned (Sprite enemySprite, float ex) {
-			// checking to see if the gargoyle fits completely in the hole
+			// checking to see if the sprite fits completely in the hole
 			if (x <= (int) ex && x + getWidth () >= (int) ex + (int) enemySprite.getWidth ()) {
 				return true ;
 			}
 			else {
 				return false ;
+			}
+		}
+		
+		public int partialAlign (Sprite enemySprite, float ex) {
+			if (ex > x && ex < x + getWidth ()) { // the left side is hanging into the hole
+				return (int) ((int) (x + getWidth ()) - ex) + 5 ;
+			}
+			else if (ex + enemySprite.getWidth () > x) { // the right side is hanging into the hole
+				return (int) ((int) (ex + enemySprite.getWidth ()) - x) + getWidth () + 5 ;
+			}
+			else { // not over the hole
+				return 0 ;
 			}
 		}
 		

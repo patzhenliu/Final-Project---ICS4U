@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class Enemy {
-	// SOMETIMES WALK OVER PLATFORM GAPS.
+	// LION IS WALKIN OVER GAPS AGAIN. GARGOYLE'S NOT GOIN DOWN HOLES.
 	// SPAWN WITH PIECES OFF THE PLATFORM.
 	// LASERS CRASH.
 	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
@@ -162,7 +162,8 @@ public class Enemy {
 			currentsprite = new Sprite (spritesheet, 3, 10, 128, 116) ;
 			hp = 5 ;
 		}*/
-		this.x = x - (int) currentsprite.getWidth ()/2 ;
+		
+		createX (x) ;
 		
 		if (type != lion) { // it either doesn't move on the x axis or it's a tree.
 			minX = plat.getX () ;
@@ -204,11 +205,46 @@ public class Enemy {
 			for (int i = 0 ; i < holes.size () ; i++) {
 				if (holes.get(i).isAligned (currentsprite, minX)) {
 					overhole = true ;
+					minY = 0 ;
 				}
+				/*if (holes.get(i).partialAlign (currentsprite,minX) <= 5) {
+					overhole = true ;
+				}*/
 			}
 			if (!overhole) {
 				minY = 100 ;
 			}
+		}
+	}
+	
+	public void createX (int x) { // centers the platform sprites. the x taken in is the far end of the plat.
+		if (type == gargoyle || type == lion) {
+			this.x = x ;
+		}
+		/*if (type == lion) {
+			boolean moved = false ;
+			for (int i = 0 ; i < holes.size () ; i++) {
+				if (holes.get(i).isAligned (currentsprite, x) && moved == false) { // the entire sprite is in the hole. shift it over by the hole's size.
+					int shiftover = holes.get(i).getX () + holes.get(i).getWidth () ;
+					this.x = x + shiftover + 5 ;
+					moved = true ;
+				}
+				else if (holes.get(i).partialAlign(currentsprite, x) != 0 && moved == false) { // the sprite is partially hanging into the hole.
+					int shiftover = holes.get(i).partialAlign(currentsprite, x) ;
+					this.x = x + shiftover ;
+					moved = true ;
+				}
+			}
+			if (moved == false) {
+				this.x = x ;
+			}
+		}*/
+		if (type == golem) { // TEMP
+			// EACH ARM IS ABOUT 45 PX
+			this.x = x - 45 ;
+		}
+		if (type == tree) { // TEMP
+			this.x = x - 80 ;
 		}
 	}
 	
