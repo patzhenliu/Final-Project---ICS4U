@@ -85,7 +85,9 @@ public class Player {
 	public void resetPos() {
 		x = 100;
 		y = 100;
-		currentSprite.setPosition(x, y);
+		for (int i = 0; i < sprites.length; i++) {
+			sprites[i].setPosition(x, y);
+		}
 	}
 	
 	public void moveLeft() {
@@ -102,7 +104,7 @@ public class Player {
 	}
 	
 	public void moveRight() {
-		if (x + speed < maxX) {
+		if (x + speed < maxX) {	
 			x += speed;
 		}
 		if (spriteCount == 0) {
@@ -162,7 +164,6 @@ public class Player {
 			y -= speed;
 			currentSprite = sprites[3];
 		}
-		
 		currentSprite.setPosition(x, y);
 	}
 	

@@ -54,12 +54,8 @@ public class Main extends ApplicationAdapter {
 		player = new Player(batch, speed);
 		background = new Background(batch, 0, 3430, 600, speed);
 		background2 = new Background(batch, 3430, 3430, 600, speed);
-		background.stop();
-		background2.stop();
 		floor = new Floor(batch, 0, 3408, 100, speed);
 		floor2 = new Floor(batch, 3408, 3408, 100, speed);
-		floor.stop();
-		floor2.stop();
 		page = "START";
 		mask = new Pixmap (Gdx.files.internal("mask.png")) ;
 		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
@@ -283,10 +279,10 @@ public class Main extends ApplicationAdapter {
 			movePlatforms();
 			moveHoles();
 			moveEnemies () ;
-			background.start();
-			background2.start();
-			floor.start();
-			floor2.start();
+			background.move();
+			background2.move();
+			floor.move();
+			floor2.move();
 			//updateLasers () ;
 			score += speed/2; //temp idk
 		}
@@ -494,10 +490,6 @@ public class Main extends ApplicationAdapter {
 		floor2.setX(3408);
 		player.reset();
 		player.draw();
-		background.stop();
-    	background2.stop();
-    	floor.stop();
-    	floor2.stop();
 		generateCourse(); //change platform and hole positions after death
 		if (gameOver) {
 			player.resetLives();

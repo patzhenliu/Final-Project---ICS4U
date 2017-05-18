@@ -31,9 +31,6 @@ public class Background {
 	}
 	
 	public void draw() {
-		if (moving) {
-			x -= moveSpeed;
-		}
 		if (x <= -1 * width) {
 			x = width;
 		}
@@ -43,12 +40,8 @@ public class Background {
 		batch.end();
 	}
 	
-	public void stop() {
-		moving = false;
-	}
-	
-	public void start() {
-		moving = true;
+	public void move() {
+		x -= moveSpeed;
 	}
 	
 	public void setX(int x) {
