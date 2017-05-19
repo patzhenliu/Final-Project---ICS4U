@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -46,6 +48,9 @@ public class Main extends ApplicationAdapter {
 	
 	boolean isMoving;
 	
+	Actor playButton;
+	ClickListener mouse; 
+	
 	@Override
 	public void create () {
 		speed = 2; //speed on screen moving backwards
@@ -72,6 +77,10 @@ public class Main extends ApplicationAdapter {
 		runTimer () ;
 		generateCourse();
 		isMoving = false;
+		
+		playButton = new Actor();
+		playButton.setPosition(200, 300);
+		playButton.setScale(100, 100);
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -360,12 +369,16 @@ public class Main extends ApplicationAdapter {
 		//draws start menu
 		//checks if player hits ENTER - play
 		//drawBackground();
+		//if (mouse.isOver(playButton, 200, 300)) {
+			//page = "GAME";
+		//}
+		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
         batch.draw(titleImg, -60, -100);
         //batch.draw(playImg, 105, 125);
         batch.end();
-        
+        //playButton.draw(batch, 1);
 		if(Gdx.input.isKeyPressed(Keys.ENTER)) {
 			//menuMusic.dispose();
 			page = "GAME";
