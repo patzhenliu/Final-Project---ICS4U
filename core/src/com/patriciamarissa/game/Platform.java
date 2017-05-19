@@ -33,7 +33,7 @@ public class Platform {
 		
 		randPosition(prevX);
 		this.y = y;
-		length = rand.nextInt(10) + 5;
+		length = rand.nextInt(5) + 5;
 		platformImg = new Texture(Gdx.files.internal("platform.png"));
 		platformSprite = new Sprite(platformImg);
 		width = (int)(platformSprite.getWidth() * length);

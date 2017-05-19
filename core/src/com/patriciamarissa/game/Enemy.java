@@ -1,25 +1,18 @@
 package com.patriciamarissa.game;
 
-import java.awt.Robot;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 
 public class Enemy {
 	// LION IS WALKIN OVER GAPS AGAIN. GARGOYLE'S NOT GOIN DOWN HOLES.
-	// THE TREE STUMPS ARE GETTING STUCK IN THEIR MOVEMENT AGAIN AND I AM DYING.
-	// LASERS CRASH.
-	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
+	private int x, y, hp, speed, spritecount, animatecount, movespeed, deathcount ;
 	private Platform plat ;
 	private final int type, tree, gargoyle, golem, lion ;
-	// private final int rock ;
 	private Batch batch ;
 	private Texture spritesheet ;
 	private Texture blank ;
@@ -42,7 +35,6 @@ public class Enemy {
 		gargoyle = 2 ;
 		golem = 3 ;
 		lion = 4 ;
-		//rock = 5 ;
 		type = t + 1 ;
 		speed = s ;
 		this.batch = batch ;
@@ -55,10 +47,10 @@ public class Enemy {
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
 			
-			sprites [0] = new Sprite (spritesheet, 0, 80, 67, 77) ;
+			sprites [0] = new Sprite (spritesheet, 0, 80, 70, 77) ;
 			sprites [1] = new Sprite (spritesheet, 70, 77, 70, 80) ;
-			sprites [2] = new Sprite (spritesheet, 144, 81, 71, 77) ;
-			sprites [3] = new Sprite (spritesheet, 220, 82, 78, 77) ;
+			sprites [2] = new Sprite (spritesheet, 144, 81, 70, 77) ;
+			sprites [3] = new Sprite (spritesheet, 212, 82, 70, 77) ;
 			
 			deathSprs [4] = new Sprite (spritesheet, 0, 162, 64, 96) ;
 			deathSprs [3] = new Sprite (spritesheet, 0, 263, 66, 97) ;
@@ -147,21 +139,6 @@ public class Enemy {
 			currentsprite = sprites [0] ;
 			movespeed = 8 ;
 		}
-		/*else if (type == rock) { // ENEMY TYPE 5: JUST STANDS THERE. HAS TO BE SHOT A LOT. BETTER TO AVOID.
-			spritesheet = new Texture  (Gdx.files.internal("sprites/stand still.png")) ;
-			animatecount = 0 ;
-			deathSprs = new Sprite [6] ;
-			
-			deathSprs [5] = new Sprite (spritesheet, 6, 776, 159, 100) ;
-			deathSprs [4] = new Sprite (spritesheet, 191, 776, 159, 100) ;
-			deathSprs [3] = new Sprite (spritesheet, 364, 776, 159, 100) ;
-			deathSprs [2] = new Sprite (spritesheet, 553, 776, 159, 100) ;
-			deathSprs [1] = new Sprite (spritesheet, 746, 776, 159, 100) ;
-			deathSprs [0] = new Sprite (spritesheet, 956, 776, 159, 100) ;
-			
-			currentsprite = new Sprite (spritesheet, 3, 10, 128, 116) ;
-			hp = 5 ;
-		}*/
 		
 		createX (x) ;
 		
@@ -240,10 +217,10 @@ public class Enemy {
 			}
 		}*/
 		if (type == golem) { // this seems to center them. mostly.
-			this.x = x - 150 ;
+			this.x = x - 200 ;
 		}
 		if (type == tree) {
-			this.x = x - 40 ;
+			this.x = x - 100 ;
 		}
 	}
 	
@@ -332,7 +309,7 @@ public class Enemy {
 	}
 	
 	public void move () { // the golem and the rock don't move, but the golem does shoot a laser.
-		if (type == lion || type == tree) { // or if type == tree
+		if (type == lion) {
 			if (right) { // going right
 				if (currentsprite.getX () + currentsprite.getWidth () < maxX) {
 					moveRight () ;
@@ -346,6 +323,26 @@ public class Enemy {
 					moveLeft () ;
 				}
 				else {
+					moveRight () ;
+				}
+			}
+		}
+		if (type == tree) {
+			if (right) { // going right
+				if (currentsprite.getX () < maxX) {
+					moveRight () ;
+				}
+				else {
+					x -= movespeed * 2 ;
+					moveLeft () ;
+				}
+			}
+			else if (!right) { // going left
+				if (x - movespeed > minX) {
+					moveLeft () ;
+				}
+				else {
+					x += movespeed * 2 ;
 					moveRight () ;
 				}
 			}
@@ -446,7 +443,7 @@ public class Enemy {
 	}
 	
 	public void shoot () {
-		lasers.add (new Laser (1, x - 51, y + 100, speed, 1, batch)) ; // PLACEHOLDER X AND Y
+		lasers.add (new Laser (1, x + 70, y + 75, speed, 1, batch)) ; // PLACEHOLDER X AND Y
 	}
 	
 	public void removeLaser (Laser l) {

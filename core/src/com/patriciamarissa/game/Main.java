@@ -63,7 +63,7 @@ public class Main extends ApplicationAdapter {
 		lifeImg = new Texture(Gdx.files.internal("lifeImg.png"));
 		pauseImg = new Texture(Gdx.files.internal("pause.png"));
 		platforms = new ArrayList <Platform> () ;
-		enemies = new Enemy [5] ;
+		enemies = new Enemy [4] ;
 		rand2 = new Random ();
 		rend = new ShapeRenderer ();
 		createPlatforms();
@@ -283,7 +283,7 @@ public class Main extends ApplicationAdapter {
 			background2.move();
 			floor.move();
 			floor2.move();
-			//updateLasers () ;
+			updateLasers () ;
 			score += speed/2; //temp idk
 		}
 		move();
@@ -462,19 +462,19 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	public void updateLasers () { // ADD! PLAYER! LASERS!
-		for (Enemy e : enemies) {
-			if (e.getType () == 3) { // a golem
-				ArrayList <Laser> elasers = e.getLasers () ;
+		for (int i = 0 ; i < enemies.length ; i++) {
+			if (enemies [i].getType () == 3) { // a golem
+				ArrayList <Laser> elasers = enemies [i].getLasers () ;
 				if (elasers.size () > 0) {
-					for (Laser L : elasers) {
-						L.move () ;
-						L.draw () ;
-						if (L.collide (player)) {
-							L.doDamage (player) ;
-							e.removeLaser (L) ;
-						}
-						if (e.getX () + e.getSprite ().getWidth () <= 0) {
-							e.removeLaser (L) ;
+					for (int j = 0 ; j < elasers.size () ; j++) {
+						elasers.get(j).move () ;
+						elasers.get(j).draw () ;
+						//if (elasers.get(j).collide (player)) {
+							//elasers.get(j).doDamage (player) ;
+							//enemies [i].removeLaser (elasers.get(j)) ;
+						//}
+						if (enemies [i].getX () + enemies [i].getSprite ().getWidth () <= 0) {
+							enemies [i].removeLaser (elasers.get(j)) ;
 						}
 					}
 				}
