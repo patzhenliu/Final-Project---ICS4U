@@ -70,6 +70,7 @@ public class Main extends ApplicationAdapter {
 		createHoles();
 		makeEnemies () ;
 		runTimer () ;
+		generateCourse();
 		isMoving = false;
 		
 		nums = new Texture[10];
@@ -92,15 +93,15 @@ public class Main extends ApplicationAdapter {
 	public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
 		int platNum = 4; 
-		platforms.add(new Platform(batch, speed, 200, 0));
+		platforms.add(new Platform(batch, speed, 200, 200));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
-		platforms.add(new Platform(batch, speed, 320, 0));
+		platforms.add(new Platform(batch, speed, 320, 400));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
-		platforms.add(new Platform(batch, speed, 440, 0));
+		platforms.add(new Platform(batch, speed, 440, 600));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
@@ -442,17 +443,17 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	public void randomizePlatforms() {
-		platforms.get(0).randPosition(0);
+		platforms.get(0).randPosition(0, 1);
 		for (int i = 1; i < 4; i++) {
-			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth());
+			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 1);
 		}
-		platforms.get(4).randPosition(0);
+		platforms.get(4).randPosition(0, 2);
 		for (int i = 5; i < 8; i++) {
-			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth());
+			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 2);
 		}
-		platforms.get(8).randPosition(0);
+		platforms.get(8).randPosition(0, 3);
 		for (int i = 9; i < 12; i++) {
-			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth());
+			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 3);
 		}
 	}
 	

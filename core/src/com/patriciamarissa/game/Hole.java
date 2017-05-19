@@ -69,7 +69,7 @@ public class Hole {
 		public boolean collide(Player player){ ///should only be feet colliding not anything
 			Sprite playerSprite = player.getSprite();
 			Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
-			Rectangle holeRect = new Rectangle(holeSprite.getX(), holeSprite.getY(), holeSprite.getWidth(), 120);
+			Rectangle holeRect = new Rectangle(holeSprite.getX() + playerSprite.getWidth(), holeSprite.getY(), holeSprite.getWidth() - playerSprite.getWidth() * 2, 120);
 			return rect.overlaps(holeRect);
 		}
 		

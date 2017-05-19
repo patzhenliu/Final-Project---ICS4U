@@ -42,7 +42,7 @@ public class Player {
 		sprites = new Sprite[4];
 		sprites[0] = new Sprite(spritePage, 38, 50, 31, 50);
 		sprites[1] = new Sprite(spritePage, 3, 50, 30, 50);
-		sprites[2] = new Sprite(spritePage, 38, 50, 31, 50);
+		sprites[2] = sprites[0];
 		sprites[3] = new Sprite(spritePage, 80, 50, 31, 50);
 		
 		currentSprite = sprites[0];
@@ -141,6 +141,7 @@ public class Player {
 	}
 	
 	public void move() {
+		//System.out.println(facingForwards);
 		moveBack();
 		if (spriteCount > 0) {
 			animationCount--;
