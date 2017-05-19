@@ -68,7 +68,7 @@ public class Main extends ApplicationAdapter {
 		lifeImg = new Texture(Gdx.files.internal("lifeImg.png"));
 		pauseImg = new Texture(Gdx.files.internal("pause.png"));
 		platforms = new ArrayList <Platform> () ;
-		enemies = new Enemy [5] ;
+		enemies = new Enemy [4] ;
 		rand2 = new Random ();
 		rend = new ShapeRenderer ();
 		createPlatforms();
@@ -131,39 +131,30 @@ public class Main extends ApplicationAdapter {
 			int p = rand.nextInt (platforms.size ()) ;
 			int type = rand.nextInt (4) ;
 			Platform plat = platforms.get (p) ;
-			System.out.println ("PLATFORM" + p) ;
+			if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
+				type = 0 ;
+			}
 			if (type != 3) {
-				enemies [i] = (new Enemy (batch, type, plat.getMiddle (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
 			}
 			else { // lion is always on floor
-				enemies [i] = (new Enemy (batch, type, plat.getMiddle (), 100, speed, plat, holes)) ;
+				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
 				// player.setBoundaries(holes.get(i).getX() - player.getWidth()/2, holes.get(i).getX() + holes.get(i).getWidth()- player.getWidth()/2);
 			}
 		}
 	}
 	
 	public void makeEnemy (int index, Platform plat) {
-		// TEST Batch batch, int t, int x, int y, int s
-		/*ArrayList <Platform> viables = new ArrayList <Platform> () ;
-		for (Platform p : platforms) { // only make it possible to go on a platform that's offscreen.
-			if (p.getX () >= 1000) {
-				viables.add (p) ;
-			}
-		}*/
-		// FIX THE X SO IT DOESNT CLIP PAST THE PLATFORM
-		//int p = rand.nextInt (platforms.size ()) ;
 		int type = rand.nextInt (4) ;
-		//Platform plat = platforms.get (p) ;
-		//System.out.println ("PLATFORM" + p) ;
-		if (type == 2 && plat.getWidth () < 100) { // only make it a golem if the platform is large enough for the feet.
+		if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
 			type = 0 ;
 		}
-		if (type != 3) {
-			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
+		if (type != 3) { // rand.nextInt (300) + 1200
+			enemies [index] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
 		}
 		else { // lion is always on floor
 			// CHANGE THE X SO IT AVOIDS THE HOLES
-			enemies [index] = (new Enemy (batch, type, rand.nextInt (300) + 1200, 100, speed, plat, holes)) ;
+			enemies [index] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
 		}
 	}
 	
@@ -302,7 +293,7 @@ public class Main extends ApplicationAdapter {
 			background2.move();
 			floor.move();
 			floor2.move();
-			//updateLasers () ;
+			updateLasers () ;
 			score += speed/2; //temp idk
 		}
 		move();
@@ -485,19 +476,19 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	public void updateLasers () { // ADD! PLAYER! LASERS!
-		for (Enemy e : enemies) {
-			if (e.getType () == 3) { // a golem
-				ArrayList <Laser> elasers = e.getLasers () ;
+		for (int i = 0 ; i < enemies.length ; i++) {
+			if (enemies [i].getType () == 3) { // a golem
+				ArrayList <Laser> elasers = enemies [i].getLasers () ;
 				if (elasers.size () > 0) {
-					for (Laser L : elasers) {
-						L.move () ;
-						L.draw () ;
-						if (L.collide (player)) {
-							L.doDamage (player) ;
-							e.removeLaser (L) ;
-						}
-						if (e.getX () + e.getSprite ().getWidth () <= 0) {
-							e.removeLaser (L) ;
+					for (int j = 0 ; j < elasers.size () ; j++) {
+						elasers.get(j).move () ;
+						elasers.get(j).draw () ;
+						//if (elasers.get(j).collide (player)) {
+							//elasers.get(j).doDamage (player) ;
+							//enemies [i].removeLaser (elasers.get(j)) ;
+						//}
+						if (enemies [i].getX () + enemies [i].getSprite ().getWidth () <= 0) {
+							enemies [i].removeLaser (elasers.get(j)) ;
 						}
 					}
 				}

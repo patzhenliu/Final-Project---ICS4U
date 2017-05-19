@@ -32,10 +32,10 @@ public class Laser {
 	
 	public void move () {
 		if (type == GOOD) { // go right towards the enemy
-			x += speed * 2 ;
+			x += speed * 3 ;
 		}
 		else { // go left towards the user
-			x -= speed * 2 ;
+			x -= speed * 3 ;
 		}
 		laser.setPosition (x, y) ;
 	}
