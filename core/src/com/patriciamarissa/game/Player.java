@@ -141,6 +141,7 @@ public class Player {
 	}
 	
 	public void move() {
+		//System.out.println(facingForwards);
 		moveBack();
 		if (spriteCount > 0) {
 			animationCount--;

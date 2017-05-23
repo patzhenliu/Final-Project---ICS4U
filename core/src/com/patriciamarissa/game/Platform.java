@@ -31,9 +31,9 @@ public class Platform {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
 		
-		randPosition(prevX);
+		//randPosition(prevX, row);
 		this.y = y;
-		length = rand.nextInt(5) + 5;
+		randLength();
 		platformImg = new Texture(Gdx.files.internal("platform.png"));
 		platformSprite = new Sprite(platformImg);
 		width = (int)(platformSprite.getWidth() * length);
@@ -48,8 +48,9 @@ public class Platform {
 		plat = new Sprite (platimg) ;*/
 	}
 	
-	public void randPosition(int prevX) { //does nothing
-		x = prevX + rand.nextInt(200) + 100;
+	public void randPosition(int prevX, int row) { //does nothing
+		//x = prevX + rand.nextInt(200) + 100;
+		x = (prevX + rand.nextInt(20 * row) + 5) * length;
 	}
 	
 	public void randLength() {
