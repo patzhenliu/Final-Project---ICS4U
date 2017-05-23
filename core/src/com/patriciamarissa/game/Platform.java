@@ -20,6 +20,7 @@ public class Platform {
 	private int y;
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
+	boolean hasMoney;
 	
 	/*private Rectangle platrect ;
 	private final int y, w, h ;
@@ -28,6 +29,7 @@ public class Platform {
 	private final Sprite plat ;*/
 	
 	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
+		hasMoney = true;
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
 		
@@ -50,7 +52,7 @@ public class Platform {
 	
 	public void randPosition(int prevX, int row) { //does nothing
 		
-		x = (prevX + rand.nextInt(20) + 5) * length * row;
+		x = (prevX + rand.nextInt(20 * row) + 5) * length;
 	}
 	
 	public void randLength() {
@@ -72,6 +74,7 @@ public class Platform {
 			//System.out.println(platformSprite.getWidth());
 			platformSprite.draw(batch);
 		}
+		
 		batch.end();
 		//move();
 	}

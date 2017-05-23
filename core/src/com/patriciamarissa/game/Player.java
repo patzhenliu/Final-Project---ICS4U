@@ -1,6 +1,7 @@
 package com.patriciamarissa.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -42,7 +43,7 @@ public class Player {
 		sprites = new Sprite[4];
 		sprites[0] = new Sprite(spritePage, 38, 50, 31, 50);
 		sprites[1] = new Sprite(spritePage, 3, 50, 30, 50);
-		sprites[2] = sprites[0];
+		sprites[2] = new Sprite(spritePage, 38, 50, 31, 50);
 		sprites[3] = new Sprite(spritePage, 80, 50, 31, 50);
 		
 		currentSprite = sprites[0];
@@ -66,6 +67,7 @@ public class Player {
 		
 		if (!facingForwards) {
 			changeDirection();
+			
 		}
 		resetPos();
 		minX = -100;
@@ -91,6 +93,7 @@ public class Player {
 	}
 	
 	public void moveLeft() {
+		
 		if (x - speed > minX) {
 			x -= speed;
 		}
@@ -98,12 +101,15 @@ public class Player {
 			
 			spriteCount = sprites.length - 1;
 			if (facingForwards) {
+				System.out.println(facingForwards);
 				changeDirection();
+				System.out.println(facingForwards);
 			}
 		}
 	}
 	
 	public void moveRight() {
+		
 		if (x + speed < maxX) {	
 			x += speed;
 		}
@@ -127,9 +133,12 @@ public class Player {
 	}
 	
 	public void changeDirection() {
+		
 		for (int i = 0; i < sprites.length; i++) {
+			System.out.println(i);
 			sprites[i].flip(true,false);
 		}
+		//sprites[0].flip(true, false);
 		facingForwards = !facingForwards;
 		
 	}
@@ -149,7 +158,8 @@ public class Player {
 				spriteCount--;
 				animationCount = speed;
 			}
-			currentSprite = sprites[spriteCount];
+			//currentSprite = sprites[spriteCount];
+			currentSprite = sprites[0];
 		}
 		
 		if (isJumpingUp) {
