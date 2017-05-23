@@ -21,48 +21,34 @@ public class Platform {
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
 	
-	/*private Rectangle platrect ;
-	private final int y, w, h ;
-	private int x ;
-	private final Texture platimg ;
-	private final Sprite plat ;*/
-	
 	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
 		
-		//randPosition(prevX, row);
+		randPosition(prevX, 0);
 		this.y = y;
 		randLength();
 		platformImg = new Texture(Gdx.files.internal("platform.png"));
 		platformSprite = new Sprite(platformImg);
 		width = (int)(platformSprite.getWidth() * length);
-		//System.out.println(width);
-		//platformSprite.setSize(rand.nextInt(200) + 150, platformSprite.getHeight());
-		/*this.x = x ;
-		this.y = y ;
-		this.w = w ;
-		h = 30 ;
-		platrect = new Rectangle (x, y, w, h) ;
-		platimg = new Texture ("platform.png") ;
-		plat = new Sprite (platimg) ;*/
 	}
 	
 	public void randPosition(int prevX, int row) { //does nothing
-		//x = prevX + rand.nextInt(200) + 100;
-		x = (prevX + rand.nextInt(20 * row) + 5) * length;
+		x = prevX + rand.nextInt(200) + 200;
+		//x = (prevX + rand.nextInt(20 * row) + 5) * length;
 	}
 	
 	public void randLength() {
-		length = rand.nextInt(10) + 5;
+		length = rand.nextInt(3) + 5;
 	}
 	
 	public void move() {
 		x -= moveSpeed;
-		if(x < 0 - width) {
-			x = rand.nextInt(200) + 1000;
-		}
-		//System.out.println (x) ;
+		//if(x < 0 - width) {
+			//x = rand.nextInt(200) + 1000;
+			//randLength () ;
+			//width = (int)(platformSprite.getWidth() * length);
+		//}
 	}
 	
 	public void draw() {

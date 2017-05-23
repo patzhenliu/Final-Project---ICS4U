@@ -93,18 +93,19 @@ public class Main extends ApplicationAdapter {
 	public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
 		int platNum = 4; 
-		platforms.add(new Platform(batch, speed, 200, 200));
+		platforms.add(new Platform(batch, speed, 200, 300));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
-		platforms.add(new Platform(batch, speed, 320, 400));
+		platforms.add(new Platform(batch, speed, 320, 500));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
-		platforms.add(new Platform(batch, speed, 440, 600));
+		platforms.add(new Platform(batch, speed, 440, 800));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
+		randomizePlatforms () ;
 	}
 	
 	public void createHoles() {
@@ -396,6 +397,14 @@ public class Main extends ApplicationAdapter {
 	public void movePlatforms() {
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).move();
+			if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) {
+				int height = platforms.get(i).getY() ;
+				int index = i - 1 ;
+				if (i == 0) {
+					index = platforms.size () - 1 ;
+				}
+				platforms.set(i, new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth())) ;
+			}
 		}
 	}
 	
