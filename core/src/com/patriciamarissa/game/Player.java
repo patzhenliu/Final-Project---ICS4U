@@ -158,8 +158,8 @@ public class Player {
 				spriteCount--;
 				animationCount = speed;
 			}
-			//currentSprite = sprites[spriteCount];
-			currentSprite = sprites[0];
+			currentSprite = sprites[spriteCount];
+			
 		}
 		
 		if (isJumpingUp) {

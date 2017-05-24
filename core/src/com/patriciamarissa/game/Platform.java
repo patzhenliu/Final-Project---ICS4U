@@ -41,7 +41,9 @@ public class Platform {
 		platformSprite = new Sprite(platformImg);
 		width = (int)(platformSprite.getWidth() * length);
 		
+		moneyList = new ArrayList<Money>();
 		createMoney(rand.nextInt(5));
+		
 		//System.out.println(width);
 		//platformSprite.setSize(rand.nextInt(200) + 150, platformSprite.getHeight());
 		/*this.x = x ;
@@ -54,15 +56,16 @@ public class Platform {
 	}
 	
 	public void createMoney(int num) {
-		moneyList = new ArrayList<Money>();
+		
+		moneyList.clear();
 		for (int i = 0; i < num; i++) {
 			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width));
 		}
 	}
 	
 	public void randPosition(int prevX, int row) { //does nothing
-		
 		x = (prevX + rand.nextInt(20 * row) + 5) * length;
+		//createMoney(rand.nextInt(5));
 	}
 	
 	public void randLength() {
@@ -73,6 +76,7 @@ public class Platform {
 		x -= moveSpeed;
 		if(x < 0 - width) {
 			x = rand.nextInt(200) + 1000;
+			//createMoney(rand.nextInt(5));
 		}
 		//System.out.println (x) ;
 	}
