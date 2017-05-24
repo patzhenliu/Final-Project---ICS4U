@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -34,6 +36,7 @@ public class Main extends ApplicationAdapter {
 	Texture [] nums;
 	int score;
 	int speed;
+	int money;
 
 	private Random rand = new Random(System.currentTimeMillis());
 	Random rand2;
@@ -46,6 +49,9 @@ public class Main extends ApplicationAdapter {
 	long speedtimer;
 	
 	boolean isMoving;
+	
+	Actor playButton;
+	ClickListener mouse; 
 	
 	@Override
 	public void create () {
@@ -72,6 +78,11 @@ public class Main extends ApplicationAdapter {
 		makeEnemies () ;
 		runTimer () ;
 		isMoving = false;
+		money = 0;
+		
+		playButton = new Actor();
+		playButton.setPosition(200, 300);
+		playButton.setScale(100, 100);
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -235,6 +246,9 @@ public class Main extends ApplicationAdapter {
 			}
 			if (platforms.get(i).collideTop(player)) {
 				isOnPlatform = true;
+				if (platforms.get(i).moneyCollision(player)) {
+					money += 1;
+				}
 				//System.out.println(platforms.get(i).getWidth());
 				if (!player.isJumping()) {
 					player.setGroundLvl(platforms.get(i).getY() + platforms.get(i).getHeight());
@@ -340,6 +354,7 @@ public class Main extends ApplicationAdapter {
 		drawEnemies () ;
 		player.draw();
 		drawNum(900, 40, score - score%10);
+		drawNum(50, 550, money);
 		update();
 		
 	}
@@ -348,12 +363,16 @@ public class Main extends ApplicationAdapter {
 		//draws start menu
 		//checks if player hits ENTER - play
 		//drawBackground();
+		//if (mouse.isOver(playButton, 200, 300)) {
+			//page = "GAME";
+		//}
+		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
         batch.draw(titleImg, -60, -100);
         //batch.draw(playImg, 105, 125);
         batch.end();
-        
+        //playButton.draw(batch, 1);
 		if(Gdx.input.isKeyPressed(Keys.ENTER)) {
 			//menuMusic.dispose();
 			page = "GAME";

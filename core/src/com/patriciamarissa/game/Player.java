@@ -1,6 +1,7 @@
 package com.patriciamarissa.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -66,6 +67,7 @@ public class Player {
 		
 		if (!facingForwards) {
 			changeDirection();
+			
 		}
 		resetPos();
 		minX = -100;
@@ -91,6 +93,7 @@ public class Player {
 	}
 	
 	public void moveLeft() {
+		
 		if (x - speed > minX) {
 			x -= speed;
 		}
@@ -98,12 +101,15 @@ public class Player {
 			
 			spriteCount = sprites.length - 1;
 			if (facingForwards) {
+				System.out.println(facingForwards);
 				changeDirection();
+				System.out.println(facingForwards);
 			}
 		}
 	}
 	
 	public void moveRight() {
+		
 		if (x + speed < maxX) {	
 			x += speed;
 		}
@@ -127,9 +133,12 @@ public class Player {
 	}
 	
 	public void changeDirection() {
+		
 		for (int i = 0; i < sprites.length; i++) {
+			System.out.println(i);
 			sprites[i].flip(true,false);
 		}
+		//sprites[0].flip(true, false);
 		facingForwards = !facingForwards;
 		
 	}
@@ -150,6 +159,7 @@ public class Player {
 				animationCount = speed;
 			}
 			currentSprite = sprites[spriteCount];
+			
 		}
 		
 		if (isJumpingUp) {

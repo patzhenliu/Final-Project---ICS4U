@@ -1,6 +1,7 @@
 package com.patriciamarissa.game;
 
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -20,6 +21,8 @@ public class Platform {
 	private int y;
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
+	private ArrayList<Money> moneyList;
+	
 	
 	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
 		this.batch = batch;
@@ -35,8 +38,22 @@ public class Platform {
 	
 	public void randPosition(int prevX, int row) { //does nothing
 		x = prevX + rand.nextInt(200) + 200;
-		//x = (prevX + rand.nextInt(20 * row) + 5) * length;
+		moneyList = new ArrayList<Money>();
+		createMoney(rand.nextInt(5));
 	}
+	
+	public void createMoney(int num) {
+		
+		moneyList.clear();
+		for (int i = 0; i < num; i++) {
+			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width));
+		}
+	}
+	
+	//public void randPosition(int prevX, int row) { //does nothing
+		//x = (prevX + rand.nextInt(20 * row) + 5) * length;
+		//createMoney(rand.nextInt(5));
+	//}
 	
 	public void randLength() {
 		length = rand.nextInt(3) + 5;
@@ -49,6 +66,11 @@ public class Platform {
 			//randLength () ;
 			//width = (int)(platformSprite.getWidth() * length);
 		//}
+		if(x < 0 - width) {
+			x = rand.nextInt(200) + 1000;
+			//createMoney(rand.nextInt(5));
+		}
+		//System.out.println (x) ;
 	}
 	
 	public void draw() {
@@ -58,8 +80,26 @@ public class Platform {
 			//System.out.println(platformSprite.getWidth());
 			platformSprite.draw(batch);
 		}
+		
 		batch.end();
+		drawMoney();
 		//move();
+	}
+	
+	public void drawMoney() {
+		for (int i = 0; i < moneyList.size(); i++) {
+			moneyList.get(i).draw(x);
+		}
+	}
+	
+	public boolean moneyCollision(Player player) { ///NEEDS WORK
+		for (int i = 0; i < moneyList.size(); i++) {
+			if (moneyList.get(i).collide(player)) {
+				moneyList.remove(i);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public boolean collideTop(Player player){
