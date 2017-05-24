@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class Main extends ApplicationAdapter {
+	// BEHOLD A USELESS COMMENT
 	SpriteBatch batch;
 	Player player;
 	Pixmap mask ;
@@ -76,7 +77,6 @@ public class Main extends ApplicationAdapter {
 		createHoles();
 		makeEnemies () ;
 		runTimer () ;
-		generateCourse();
 		isMoving = false;
 		money = 0;
 		
@@ -104,18 +104,19 @@ public class Main extends ApplicationAdapter {
 	public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
 		int platNum = 4; 
-		platforms.add(new Platform(batch, speed, 200, 200));
+		platforms.add(new Platform(batch, speed, 200, 300));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
-		platforms.add(new Platform(batch, speed, 320, 400));
+		platforms.add(new Platform(batch, speed, 320, 500));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
-		platforms.add(new Platform(batch, speed, 440, 600));
+		platforms.add(new Platform(batch, speed, 440, 800));
 		for(int i = 1; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
 		}
+		randomizePlatforms () ;
 	}
 	
 	public void createHoles() {
@@ -277,16 +278,12 @@ public class Main extends ApplicationAdapter {
 		
 		for (int i = 0 ; i < enemies.length ; i ++) { // removing enemies that have gone off the left or finished dying
 			if (enemies [i] == null || enemies [i].getX () + enemies [i].getWidth () <= 0 || enemies [i].isDead () == true) {
-				//System.out.println ("CHANGE") ;
-				boolean remade = false ;
 				for (int j = 0 ; j < platforms.size () ; j++) {
-					if (platforms.get (j).offRight() && remade == false) {
+					if (platforms.get (j).offRight()) {
 						enemies [i] = null ;
 						makeEnemy (i, platforms.get(j)) ;
 					}
 				}
-				//enemies [i] = null ;
-				//makeEnemy (i) ;
 			}
 		}
 		
@@ -419,6 +416,14 @@ public class Main extends ApplicationAdapter {
 	public void movePlatforms() {
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).move();
+			if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) {
+				int height = platforms.get(i).getY() ;
+				int index = i - 1 ;
+				if (i == 0) {
+					index = platforms.size () - 1 ;
+				}
+				platforms.set(i, new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth())) ;
+			}
 		}
 	}
 	

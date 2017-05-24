@@ -227,7 +227,9 @@ public class Enemy {
 	public void draw() {
 		currentsprite.setPosition(x,y); //:PP
 		batch.begin();
-		currentsprite.draw(batch);
+		if (!isDead ()) {
+			currentsprite.draw(batch);
+		}
 		batch.end();
 	}
 	

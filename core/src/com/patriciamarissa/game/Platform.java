@@ -24,17 +24,11 @@ public class Platform {
 	private ArrayList<Money> moneyList;
 	
 	
-	/*private Rectangle platrect ;
-	private final int y, w, h ;
-	private int x ;
-	private final Texture platimg ;
-	private final Sprite plat ;*/
-	
 	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
 		
-		//randPosition(prevX, row);
+		randPosition(prevX, 0);
 		this.y = y;
 		randLength();
 		platformImg = new Texture(Gdx.files.internal("platform.png"));
@@ -68,8 +62,13 @@ public class Platform {
 		//createMoney(rand.nextInt(5));
 	}
 	
+	public void randPosition(int prevX, int row) { //does nothing
+		x = prevX + rand.nextInt(200) + 200;
+		//x = (prevX + rand.nextInt(20 * row) + 5) * length;
+	}
+	
 	public void randLength() {
-		length = rand.nextInt(10) + 5;
+		length = rand.nextInt(3) + 5;
 	}
 	
 	public void move() {
@@ -79,6 +78,11 @@ public class Platform {
 			//createMoney(rand.nextInt(5));
 		}
 		//System.out.println (x) ;
+		//if(x < 0 - width) {
+			//x = rand.nextInt(200) + 1000;
+			//randLength () ;
+			//width = (int)(platformSprite.getWidth() * length);
+		//}
 	}
 	
 	public void draw() {

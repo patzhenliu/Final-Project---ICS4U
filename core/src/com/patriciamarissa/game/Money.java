@@ -47,6 +47,23 @@ public class Money {
 		if (spriteCount == 0) {
 			spriteCount = sprites.length - 1;
 		}
+	
+	public Money() {
+		sprites = new Sprite[4];
+		sprites[0] = new Sprite(spritePage, 28, 29, 25, 24);
+		sprites[1] = new Sprite(spritePage, 3, 29, 23, 24);
+		sprites[2] = new Sprite(spritePage, 80, 29, 5, 24);
+		sprites[3] = new Sprite(spritePage, 55, 29, 23, 24);
+		
+		spriteCount = 0;
+		animationCount = 2;
+	}
+	
+	public void draw(int x, int y) {
+		currentSprite.setPosition(x, y);
+		batch.begin();
+		currentSprite.draw(batch);
+		batch.end();
 	}
 	
 	public void spin() {
@@ -66,5 +83,8 @@ public class Money {
 		Rectangle moneyRect = new Rectangle(currentSprite.getX(), currentSprite.getY(), currentSprite.getWidth(), currentSprite.getHeight() );
 		
 		return rect.overlaps(moneyRect);
+			}
+			currentSprite = sprites[spriteCount];
+		}
 	}
 }
