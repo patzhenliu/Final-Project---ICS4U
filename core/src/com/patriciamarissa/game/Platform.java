@@ -29,7 +29,7 @@ public class Platform {
 		this.moveSpeed = moveSpeed;
 		
 		randLength();
-		randPosition(prevX, 0);
+		//randPosition(prevX, 0);
 		this.y = y;
 		platformImg = new Texture(Gdx.files.internal("platform.png"));
 		platformSprite = new Sprite(platformImg);
@@ -57,15 +57,13 @@ public class Platform {
 		}
 	}
 	
-	
 	public void randPosition(int prevX, int row) { //does nothing
-		x = prevX + rand.nextInt(20 * row) + 5;
-		//createMoney(rand.nextInt(5));
+		//x = prevX + rand.nextInt(200) + 200;
+		x = (prevX + rand.nextInt(20 * row) + 5) * length;
 	}
 	
-	
 	public void randLength() {
-		length = rand.nextInt(3) + 5;
+		length = rand.nextInt(10) + 5;
 	}
 	
 	public void move() {
