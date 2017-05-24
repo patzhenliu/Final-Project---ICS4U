@@ -270,7 +270,7 @@ public class Main extends ApplicationAdapter {
 			
 			if (holes.get(i).collide(player)) {
 				player.setGroundLvl(0);
-				player.setBoundaries(holes.get(i).getX() - player.getWidth()/2, holes.get(i).getX() + holes.get(i).getWidth()- player.getWidth()/2);
+				player.setInHole(holes.get(i));
 			}
 			
 		}
