@@ -35,6 +35,7 @@ public class Main extends ApplicationAdapter {
 	Texture [] nums;
 	int score;
 	int speed;
+	int money;
 
 	private Random rand = new Random(System.currentTimeMillis());
 	Random rand2;
@@ -77,6 +78,7 @@ public class Main extends ApplicationAdapter {
 		runTimer () ;
 		generateCourse();
 		isMoving = false;
+		money = 0;
 		
 		playButton = new Actor();
 		playButton.setPosition(200, 300);
@@ -243,6 +245,9 @@ public class Main extends ApplicationAdapter {
 			}
 			if (platforms.get(i).collideTop(player)) {
 				isOnPlatform = true;
+				if (platforms.get(i).moneyCollision(player)) {
+					money += 1;
+				}
 				//System.out.println(platforms.get(i).getWidth());
 				if (!player.isJumping()) {
 					player.setGroundLvl(platforms.get(i).getY() + platforms.get(i).getHeight());
@@ -352,6 +357,7 @@ public class Main extends ApplicationAdapter {
 		drawEnemies () ;
 		player.draw();
 		drawNum(900, 40, score - score%10);
+		drawNum(50, 550, money);
 		update();
 		
 	}

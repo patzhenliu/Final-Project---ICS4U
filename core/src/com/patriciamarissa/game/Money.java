@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Money {
 	private Batch batch;
@@ -57,5 +58,13 @@ public class Money {
 			}
 			currentSprite = sprites[spriteCount];
 		}
+	}
+	
+	public boolean collide(Player player){
+		Sprite playerSprite = player.getSprite();
+		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight()/2);
+		Rectangle moneyRect = new Rectangle(currentSprite.getX(), currentSprite.getY(), currentSprite.getWidth(), currentSprite.getHeight() );
+		
+		return rect.overlaps(moneyRect);
 	}
 }

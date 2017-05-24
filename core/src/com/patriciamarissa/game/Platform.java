@@ -21,7 +21,7 @@ public class Platform {
 	private int y;
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
-	private Money[] moneyList;
+	private ArrayList<Money> moneyList;
 	
 	
 	/*private Rectangle platrect ;
@@ -54,9 +54,9 @@ public class Platform {
 	}
 	
 	public void createMoney(int num) {
-		moneyList = new Money[num];
+		moneyList = new ArrayList<Money>();
 		for (int i = 0; i < num; i++) {
-			moneyList[i] = new Money(batch, x, y + (int)platformSprite.getHeight(), width);
+			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width));
 		}
 	}
 	
@@ -91,9 +91,19 @@ public class Platform {
 	}
 	
 	public void drawMoney() {
-		for (int i = 0; i < moneyList.length; i++) {
-			moneyList[i].draw(x);
+		for (int i = 0; i < moneyList.size(); i++) {
+			moneyList.get(i).draw(x);
 		}
+	}
+	
+	public boolean moneyCollision(Player player) { ///NEEDS WORK
+		for (int i = 0; i < moneyList.size(); i++) {
+			if (moneyList.get(i).collide(player)) {
+				moneyList.remove(i);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public boolean collideTop(Player player){
