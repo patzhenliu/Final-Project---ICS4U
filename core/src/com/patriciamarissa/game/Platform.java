@@ -57,8 +57,9 @@ public class Platform {
 		}
 	}
 	
+	
 	public void randPosition(int prevX, int row) { //does nothing
-		x = (prevX + rand.nextInt(20 * row) + 5) * length;
+		x = prevX + rand.nextInt(20 * row) + 5;
 		//createMoney(rand.nextInt(5));
 	}
 	
