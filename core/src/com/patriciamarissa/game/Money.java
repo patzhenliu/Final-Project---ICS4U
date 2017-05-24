@@ -47,6 +47,7 @@ public class Money {
 		if (spriteCount == 0) {
 			spriteCount = sprites.length - 1;
 		}
+	}
 	
 	public Money() {
 		sprites = new Sprite[4];
@@ -83,8 +84,6 @@ public class Money {
 		Rectangle moneyRect = new Rectangle(currentSprite.getX(), currentSprite.getY(), currentSprite.getWidth(), currentSprite.getHeight() );
 		
 		return rect.overlaps(moneyRect);
-			}
-			currentSprite = sprites[spriteCount];
-		}
+		
 	}
 }
