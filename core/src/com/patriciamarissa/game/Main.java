@@ -369,7 +369,7 @@ public class Main extends ApplicationAdapter {
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
-        batch.draw(titleImg, -60, -100);
+        batch.draw(titleImg, 0, 0);
         //batch.draw(playImg, 105, 125);
         batch.end();
         //playButton.draw(batch, 1);
