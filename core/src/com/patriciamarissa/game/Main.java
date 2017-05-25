@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class Main extends ApplicationAdapter {
-	// BEHOLD A USELESS COMMENT
+	// useless
 	SpriteBatch batch;
 	Player player;
 	Pixmap mask ;
