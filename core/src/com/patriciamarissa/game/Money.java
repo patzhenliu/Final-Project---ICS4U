@@ -37,7 +37,7 @@ public class Money {
 	
 	int offsetX, y;
 	
-	private Random rand = new Random(System.currentTimeMillis());
+	private Random rand; 
 	
 	public Money(Batch batch, int px, int py, int range) {
 		this.batch = batch;
@@ -48,10 +48,10 @@ public class Money {
 		sprites[2] = new Sprite(spritePage, 160, 58, 10, 48);
 		sprites[3] = new Sprite(spritePage, 110, 58, 46, 48);
 		currentSprite = sprites[0];
-		
+		rand = new Random(System.currentTimeMillis());
 		spriteCount = 0;
 		animationCount = 4;
-		offsetX = rand.nextInt(range - (int)sprites[0].getWidth()) + px;
+		offsetX = rand.nextInt(range - (int)(sprites[0].getWidth())) + px;
 		y = py;
 		System.out.println(y);
 		
@@ -73,11 +73,11 @@ public class Money {
 			animationCount--;
 			if (animationCount == 0) {
 				spriteCount--;
+				animationCount = 4;
 			}
 			currentSprite = sprites[spriteCount];
 		}
-		animationCount = 4;
-		currentSprite = sprites[spriteCount];
+		//currentSprite = sprites[spriteCount];
 	}
 	
 	public boolean collide(Player player){

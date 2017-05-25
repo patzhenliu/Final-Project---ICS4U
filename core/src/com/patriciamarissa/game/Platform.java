@@ -27,12 +27,11 @@ public class Platform {
 	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
-		
+		platformImg = new Texture(Gdx.files.internal("platform.png"));
+		platformSprite = new Sprite(platformImg);
 		randPosition(prevX, 0);
 		this.y = y;
 		randLength();
-		platformImg = new Texture(Gdx.files.internal("platform.png"));
-		platformSprite = new Sprite(platformImg);
 		width = (int)(platformSprite.getWidth() * length);
 	}
 	
@@ -49,11 +48,6 @@ public class Platform {
 			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width));
 		}
 	}
-	
-	//public void randPosition(int prevX, int row) { //does nothing
-		//x = (prevX + rand.nextInt(20 * row) + 5) * length;
-		//createMoney(rand.nextInt(5));
-	//}
 	
 	public void randLength() {
 		length = rand.nextInt(3) + 5;
