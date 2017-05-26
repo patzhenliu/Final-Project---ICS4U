@@ -22,6 +22,7 @@ public class Platform {
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
 	private ArrayList<Money> moneyList;
+	private ArrayList<Fire> fireList;
 	
 	
 	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
@@ -37,6 +38,8 @@ public class Platform {
 		
 		moneyList = new ArrayList<Money>();
 		createMoney(rand.nextInt(5));
+		fireList = new ArrayList<Fire>();
+		createFire(rand.nextInt(5));
 		
 		//System.out.println(width);
 		//platformSprite.setSize(rand.nextInt(200) + 150, platformSprite.getHeight());
@@ -54,6 +57,14 @@ public class Platform {
 		moneyList.clear();
 		for (int i = 0; i < num; i++) {
 			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width));
+		}
+	}
+	
+	public void createFire(int num) {
+		
+		fireList.clear();
+		for (int i = 0; i < num; i++) {
+			fireList.add(new Fire(batch, x, y + (int)platformSprite.getHeight(), width));
 		}
 	}
 	
@@ -90,6 +101,7 @@ public class Platform {
 		
 		batch.end();
 		drawMoney();
+		drawFire();
 		//move();
 	}
 	
@@ -99,10 +111,26 @@ public class Platform {
 		}
 	}
 	
+	public void drawFire() {
+		for (int i = 0; i < fireList.size(); i++) {
+			fireList.get(i).draw(x);
+		}
+	}
+	
 	public boolean moneyCollision(Player player) { ///NEEDS WORK
 		for (int i = 0; i < moneyList.size(); i++) {
 			if (moneyList.get(i).collide(player)) {
 				moneyList.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean fireCollision(Player player) { ///NEEDS WORK
+		for (int i = 0; i < fireList.size(); i++) {
+			if (fireList.get(i).collide(player)) {
+				fireList.remove(i);
 				return true;
 			}
 		}

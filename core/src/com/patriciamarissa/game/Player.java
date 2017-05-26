@@ -190,6 +190,9 @@ public class Player {
 	public void die(){
 		isDead = true;
 		lives -= 1 ;
+		if (x < 0) {
+			x = 0;
+		}
 	}
 	
 	public boolean dying() {

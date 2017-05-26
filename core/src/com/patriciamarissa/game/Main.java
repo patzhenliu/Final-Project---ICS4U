@@ -31,6 +31,7 @@ public class Main extends ApplicationAdapter {
 	ArrayList <Platform> platforms;
 	ArrayList <Hole> holes;
 	Enemy [] enemies;
+	Shop shop;
 
 	ShapeRenderer rend;
 	Texture [] nums;
@@ -79,6 +80,7 @@ public class Main extends ApplicationAdapter {
 		runTimer () ;
 		isMoving = false;
 		money = 0;
+		shop = new Shop(batch);
 		
 		playButton = new Actor();
 		playButton.setPosition(200, 300);
@@ -234,6 +236,9 @@ public class Main extends ApplicationAdapter {
 			pauseMenu();
 			return;
 		}
+		else if (page.equals("SHOP")) {
+			shop.draw();
+		}
 		
 		
 		boolean isOnPlatform = false;
@@ -248,6 +253,9 @@ public class Main extends ApplicationAdapter {
 				isOnPlatform = true;
 				if (platforms.get(i).moneyCollision(player)) {
 					money += 1;
+				}
+				if (platforms.get(i).fireCollision(player)) {
+					player.die();
 				}
 				//System.out.println(platforms.get(i).getWidth());
 				if (!player.isJumping()) {
@@ -373,9 +381,13 @@ public class Main extends ApplicationAdapter {
         //batch.draw(playImg, 105, 125);
         batch.end();
         //playButton.draw(batch, 1);
-		if(Gdx.input.isKeyPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
 			//menuMusic.dispose();
 			page = "GAME";
+		}
+		else if (Gdx.input.isKeyPressed(Keys.S)) {
+			//menuMusic.dispose();
+			page = "SHOP";
 		}
 	}
 	
