@@ -29,15 +29,18 @@ public class Platform {
 		this.moveSpeed = moveSpeed;
 		platformImg = new Texture(Gdx.files.internal("platform.png"));
 		platformSprite = new Sprite(platformImg);
-		randPosition(prevX, 0);
-		this.y = y;
 		randLength();
 		width = (int)(platformSprite.getWidth() * length);
+		moneyList = new ArrayList<Money>();
+		this.y = y;
+		randPosition(prevX, 0);
+		
+		
 	}
 	
 	public void randPosition(int prevX, int row) { //does nothing
 		x = prevX + rand.nextInt(200) + 200;
-		moneyList = new ArrayList<Money>();
+		
 		createMoney(rand.nextInt(5));
 	}
 	

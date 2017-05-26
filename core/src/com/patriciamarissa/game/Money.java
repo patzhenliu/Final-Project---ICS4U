@@ -17,6 +17,10 @@ public class Money {
 	private int spriteCount;
 	private int animationCount;
 	
+	int offsetX, y;
+	
+	private Random rand; 
+	
 	public Money() {
 		sprites = new Sprite[4];
 		sprites[0] = new Sprite(spritePage, 28, 29, 25, 24);
@@ -35,10 +39,6 @@ public class Money {
 		batch.end();
 	}
 	
-	int offsetX, y;
-	
-	private Random rand; 
-	
 	public Money(Batch batch, int px, int py, int range) {
 		this.batch = batch;
 		spritePage = new Texture(Gdx.files.internal("i found this idk.png"));
@@ -51,6 +51,7 @@ public class Money {
 		rand = new Random(System.currentTimeMillis());
 		spriteCount = 0;
 		animationCount = 4;
+		System.out.println(range);
 		offsetX = rand.nextInt(range - (int)(sprites[0].getWidth())) + px;
 		y = py;
 		System.out.println(y);
