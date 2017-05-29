@@ -1,30 +1,21 @@
 package com.patriciamarissa.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-
-public class Shop {
+public class Controls {
 	private Batch batch;
 	private Texture shopImg;
-	private final int title, game, shop ;
+	private final int title, game, controls ;
 	private int coins ;
 	
-	public Shop(Batch batch) {
+	public Controls (Batch batch) { // TEMP STUFF FOR NOW
+		// THREE CONTROLS PAGES
+		// FIRST ONE IS PLAYER
+		// SECOND ONE IS ENEMY EXPLAINATIONS
+		// THIRD ONE IS PAGE EXPLAINATIONS
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("shop.png"));
 		title = 1 ;
 		game = 2 ;
-		shop = 3 ;
-		coins = 0 ;
-	}
-	
-	public void add (int c) {
-		coins += c ;
-	}
-	
-	public void deduct (int d) {
-		coins -= d ;
+		controls = 4 ;
 	}
 	
 	public void draw() {
@@ -50,7 +41,7 @@ public class Shop {
 			return title ;
 		}
 		else {
-			return shop ;
+			return controls ;
 		}
 	}
 }
