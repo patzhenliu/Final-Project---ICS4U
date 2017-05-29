@@ -65,9 +65,9 @@ public class Fire {
 	public boolean collide(Player player){
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight()/2);
-		Rectangle moneyRect = new Rectangle(currentSprite.getX(), currentSprite.getY(), currentSprite.getWidth(), currentSprite.getHeight() );
-		
-		return rect.overlaps(moneyRect);
+		Rectangle fireRect = new Rectangle(currentSprite.getX(), currentSprite.getY(), currentSprite.getWidth()/32, currentSprite.getHeight()/2 );
+		//play with fireRect size
+		return rect.overlaps(fireRect);
 		
 	}
 }
