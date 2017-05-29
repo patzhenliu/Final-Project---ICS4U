@@ -34,7 +34,7 @@ public class Hole {
 			randPosition(prevX);
 			// originalx = x ;
 			y = 0;
-			holeImg = new Texture(Gdx.files.internal("hole.png"));
+			holeImg = new Texture(Gdx.files.internal("backgrounds/hole.png"));
 			holeSprite = new Sprite(holeImg);
 			holeSprite.setSize(rand.nextInt(100) + 100, holeSprite.getHeight());
 			/*this.x = x ;

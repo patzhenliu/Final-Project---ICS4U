@@ -22,7 +22,7 @@ public class Money {
 	
 	public Money(Batch batch, int px, int py, int range) {
 		this.batch = batch;
-		spritePage = new Texture(Gdx.files.internal("i found this idk.png"));
+		spritePage = new Texture(Gdx.files.internal("sprites/money.png"));
 		sprites = new Sprite[4];
 		sprites[0] = new Sprite(spritePage, 56, 58, 50, 48);
 		sprites[1] = new Sprite(spritePage, 6, 58, 46, 48);

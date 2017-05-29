@@ -1,5 +1,10 @@
 package com.patriciamarissa.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+
 public class TitleScreen {
 	
 	private final int title, game, shop, controls, credits ;
@@ -16,11 +21,11 @@ public class TitleScreen {
 		pages = new Texture [5] ;
 		this.batch = batch ;
 		
-		pages [0] = new Texture(Gdx.files.internal("Title0.png"));
-		pages [1] = new Texture(Gdx.files.internal("Title1.png"));
-		pages [2] = new Texture(Gdx.files.internal("Title2.png"));
-		pages [3] = new Texture(Gdx.files.internal("Title3.png"));
-		pages [4] = new Texture(Gdx.files.internal("Title4.png"));
+		pages [0] = new Texture(Gdx.files.internal("menus/Title0.png"));
+		pages [1] = new Texture(Gdx.files.internal("menus/Title1.png"));
+		pages [2] = new Texture(Gdx.files.internal("menus/Title2.png"));
+		pages [3] = new Texture(Gdx.files.internal("menus/Title3.png"));
+		pages [4] = new Texture(Gdx.files.internal("menus/Title4.png"));
 		
 		page = pages [0] ;
 	}
@@ -42,16 +47,16 @@ public class TitleScreen {
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			return game ;
 		}
-		else if (Gdx.input.isKeyPressed(Keys.S)) {
+		else if (Gdx.input.isKeyJustPressed(Keys.S)) {
 			return shop ;
 		}
-		else if (Gdx.input.isKeyPressed(Keys.C)) {
+		else if (Gdx.input.isKeyJustPressed(Keys.C)) {
 			return controls ;
 		}
-		else if (Gdx.input.isKeyPressed(Keys.TAB)) {
+		else if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			return credits ;
 		}
 		else {

@@ -40,7 +40,7 @@ public class Player {
 		this.moveSpeed = moveSpeed;
 		
 		spritePage = new Texture(Gdx.files.internal("sprites/SpriteSheet.png"));
-		deathImg = new Texture(Gdx.files.internal("death.png"));
+		deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
 
 		sprites = new Sprite[4];
 		sprites[0] = new Sprite(spritePage, 38, 50, 31, 50);

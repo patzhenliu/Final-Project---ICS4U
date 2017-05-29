@@ -1,14 +1,19 @@
 package com.patriciamarissa.game;
 
-public class Credits {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+
+public class CreditsScreen {
 	private Batch batch;
 	private Texture shopImg;
 	private final int title, credits ;
 	private int coins ;
 	
-	public Credits (Batch batch) { // TEMP STUFF FOR NOW
+	public CreditsScreen (Batch batch) { // TEMP STUFF FOR NOW
 		this.batch = batch;
-		shopImg = new Texture(Gdx.files.internal("shop.png"));
+		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
 		title = 1 ;
 		credits = 5 ;
 	}
