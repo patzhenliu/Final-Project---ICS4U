@@ -273,6 +273,7 @@ public class Main extends ApplicationAdapter {
 		else if (page == storynum) {
 			story.update();
 			page = story.giveNextScreen();
+			resetSpeed(); //will put if statement or something because you dont need to do this every time
 			return;
 		}
 		
@@ -595,7 +596,13 @@ public class Main extends ApplicationAdapter {
 			page = gamenum;
 		}
 		isMoving = false;
-    	speed = 2;
+    	resetSpeed();
+
+	}
+	
+	public void resetSpeed() {
+		player.setSpeed(10);
+		speed = 2;
     	
     	floor.setMoveSpeed(speed);
     	floor2.setMoveSpeed(speed);
@@ -610,7 +617,6 @@ public class Main extends ApplicationAdapter {
 		for (Enemy e : enemies) {
 			e.setSpeed(speed);
 		}
-
 	}
 	
 	public void drawLives() {
