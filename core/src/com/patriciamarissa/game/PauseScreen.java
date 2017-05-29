@@ -47,16 +47,16 @@ public class PauseScreen {
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			return game ;
 		}
-		else if (Gdx.input.isKeyPressed(Keys.S)) {
+		else if (Gdx.input.isKeyJustPressed(Keys.S)) {
 			return shop ;
 		}
-		else if (Gdx.input.isKeyPressed(Keys.C)) {
+		else if (Gdx.input.isKeyJustPressed(Keys.C)) {
 			return controls ;
 		}
-		else if (Gdx.input.isKeyPressed(Keys.H)) {
+		else if (Gdx.input.isKeyJustPressed(Keys.H)) {
 			return title ;
 		}
 		else {

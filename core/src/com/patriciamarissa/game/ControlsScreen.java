@@ -39,10 +39,10 @@ public class ControlsScreen {
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (Gdx.input.isKeyPressed(Keys.G)) {
+		if (Gdx.input.isKeyJustPressed(Keys.G)) {
 			return game ;
 		}
-		else if (Gdx.input.isKeyPressed(Keys.T)) {
+		else if (Gdx.input.isKeyJustPressed(Keys.T)) {
 			return title ;
 		}
 		else {
