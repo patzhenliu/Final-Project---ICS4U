@@ -22,7 +22,7 @@ public class Fire {
 	
 	public Fire(Batch batch, int px, int py, int range) {
 		this.batch = batch;
-		spritePage = new Texture(Gdx.files.internal("Fire.png"));
+		spritePage = new Texture(Gdx.files.internal("sprites/Fire.png"));
 		sprites = new Sprite[6];
 		sprites[0] = new Sprite(spritePage, 4, 116, 41, 50);
 		sprites[1] = new Sprite(spritePage, 57, 117, 42, 50);

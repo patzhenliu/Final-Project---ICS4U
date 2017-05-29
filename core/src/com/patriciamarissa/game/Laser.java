@@ -1,5 +1,6 @@
 package com.patriciamarissa.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -18,10 +19,10 @@ public class Laser {
 		BAD = 1 ;
 		type = t ;
 		if (type == BAD) {
-			img = new Texture ("enemy laser.png") ;
+			img = new Texture (Gdx.files.internal("sprites/enemy laser.png")) ;
 		}
 		else {
-			img = new Texture ("user laser.png") ;
+			img = new Texture (Gdx.files.internal("sprites/user laser.png")) ;
 		}
 		laser = new Sprite (img) ;
 		this.x = x ;

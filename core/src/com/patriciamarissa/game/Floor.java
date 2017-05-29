@@ -23,7 +23,7 @@ public class Floor {
 		this.width = width;
 		this.moveSpeed = moveSpeed;
 		
-		backgroundImg = new Texture(Gdx.files.internal("floor.png"));
+		backgroundImg = new Texture(Gdx.files.internal("backgrounds/floor.png"));
 		background = new TextureRegion(backgroundImg, 0, 0, width, height);
 		
 		this.x = x;

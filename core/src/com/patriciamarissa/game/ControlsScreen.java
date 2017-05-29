@@ -1,18 +1,23 @@
 package com.patriciamarissa.game;
 
-public class Controls {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+
+public class ControlsScreen {
 	private Batch batch;
 	private Texture shopImg;
 	private final int title, game, controls ;
 	private int coins ;
 	
-	public Controls (Batch batch) { // TEMP STUFF FOR NOW
+	public ControlsScreen (Batch batch) { // TEMP STUFF FOR NOW
 		// THREE CONTROLS PAGES
 		// FIRST ONE IS PLAYER
 		// SECOND ONE IS ENEMY EXPLAINATIONS
 		// THIRD ONE IS PAGE EXPLAINATIONS
 		this.batch = batch;
-		shopImg = new Texture(Gdx.files.internal("shop.png"));
+		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
 		title = 1 ;
 		game = 2 ;
 		controls = 4 ;

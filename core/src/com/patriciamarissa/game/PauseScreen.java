@@ -1,13 +1,18 @@
 package com.patriciamarissa.game;
 
-public class Pause {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+
+public class PauseScreen {
 	
 	private Batch batch ;
 	private Texture img ;
 	private Texture [] imgs ;
 	private final int title, game, shop, controls, pause ;
 	
-	public Pause (Batch batch) {
+	public PauseScreen (Batch batch) {
 		title = 1 ;
 		game = 2 ;
 		shop = 3 ;
@@ -16,11 +21,11 @@ public class Pause {
 		imgs = new Texture [5] ;
 		this.batch = batch ;
 		
-		imgs [0] = new Texture(Gdx.files.internal("pause0.png"));
-		imgs [1] = new Texture(Gdx.files.internal("pause1.png"));
-		imgs [2] = new Texture(Gdx.files.internal("pause2.png"));
-		imgs [3] = new Texture(Gdx.files.internal("pause3.png"));
-		imgs [4] = new Texture(Gdx.files.internal("pause4.png"));
+		imgs [0] = new Texture(Gdx.files.internal("menus/pause0.png"));
+		imgs [1] = new Texture(Gdx.files.internal("menus/pause1.png"));
+		imgs [2] = new Texture(Gdx.files.internal("menus/pause2.png"));
+		imgs [3] = new Texture(Gdx.files.internal("menus/pause3.png"));
+		imgs [4] = new Texture(Gdx.files.internal("menus/pause4.png"));
 		
 		img = imgs [0] ;
 	}

@@ -25,7 +25,7 @@ public class Main extends ApplicationAdapter {
 	// BEHOLD A USELESS COMMENT
 	SpriteBatch batch;
 	Player player;
-	Pixmap mask ;
+	//Pixmap mask ;
 	Background background, background2;
 	Floor floor, floor2;
 	ArrayList <Platform> platforms;
@@ -33,13 +33,14 @@ public class Main extends ApplicationAdapter {
 	Enemy [] enemies;
 	Shop shop;
 	TitleScreen title ;
-	Credits credits ;
-	Lose lose ;
-	Controls control ;
-	MainGame game ;
-	Pause pause ;
+	CreditsScreen credits ;
+	LoseScreen lose ;
+	ControlsScreen control ;
+	Story story;
+	//MainGame game ;
+	PauseScreen pause ;
 	
-	private final int titlenum, gamenum, shopnum, controlsnum, creditsnum, pausenum, losenum ;
+	int titlenum, gamenum, shopnum, controlsnum, creditsnum, pausenum, losenum, storynum ;
 
 	ShapeRenderer rend;
 	Texture [] nums;
@@ -72,12 +73,8 @@ public class Main extends ApplicationAdapter {
 		background2 = new Background(batch, 3430, 3430, 600, speed);
 		floor = new Floor(batch, 0, 3408, 100, speed);
 		floor2 = new Floor(batch, 3408, 3408, 100, speed);
-		page = "START";
-		mask = new Pixmap (Gdx.files.internal("mask.png")) ;
-		titleImg = new Texture(Gdx.files.internal("TitleImg.png"));
-		loseImg = new Texture(Gdx.files.internal("loseImg.png"));
-		lifeImg = new Texture(Gdx.files.internal("lifeImg.png"));
-		pauseImg = new Texture(Gdx.files.internal("pause.png"));
+		//mask = new Pixmap (Gdx.files.internal("mask.png")) ;
+		lifeImg = new Texture(Gdx.files.internal("sprites/lifeImg.png"));
 		platforms = new ArrayList <Platform> () ;
 		enemies = new Enemy [4] ;
 		rand2 = new Random ();
@@ -96,13 +93,16 @@ public class Main extends ApplicationAdapter {
 		creditsnum = 5 ;
 		pausenum = 6 ;
 		losenum = 7 ;
+		storynum = 8;
+		page = storynum;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
-		pause = new Pause (batch) ;
-		lose = new Lose (batch) ;
-		control = new Control (batch) ;
-		credits = new Credits (batch) ;
+		pause = new PauseScreen (batch) ;
+		lose = new LoseScreen (batch) ;
+		control = new ControlsScreen (batch) ;
+		credits = new CreditsScreen (batch) ;
+		story = new Story(batch);
 		
 		playButton = new Actor();
 		playButton.setPosition(200, 300);
@@ -233,7 +233,7 @@ public class Main extends ApplicationAdapter {
 			}
 			return;
 		}
-		else if (page == losenum && player.getLives() == 0) {
+		else if (page == losenum && player.getLives() <= 0) {
 			loseScreen();
 			return;
 		}
@@ -242,8 +242,11 @@ public class Main extends ApplicationAdapter {
 			if (page == losenum) {
 				page = gamenum;
 			}
-			else {
+			else if (page == gamenum){
 				page = pausenum;
+			}
+			else if (page == pausenum) {
+				page = gamenum;
 			}
 		}
 		
@@ -266,6 +269,10 @@ public class Main extends ApplicationAdapter {
 		else if (page == creditsnum) {
 			creditsScreen () ;
 			return ;
+		}
+		else if (page == storynum) {
+			story.draw();
+			page = story.giveNextScreen();
 		}
 		
 		
@@ -451,14 +458,13 @@ public class Main extends ApplicationAdapter {
 		//checks if player hits ENTER - play again
 		/*batch.begin();
 	    batch.draw(loseImg, -100, -120);
-        batch.end();
+        batch.end();*/
         
-        if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
-        	reset(true);
-        	page = "GAME";
-        }*/
 		lose.update () ;
-		page = lose.giveNextScreen () ;
+		if (lose.giveNextScreen () == gamenum) {
+			reset(true);
+        	page = gamenum;
+		}
 	}
 	
 	public void drawPlatforms() {

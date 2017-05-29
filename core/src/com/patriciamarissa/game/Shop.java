@@ -1,6 +1,7 @@
 package com.patriciamarissa.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
@@ -12,7 +13,7 @@ public class Shop {
 	
 	public Shop(Batch batch) {
 		this.batch = batch;
-		shopImg = new Texture(Gdx.files.internal("shop.png"));
+		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
 		title = 1 ;
 		game = 2 ;
 		shop = 3 ;

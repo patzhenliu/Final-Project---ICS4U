@@ -22,7 +22,7 @@ public class Background {
 		this.width = width;
 		this.moveSpeed = moveSpeed;
 		
-		backgroundImg = new Texture(Gdx.files.internal("background.png"));
+		backgroundImg = new Texture(Gdx.files.internal("backgrounds/background.png"));
 		background = new TextureRegion(backgroundImg, 0, 100, width, height);
 		
 		this.x = x;
