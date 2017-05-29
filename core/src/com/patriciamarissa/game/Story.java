@@ -42,10 +42,11 @@ public class Story {
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (pageNum == 5) {
-			return 1;
-		}
-		else if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			if (pageNum == 5) {
+				return 1;
+			}
 			pageNum += 1;
 		}
 		return 8;
