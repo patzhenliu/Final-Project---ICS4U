@@ -273,6 +273,7 @@ public class Main extends ApplicationAdapter {
 		else if (page == storynum) {
 			story.update();
 			page = story.giveNextScreen();
+			return;
 		}
 		
 		
