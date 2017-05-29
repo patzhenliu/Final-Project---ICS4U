@@ -22,26 +22,34 @@ public class Platform {
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
 	private ArrayList<Money> moneyList;
+	private ArrayList<Fire> fireList;
 	
 	
 	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
+		
+		randLength();
+		//randPosition(prevX, 0);
+		this.y = y;
 		platformImg = new Texture(Gdx.files.internal("platform.png"));
 		platformSprite = new Sprite(platformImg);
-		randLength();
 		width = (int)(platformSprite.getWidth() * length);
+		
 		moneyList = new ArrayList<Money>();
-		this.y = y;
-		randPosition(prevX, 0);
-		
-		
-	}
-	
-	public void randPosition(int prevX, int row) { //does nothing
-		x = prevX + rand.nextInt(200) + 200;
-		
 		createMoney(rand.nextInt(5));
+		fireList = new ArrayList<Fire>();
+		createFire(rand.nextInt(5));
+		
+		//System.out.println(width);
+		//platformSprite.setSize(rand.nextInt(200) + 150, platformSprite.getHeight());
+		/*this.x = x ;
+		this.y = y ;
+		this.w = w ;
+		h = 30 ;
+		platrect = new Rectangle (x, y, w, h) ;
+		platimg = new Texture ("platform.png") ;
+		plat = new Sprite (platimg) ;*/
 	}
 	
 	public void createMoney(int num) {
@@ -52,22 +60,35 @@ public class Platform {
 		}
 	}
 	
+	public void createFire(int num) {
+		
+		fireList.clear();
+		for (int i = 0; i < num; i++) {
+			fireList.add(new Fire(batch, x, y + (int)platformSprite.getHeight(), width));
+		}
+	}
+	
+	public void randPosition(int prevX, int row) { //does nothing
+		//x = prevX + rand.nextInt(200) + 200;
+		x = (prevX + rand.nextInt(20 * row) + 5) * length;
+	}
+	
 	public void randLength() {
-		length = rand.nextInt(3) + 5;
+		length = rand.nextInt(10) + 5;
 	}
 	
 	public void move() {
 		x -= moveSpeed;
-		//if(x < 0 - width) {
-			//x = rand.nextInt(200) + 1000;
-			//randLength () ;
-			//width = (int)(platformSprite.getWidth() * length);
-		//}
 		if(x < 0 - width) {
 			x = rand.nextInt(200) + 1000;
 			//createMoney(rand.nextInt(5));
 		}
 		//System.out.println (x) ;
+		//if(x < 0 - width) {
+			//x = rand.nextInt(200) + 1000;
+			//randLength () ;
+			//width = (int)(platformSprite.getWidth() * length);
+		//}
 	}
 	
 	public void draw() {
@@ -80,6 +101,7 @@ public class Platform {
 		
 		batch.end();
 		drawMoney();
+		drawFire();
 		//move();
 	}
 	
@@ -89,10 +111,26 @@ public class Platform {
 		}
 	}
 	
+	public void drawFire() {
+		for (int i = 0; i < fireList.size(); i++) {
+			fireList.get(i).draw(x);
+		}
+	}
+	
 	public boolean moneyCollision(Player player) { ///NEEDS WORK
 		for (int i = 0; i < moneyList.size(); i++) {
 			if (moneyList.get(i).collide(player)) {
 				moneyList.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean fireCollision(Player player) { ///NEEDS WORK
+		for (int i = 0; i < fireList.size(); i++) {
+			if (fireList.get(i).collide(player)) {
+				fireList.remove(i);
 				return true;
 			}
 		}

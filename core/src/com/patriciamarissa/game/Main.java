@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class Main extends ApplicationAdapter {
-	// useless
+	// BEHOLD A USELESS COMMENT
 	SpriteBatch batch;
 	Player player;
 	Pixmap mask ;
@@ -31,6 +31,15 @@ public class Main extends ApplicationAdapter {
 	ArrayList <Platform> platforms;
 	ArrayList <Hole> holes;
 	Enemy [] enemies;
+	Shop shop;
+	TitleScreen title ;
+	Credits credits ;
+	Lose lose ;
+	Controls control ;
+	MainGame game ;
+	Pause pause ;
+	
+	private final int titlenum, gamenum, shopnum, controlsnum, creditsnum, pausenum, losenum ;
 
 	ShapeRenderer rend;
 	Texture [] nums;
@@ -41,7 +50,7 @@ public class Main extends ApplicationAdapter {
 	private Random rand = new Random(System.currentTimeMillis());
 	Random rand2;
 	
-	String page;
+	int page;
 	Texture titleImg;
 	Texture loseImg;
 	Texture lifeImg;
@@ -79,6 +88,21 @@ public class Main extends ApplicationAdapter {
 		runTimer () ;
 		isMoving = false;
 		money = 0;
+		
+		titlenum = 1 ;
+		gamenum = 2 ;
+		shopnum = 3 ;
+		controlsnum = 4 ;
+		creditsnum = 5 ;
+		pausenum = 6 ;
+		losenum = 7 ;
+		
+		shop = new Shop(batch) ;
+		title = new TitleScreen (batch) ;
+		pause = new Pause (batch) ;
+		lose = new Lose (batch) ;
+		control = new Control (batch) ;
+		credits = new Credits (batch) ;
 		
 		playButton = new Actor();
 		playButton.setPosition(200, 300);
@@ -164,14 +188,14 @@ public class Main extends ApplicationAdapter {
 	public void move() {
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
 			player.moveRight();
-			if (page.equals("GAME")) {
+			if (page == gamenum) {
 				isMoving = true;
 			}
 		}
 		
 		else if(Gdx.input.isKeyPressed(Keys.LEFT)){
 			player.moveLeft();
-			if (page.equals("GAME")) {
+			if (page == gamenum) {
 				isMoving = true;
 			}
 				
@@ -182,7 +206,7 @@ public class Main extends ApplicationAdapter {
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			player.jump();
-			if (page.equals("GAME")) {
+			if (page == gamenum) {
 				isMoving = true;
 			}
 				
@@ -203,36 +227,45 @@ public class Main extends ApplicationAdapter {
 		drawLives();
 		
 		if (player.dying()) {
-			page = "LOSE";
+			page = losenum;
 			if (player.getLives() > 0) {
 				reset(false);
 			}
 			return;
 		}
-		else if (page.equals("LOSE") && player.getLives() == 0) {
+		else if (page == losenum && player.getLives() == 0) {
 			loseScreen();
 			return;
 		}
-		//System.out.println(page);
-		//System.out.println(player.getLives());
-		//System.out.println(player.getLives());
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			if (page.equals("PAUSE")) {
-				page = "GAME";
+			if (page == losenum) {
+				page = gamenum;
 			}
 			else {
-				page = "PAUSE";
+				page = pausenum;
 			}
 		}
 		
-		if (page.equals("START")) {
+		if (page == titlenum) {
 			startMenu();
 			return;
 		}
-		else if (page.equals("PAUSE")) {
+		else if (page == pausenum) {
 			pauseMenu();
 			return;
+		}
+		else if (page == shopnum) {
+			shopMenu () ;
+			return ;
+		}
+		else if (page == controlsnum) {
+			controlScreen () ;
+			return ;
+		}
+		else if (page == creditsnum) {
+			creditsScreen () ;
+			return ;
 		}
 		
 		
@@ -248,6 +281,9 @@ public class Main extends ApplicationAdapter {
 				isOnPlatform = true;
 				if (platforms.get(i).moneyCollision(player)) {
 					money += 1;
+				}
+				if (platforms.get(i).fireCollision(player)) {
+					player.die();
 				}
 				//System.out.println(platforms.get(i).getWidth());
 				if (!player.isJumping()) {
@@ -271,7 +307,7 @@ public class Main extends ApplicationAdapter {
 			
 			if (holes.get(i).collide(player)) {
 				player.setGroundLvl(0);
-				player.setBoundaries(holes.get(i).getX() - player.getWidth()/2, holes.get(i).getX() + holes.get(i).getWidth()- player.getWidth()/2);
+				player.setInHole(holes.get(i));
 			}
 			
 		}
@@ -349,7 +385,6 @@ public class Main extends ApplicationAdapter {
 		floor.draw();
 		floor2.draw();
 		drawPlatforms();
-		//drawFloor () ;
 		drawHoles();
 		drawEnemies () ;
 		player.draw();
@@ -367,38 +402,63 @@ public class Main extends ApplicationAdapter {
 			//page = "GAME";
 		//}
 		
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		/*Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
         batch.draw(titleImg, 0, 0);
         //batch.draw(playImg, 105, 125);
         batch.end();
         //playButton.draw(batch, 1);
-		if(Gdx.input.isKeyPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
 			//menuMusic.dispose();
 			page = "GAME";
 		}
+		else if (Gdx.input.isKeyPressed(Keys.S)) {
+			//menuMusic.dispose();
+			page = "SHOP";
+		}*/
+		title.update () ;
+		page = title.giveNextScreen () ;
 	}
 	
 	public void pauseMenu() {
 		//temporary picture and stuff
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		/*Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
         batch.draw(pauseImg, 270, 250);
         //batch.draw(playImg, 105, 125);
-        batch.end();
+        batch.end();*/
+		pause.update () ;
+		page = pause.giveNextScreen () ;
+	}
+	
+	public void shopMenu () {
+		shop.update () ;
+		page = shop.giveNextScreen () ;
+	}
+	
+	public void controlScreen () {
+		control.update () ;
+		page = control.giveNextScreen () ;
+	}
+	
+	public void creditsScreen () {
+		credits.update () ;
+		page = credits.giveNextScreen () ;
 	}
 	
 	public void loseScreen() {
 		//draws screen when player loses
 		//checks if player hits ENTER - play again
-		batch.begin();
+		/*batch.begin();
 	    batch.draw(loseImg, -100, -120);
         batch.end();
         
         if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
         	reset(true);
         	page = "GAME";
-        }
+        }*/
+		lose.update () ;
+		page = lose.giveNextScreen () ;
 	}
 	
 	public void drawPlatforms() {
@@ -525,7 +585,7 @@ public class Main extends ApplicationAdapter {
 			makeEnemies () ;
 		}
 		else {
-			page = "GAME";
+			page = gamenum;
 		}
 		isMoving = false;
     	speed = 2;

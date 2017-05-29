@@ -33,6 +33,8 @@ public class Player {
 	boolean isJumpingUp;
 	boolean facingForwards; //true-right false-left
 	
+	Hole hole;
+	
 	public Player(Batch batch, int moveSpeed) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
@@ -59,6 +61,8 @@ public class Player {
 		lives = 3;
 		reset();
 		
+		hole = null;
+		
 		//deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
 		
 	}
@@ -70,6 +74,7 @@ public class Player {
 			
 		}
 		resetPos();
+		hole = null;
 		minX = -100;
 		maxX = Gdx.graphics.getWidth();
 		speed = 10;
@@ -150,7 +155,11 @@ public class Player {
 	}
 	
 	public void move() {
-		//System.out.println(facingForwards);
+		if (hole != null) {
+			System.out.println("BOUNDARIES RESET!");
+			setBoundaries(hole.getX(), hole.getX() + hole.getWidth()- getWidth());
+		}
+			//System.out.println(facingForwards);
 		moveBack();
 		if (spriteCount > 0) {
 			animationCount--;
@@ -181,6 +190,9 @@ public class Player {
 	public void die(){
 		isDead = true;
 		lives -= 1 ;
+		if (x < 0) {
+			x = 0;
+		}
 	}
 	
 	public boolean dying() {
@@ -237,6 +249,10 @@ public class Player {
 	public void setBoundaries(int min, int max) {
 		minX = min;
 		maxX = max;
+	}
+	
+	public void setInHole(Hole h) {
+		hole = h;
 	}
 	
 	public int getJumpHeight() { //not in use
