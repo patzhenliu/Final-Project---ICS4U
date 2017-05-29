@@ -10,17 +10,15 @@ public class Story {
 	private Batch batch;
 	private Texture [] pages;
 	private int pageNum;
+	private final int totPages = 100;
 	
 	public Story (Batch batch) {
-		pages = new Texture [6] ;
+		pages = new Texture [totPages] ;
 		this.batch = batch ;
 		
-		pages [0] = new Texture(Gdx.files.internal("story/story0.png"));
-		pages [1] = new Texture(Gdx.files.internal("story/story1.png"));
-		pages [2] = new Texture(Gdx.files.internal("story/story2.png"));
-		pages [3] = new Texture(Gdx.files.internal("story/story3.png"));
-		pages [4] = new Texture(Gdx.files.internal("story/story4.png"));
-		pages [5] = new Texture(Gdx.files.internal("story/story5.png"));
+		for (int i = 0; i < totPages; i++) {
+			pages [i] = new Texture(Gdx.files.internal("story/story" + i +".png"));
+		}
 		
 		pageNum = 0;
 	}
@@ -39,12 +37,17 @@ public class Story {
 	public void update () {
 		updatePage () ;
 		draw () ;
+		if (Gdx.input.isKeyJustPressed(Keys.S)) {
+			pageNum = totPages;
+		}
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			if (pageNum == 5) {
+		if (pageNum > totPages - 1) {
+			return 1;
+		}
+		else if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			if (pageNum == totPages - 1) {
 				return 1;
 			}
 			pageNum += 1;

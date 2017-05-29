@@ -271,7 +271,7 @@ public class Main extends ApplicationAdapter {
 			return ;
 		}
 		else if (page == storynum) {
-			story.draw();
+			story.update();
 			page = story.giveNextScreen();
 		}
 		
