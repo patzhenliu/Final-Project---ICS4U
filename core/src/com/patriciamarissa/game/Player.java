@@ -28,7 +28,6 @@ public class Player {
 	private int jumpHeight;
 	private int lives;
 	private int [] powerups; // ignore this for now
-	// powerups: shoot, increase lives, higher jump? tba
 	
 	boolean isJumpingUp;
 	boolean facingForwards; //true-right false-left
@@ -53,7 +52,8 @@ public class Player {
 		spriteCount = 0;
 		animationCount = 2;
 		
-		powerups = new int [4] ; // uhhh change this once we actually decide the powerups
+		powerups = new int [10] ; 
+		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, DOUBLE MONEY, DOUBLE SCORE, SLOW TIME, NUKE, KILL FIRE, KILL HOLES
 		
 		groundLvl = 100;
 		jumpHeight = 150;
@@ -64,7 +64,6 @@ public class Player {
 		hole = null;
 		
 		//deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
-		
 	}
 	
 	public void reset() {
@@ -79,7 +78,7 @@ public class Player {
 		maxX = Gdx.graphics.getWidth();
 		speed = 10;
 		//lives = 3 ;
-		lives += powerups [1] ;
+		lives += powerups [0] ;
 		groundLvl = 100;
 		
 		isJumpingUp = false;
@@ -255,6 +254,10 @@ public class Player {
 		hole = h;
 	}
 	
+	public void losePower (int index) {
+		powerups [index] = 0 ;
+	}
+	
 	public int getJumpHeight() { //not in use
 		return jumpHeight;
 	}
@@ -284,6 +287,10 @@ public class Player {
 	
 	public void resetLives() {
 		lives = 3;
+	}
+	
+	public int [] getPowers () {
+		return powerups ;
 	}
 	
 }
