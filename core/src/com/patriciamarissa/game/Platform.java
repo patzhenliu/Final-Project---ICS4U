@@ -71,6 +71,8 @@ public class Platform {
 	public void randPosition(int prevX, int row) { //does nothing
 		//x = prevX + rand.nextInt(200) + 200;
 		x = (prevX + rand.nextInt(20 * row) + 5) * length;
+		//createMoney(rand.nextInt(5));
+		//createFire(rand.nextInt(5));
 	}
 	
 	public void randLength() {

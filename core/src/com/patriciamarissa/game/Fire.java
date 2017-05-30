@@ -46,12 +46,13 @@ public class Fire {
 		currentSprite.draw(batch);
 		batch.end();
 		animate();
-		if (spriteCount == 0) {
-			spriteCount = sprites.length - 1;
-		}
+		
 	}
 	
 	public void animate() {
+		if (spriteCount == 0) {
+			spriteCount = sprites.length - 1;
+		}
 		if (spriteCount > 0) {
 			animationCount--;
 			if (animationCount == 0) {
