@@ -1,5 +1,7 @@
 package com.patriciamarissa.game;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,6 +22,21 @@ public class Shop {
 	private int animationCount;
 	
 	private Texture speech;
+	private int [] pricelist ;
+	private int [] boughtlist ;
+	
+	/* lasers (upgradable to 3) (10, 20, 40)
+	 * more life (upgradable to 6, but starts at 3) (10, 20, 40)
+	 * higher jump (upgradable twice, or to whatever point hits top of screen) (10, 20, 40)
+	 * increase money (upgradable) (20, 40, 60)
+	 * double money (one time use) (10)
+	 * double score (one time use) (10)
+	 * slow down time (one time use) (10)
+	 * kill all enemies? (one time use, timed, 10 seconds) (20)
+	 * remove fire (one time use) (10)
+	 * remove holes (one time use) (10)
+	 * GOING TO HAVE TO CHANGE LION TO ACCOMODATE THE HOLE REMOVAL. STILL NEED TO FIX LION AND GARGOYLE MOVEMENT ANYWAYS.
+	 */
 	
 	public Shop(Batch batch) {
 		this.batch = batch;
@@ -43,6 +60,19 @@ public class Shop {
 		
 		spriteCount = 0;
 		animationCount = 5;
+		pricelist = new int [10] ;
+		Arrays.fill (pricelist, 10) ;
+		pricelist [3] = 20 ; // increase money
+		pricelist [7] = 20 ; // nuke the enemies
+		boughtlist = new int [10] ;
+		Arrays.fill(boughtlist, 0) ;
+	}
+	
+	public void buy (int index, int [] powers) {
+		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, DOUBLE MONEY, DOUBLE SCORE, SLOW TIME, NUKE, KILL FIRE, KILL HOLES
+		boughtlist [index] += 1 ; // INDEXES 0 TO 3 ARE UPGRADABLE
+		powers [index] += 1 ;
+		deduct (pricelist [index]) ;
 	}
 	
 	public void add (int c) {
@@ -60,13 +90,16 @@ public class Shop {
 		drawGhost();
 	}
 	
-	public void updatePage () {
+	public void updatePage (Player player) {
 		// use mouse coordinates to figure out which img from the list to use
 		animateGhost();
+		// if something is already bought, grey out the image and make it unclickable
+		// else make it so that you can click to buy
+		// and maybe play a cha ching sound?
 	}
 	
-	public void update () {
-		updatePage () ;
+	public void update (Player player) { // needs the player to give an upgrade in case an upgrade is purchased
+		updatePage (player) ;
 		draw () ;
 	}
 	

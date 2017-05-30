@@ -441,7 +441,7 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	public void shopMenu () {
-		shop.update () ;
+		shop.update (player) ;
 		page = shop.giveNextScreen () ;
 	}
 	
