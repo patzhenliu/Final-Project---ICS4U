@@ -1,5 +1,6 @@
 package com.patriciamarissa.game;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
@@ -22,8 +23,9 @@ public class Shop {
 	private int animationCount;
 	
 	private Texture speech;
-	private int [] pricelist ;
-	private int [] boughtlist ;
+	private Upgrade[] upgrades;
+	private final int numOfUpgrades = 10;
+	int shopPage;
 	
 	/* lasers (upgradable to 3) (10, 20, 40)
 	 * more life (upgradable to 6, but starts at 3) (10, 20, 40)
@@ -60,19 +62,22 @@ public class Shop {
 		
 		spriteCount = 0;
 		animationCount = 5;
-		pricelist = new int [10] ;
-		Arrays.fill (pricelist, 10) ;
-		pricelist [3] = 20 ; // increase money
-		pricelist [7] = 20 ; // nuke the enemies
-		boughtlist = new int [10] ;
-		Arrays.fill(boughtlist, 0) ;
+		createUpgrades();
+		shopPage = 0;
+	}
+	
+	private void createUpgrades() {
+		upgrades = new Upgrade[numOfUpgrades];
+		for(int i = 0; i < numOfUpgrades; i++) {
+			int ux = i % 4;
+			int uy = ((int)(i - 1)/ 4) % 2; 
+			upgrades[i] = new Upgrade(batch, 150 + ux * 200, 300 - uy * 200);
+		}
 	}
 	
 	public void buy (int index, int [] powers) {
 		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, DOUBLE MONEY, DOUBLE SCORE, SLOW TIME, NUKE, KILL FIRE, KILL HOLES
-		boughtlist [index] += 1 ; // INDEXES 0 TO 3 ARE UPGRADABLE
-		powers [index] += 1 ;
-		deduct (pricelist [index]) ;
+		return;
 	}
 	
 	public void add (int c) {
@@ -87,6 +92,10 @@ public class Shop {
 		batch.begin();
 	    batch.draw(shopImg, 0, 0);
 		batch.end();
+		
+		for (int i = shopPage * 8; i < 8; i++) {
+			upgrades[i].draw();
+		}
 		drawGhost();
 	}
 	
@@ -105,7 +114,7 @@ public class Shop {
 	
 	public void drawGhost() {
 		batch.begin();
-		batch.draw(ghostSprite, 800, 350);
+		batch.draw(ghostSprite, 830, 350);
 		batch.draw(speech, 450, 450);
 		batch.end();
 	}
@@ -132,6 +141,19 @@ public class Shop {
 		else if (Gdx.input.isKeyJustPressed(Keys.T)) {
 			spriteCount = 0;
 			return title ;
+		}
+		else if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+			if (shopPage > 0){
+				shopPage -= 1;
+			}
+			return shop;
+		}
+		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+			System.out.println(shopPage);
+			if (shopPage < (int)(upgrades.length / 8 - 1)){
+				shopPage += 1;
+			}
+			return shop;
 		}
 		else {
 			return shop ;

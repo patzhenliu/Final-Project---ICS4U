@@ -7,6 +7,7 @@ import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,7 +22,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-public class Main extends ApplicationAdapter {
+public class Main extends ApplicationAdapter implements InputProcessor{
 	// BEHOLD A USELESS COMMENT
 	SpriteBatch batch;
 	Player player;
@@ -60,9 +61,6 @@ public class Main extends ApplicationAdapter {
 	
 	boolean isMoving;
 	
-	Actor playButton;
-	ClickListener mouse; 
-	
 	@Override
 	public void create () {
 		speed = 2; //speed on screen moving backwards
@@ -94,7 +92,7 @@ public class Main extends ApplicationAdapter {
 		pausenum = 6 ;
 		losenum = 7 ;
 		storynum = 8;
-		page = storynum;
+		page = shopnum;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
@@ -103,10 +101,6 @@ public class Main extends ApplicationAdapter {
 		control = new ControlsScreen (batch) ;
 		credits = new CreditsScreen (batch) ;
 		story = new Story(batch);
-		
-		playButton = new Actor();
-		playButton.setPosition(200, 300);
-		playButton.setScale(100, 100);
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -640,5 +634,53 @@ public class Main extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose () ;
 		rend.dispose () ;
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
