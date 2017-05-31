@@ -70,7 +70,8 @@ public class Shop {
 		upgrades = new Upgrade[numOfUpgrades];
 		for(int i = 0; i < numOfUpgrades; i++) {
 			int ux = i % 4;
-			int uy = ((int)(i - 1)/ 4) % 2; 
+			int uy = ((int)(i / 4) )% 2; 
+			System.out.println(ux + "," + uy);
 			upgrades[i] = new Upgrade(batch, 150 + ux * 200, 300 - uy * 200);
 		}
 	}
@@ -93,7 +94,10 @@ public class Shop {
 	    batch.draw(shopImg, 0, 0);
 		batch.end();
 		
-		for (int i = shopPage * 8; i < 8; i++) {
+		for (int i = shopPage * 8; i < shopPage* 8 + 8; i++) {
+			if (i >= upgrades.length) {
+				break;
+			}
 			upgrades[i].draw();
 		}
 		drawGhost();
@@ -150,7 +154,7 @@ public class Shop {
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
 			System.out.println(shopPage);
-			if (shopPage < (int)(upgrades.length / 8 - 1)){
+			if (shopPage < (int)(upgrades.length / 8 )){
 				shopPage += 1;
 			}
 			return shop;
