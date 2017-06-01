@@ -23,8 +23,10 @@ public class Shop {
 	private int animationCount;
 	
 	private Texture speech;
+	private int [] pricelist ;
+	private int [] boughtlist ;
 	private Upgrade[] upgrades;
-	private final int numOfUpgrades = 10;
+	private final int numOfUpgrades = 14;
 	int shopPage;
 	
 	/* lasers (upgradable to 3) (10, 20, 40)
@@ -62,6 +64,12 @@ public class Shop {
 		
 		spriteCount = 0;
 		animationCount = 5;
+		pricelist = new int [10] ;
+		Arrays.fill (pricelist, 10) ;
+		pricelist [3] = 20 ; // increase money
+		pricelist [7] = 20 ; // nuke the enemies
+		boughtlist = new int [10] ;
+		Arrays.fill(boughtlist, 0) ;
 		createUpgrades();
 		shopPage = 0;
 	}
@@ -71,7 +79,7 @@ public class Shop {
 		for(int i = 0; i < numOfUpgrades; i++) {
 			int ux = i % 4;
 			int uy = ((int)(i / 4) )% 2; 
-			System.out.println(ux + "," + uy);
+			//System.out.println(ux + "," + uy);
 			upgrades[i] = new Upgrade(batch, 150 + ux * 200, 300 - uy * 200);
 		}
 	}

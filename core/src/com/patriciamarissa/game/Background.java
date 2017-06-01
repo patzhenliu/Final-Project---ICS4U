@@ -23,10 +23,10 @@ public class Background {
 		this.moveSpeed = moveSpeed;
 		
 		backgroundImg = new Texture(Gdx.files.internal("backgrounds/background.png"));
-		background = new TextureRegion(backgroundImg, 0, 100, width, height);
+		//background = new TextureRegion(backgroundImg, 0, 100, width, height);
 		
 		this.x = x;
-		int y = Gdx.graphics.getHeight();
+		int y = 100;
 		moving = true;
 	}
 	
@@ -36,7 +36,7 @@ public class Background {
 		}
 		batch.begin();
 		//batch.draw(background, 0, 0);
-	    batch.draw(background, x, y);
+	    batch.draw(backgroundImg, x, 100);
 		batch.end();
 	}
 	

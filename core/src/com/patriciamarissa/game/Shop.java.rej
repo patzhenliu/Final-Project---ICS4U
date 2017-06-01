@@ -1,0 +1,9 @@
+diff a/core/src/com/patriciamarissa/game/Shop.java b/core/src/com/patriciamarissa/game/Shop.java	(rejected hunks)
+@@ -62,7 +62,6 @@
+ 		
+ 		spriteCount = 0;
+ 		animationCount = 5;
+-		Arrays.fill(boughtlist, 0) ;
+ 		createUpgrades();
+ 		shopPage = 0;
+ 	}
