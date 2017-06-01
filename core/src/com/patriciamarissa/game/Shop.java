@@ -2,6 +2,8 @@ package com.patriciamarissa.game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
+import java.io.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -26,7 +28,7 @@ public class Shop {
 	private int [] pricelist ;
 	private int [] boughtlist ;
 	private Upgrade[] upgrades;
-	private final int numOfUpgrades = 14;
+	private final int numOfUpgrades = 3;
 	int shopPage;
 	
 	/* lasers (upgradable to 3) (10, 20, 40)
@@ -76,12 +78,19 @@ public class Shop {
 	
 	private void createUpgrades() {
 		upgrades = new Upgrade[numOfUpgrades];
-		for(int i = 0; i < numOfUpgrades; i++) {
-			int ux = i % 4;
-			int uy = ((int)(i / 4) )% 2; 
-			//System.out.println(ux + "," + uy);
-			upgrades[i] = new Upgrade(batch, 150 + ux * 200, 300 - uy * 200);
+		//try {
+			//Scanner in = new Scanner(new BufferedReader(new FileReader("upgrades/upgrades.txt")));
+			for(int i = 0; i < numOfUpgrades; i++) {
+				int ux = i % 4;
+				int uy = ((int)(i / 4) )% 2; 
+				upgrades[i] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200,
+						new Texture(Gdx.files.internal("upgrades/upgrade" + i + ".png")));
+			}
+			/*in.close();
 		}
+		catch(IOException ex) {
+			System.out.println("upgrades.txt does not exist");
+		}*/
 	}
 	
 	public void buy (int index, int [] powers) {
@@ -161,7 +170,7 @@ public class Shop {
 			return shop;
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-			System.out.println(shopPage);
+			//System.out.println(shopPage);
 			if (shopPage < (int)(upgrades.length / 8 )){
 				shopPage += 1;
 			}

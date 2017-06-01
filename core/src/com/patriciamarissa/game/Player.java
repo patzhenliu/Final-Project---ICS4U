@@ -105,9 +105,9 @@ public class Player {
 			
 			spriteCount = sprites.length - 1;
 			if (facingForwards) {
-				System.out.println(facingForwards);
+				//System.out.println(facingForwards);
 				changeDirection();
-				System.out.println(facingForwards);
+				//System.out.println(facingForwards);
 			}
 		}
 	}
@@ -139,7 +139,7 @@ public class Player {
 	public void changeDirection() {
 		
 		for (int i = 0; i < sprites.length; i++) {
-			System.out.println(i);
+			//System.out.println(i);
 			sprites[i].flip(true,false);
 		}
 		//sprites[0].flip(true, false);
