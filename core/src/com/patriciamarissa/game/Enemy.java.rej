@@ -1,0 +1,13 @@
+diff a/core/src/com/patriciamarissa/game/Enemy.java b/core/src/com/patriciamarissa/game/Enemy.java	(rejected hunks)
+@@ -16,9 +16,10 @@
+ 	// BUGS: ENEMIES GET STUCK.
+ 	// SOMETIMES WALK OVER PLATFORM GAPS.
+ 	// SPAWN WITH PIECES OFF THE PLATFORM.
++	// OFFSCREEN, JUST SPAWN COMPLETELY OFF A PLATFORM.
+ 	// GARGOYLES CLIP THROUGH THE GROUND.
+ 	// LASERS CRASH.
+-	private int x, y, hp, speed, spritecount, animatecount, movespeed, ox, deathcount ;
++	private int x, y, hp, speed, spritecount, animatecount, movespeed, deathcount, minX, maxX, minY, maxY ;
+ 	private Platform plat ;
+ 	private final int type, tree, gargoyle, rock, golem, lion ;
+ 	private Batch batch ;

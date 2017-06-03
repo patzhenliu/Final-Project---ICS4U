@@ -1,0 +1,10 @@
+diff a/core/src/com/patriciamarissa/game/Platform.java b/core/src/com/patriciamarissa/game/Platform.java	(rejected hunks)
+@@ -18,6 +18,8 @@
+ 	private int moveSpeed;
+ 	private int x;
+ 	private int y;
++	private int length;
++	private int width;
+ 	private Random rand = new Random(System.currentTimeMillis() );
+ 	
+ 	/*private Rectangle platrect ;
