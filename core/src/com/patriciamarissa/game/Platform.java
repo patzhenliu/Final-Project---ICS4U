@@ -39,7 +39,7 @@ public class Platform {
 		moneyList = new ArrayList<Money>();
 		createMoney(rand.nextInt(5));
 		fireList = new ArrayList<Fire>();
-		createFire(rand.nextInt(5));
+		createFire(rand.nextInt(2));
 		
 		//System.out.println(width);
 		//platformSprite.setSize(rand.nextInt(200) + 150, platformSprite.getHeight());

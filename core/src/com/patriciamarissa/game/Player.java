@@ -38,21 +38,17 @@ public class Player {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
 		
-		spritePage = new Texture(Gdx.files.internal("sprites/SpriteSheet.png"));
+		
 		deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
 
-		sprites = new Sprite[4];
-		sprites[0] = new Sprite(spritePage, 38, 50, 31, 50);
-		sprites[1] = new Sprite(spritePage, 3, 50, 30, 50);
-		sprites[2] = new Sprite(spritePage, 38, 50, 31, 50);
-		sprites[3] = new Sprite(spritePage, 80, 50, 31, 50);
 		
+		importSprite();
 		currentSprite = sprites[0];
 		
 		spriteCount = 0;
 		animationCount = 2;
 		
-		powerups = new int [10] ; 
+		//powerups = new int [10] ; 
 		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, DOUBLE MONEY, DOUBLE SCORE, SLOW TIME, NUKE, KILL FIRE, KILL HOLES
 		
 		groundLvl = 100;
@@ -66,6 +62,15 @@ public class Player {
 		//deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
 	}
 	
+	public void importSprite() {
+		spritePage = new Texture(Gdx.files.internal("sprites/SpriteSheet.png"));
+		sprites = new Sprite[4];
+		sprites[0] = new Sprite(spritePage, 38, 50, 31, 50);
+		sprites[1] = new Sprite(spritePage, 3, 50, 30, 50);
+		sprites[2] = new Sprite(spritePage, 38, 50, 31, 50);
+		sprites[3] = new Sprite(spritePage, 80, 50, 31, 50);
+	}
+	
 	public void reset() {
 		
 		if (!facingForwards) {
@@ -77,8 +82,8 @@ public class Player {
 		minX = -100;
 		maxX = Gdx.graphics.getWidth();
 		speed = 10;
-		//lives = 3 ;
-		lives += powerups [0] ;
+		lives = 3 ;
+		//lives += powerups [0] ;
 		groundLvl = 100;
 		
 		isJumpingUp = false;
@@ -184,6 +189,11 @@ public class Player {
 			currentSprite = sprites[3];
 		}
 		currentSprite.setPosition(x, y);
+	}
+	
+	public void shoot() {
+		//Laser laser = new Laser();
+		return;
 	}
 	
 	public void die(){

@@ -1,6 +1,7 @@
 package com.patriciamarissa.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -47,7 +48,7 @@ public class TitleScreen {
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			return game ;
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.S)) {
