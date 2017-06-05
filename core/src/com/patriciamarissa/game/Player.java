@@ -28,14 +28,16 @@ public class Player {
 	private int jumpHeight;
 	private int lives;
 	private int [] powerups; // ignore this for now
+	private int startSpeed;
 	
 	boolean isJumpingUp;
 	boolean facingForwards; //true-right false-left
 	
 	Hole hole;
 	
-	public Player(Batch batch, int moveSpeed) {
+	public Player(Batch batch, int speed, int moveSpeed) {
 		this.batch = batch;
+		startSpeed = speed;
 		this.moveSpeed = moveSpeed;
 		
 		
@@ -81,11 +83,10 @@ public class Player {
 		hole = null;
 		minX = -100;
 		maxX = Gdx.graphics.getWidth();
-		speed = 10;
 		lives = 3 ;
 		//lives += powerups [0] ;
 		groundLvl = 100;
-		
+		speed = startSpeed;
 		isJumpingUp = false;
 		facingForwards = true;
 		isDead = false;
@@ -121,6 +122,7 @@ public class Player {
 		
 		if (x + speed < maxX) {	
 			x += speed;
+			//System.out.println("MOVING");
 		}
 		if (spriteCount == 0) {
 			
@@ -160,7 +162,7 @@ public class Player {
 	
 	public void move() {
 		if (hole != null) {
-			System.out.println("BOUNDARIES RESET!");
+			//System.out.println("BOUNDARIES RESET!");
 			setBoundaries(hole.getX(), hole.getX() + hole.getWidth()- getWidth());
 		}
 			//System.out.println(facingForwards);
@@ -188,6 +190,7 @@ public class Player {
 			y -= speed;
 			currentSprite = sprites[3];
 		}
+		//System.out.println(x+","+y);
 		currentSprite.setPosition(x, y);
 	}
 	

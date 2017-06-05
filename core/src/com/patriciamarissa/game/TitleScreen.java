@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
 public class TitleScreen {
 	
@@ -12,6 +14,9 @@ public class TitleScreen {
 	private Batch batch;
 	private Texture page ;
 	private Texture [] pages;
+	
+	Button playButton;
+	Actor play;
 	
 	public TitleScreen (Batch batch) {
 		title = 1 ;
@@ -29,13 +34,19 @@ public class TitleScreen {
 		pages [4] = new Texture(Gdx.files.internal("menus/Title4.png"));
 		
 		page = pages [0] ;
+		
+		play = new Actor();
+		play.setVisible(true);
+		play.setColor(255,255,255,255);
 	}
 	
 	public void draw () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
 	    batch.draw(page, 0, 0);
+	  
 	    batch.end();
+	    play.draw(batch, 255);
 	}
 	
 	public void updatePage () {
@@ -48,7 +59,7 @@ public class TitleScreen {
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) { //isButtonPressed(Input.Buttons.LEFT)
 			return game ;
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.S)) {
