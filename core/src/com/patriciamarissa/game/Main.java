@@ -222,14 +222,13 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		drawLives();
 		
 		if (player.dying()) {
-			page = losenum;
 			if (player.getLives() > 0) {
 				reset(false);
 			}
-			return;
-		}
-		else if (page == losenum && player.getLives() <= 0) {
-			loseScreen();
+			else {
+				reset(true) ;
+				page = losenum ;
+			}
 			return;
 		}
 		
@@ -247,6 +246,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		if (page == titlenum) {
 			startMenu();
+			return;
+		}
+		else if (page == losenum) {
+			loseScreen ();
 			return;
 		}
 		else if (page == pausenum) {
@@ -341,8 +344,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		move();
 		for (Enemy e : enemies) {
 			if (e.collide(player) && !e.dying) {
-				//player.die () ;
-				e.loseHp(10); // just to ensure they die
+				player.die () ;
+				//e.loseHp(10); // just to ensure they die
 			}
 		}
 	}
@@ -548,10 +551,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 					for (int j = 0 ; j < elasers.size () ; j++) {
 						elasers.get(j).move () ;
 						elasers.get(j).draw () ;
-						//if (elasers.get(j).collide (player)) {
-							//elasers.get(j).doDamage (player) ;
-							//enemies [i].removeLaser (elasers.get(j)) ;
-						//}
+						if (elasers.get(j).collide (player)) {
+							elasers.get(j).doDamage (player) ;
+							enemies [i].removeLaser (elasers.get(j)) ;
+						}
 						if (enemies [i].getX () + enemies [i].getSprite ().getWidth () <= 0) {
 							enemies [i].removeLaser (elasers.get(j)) ;
 						}

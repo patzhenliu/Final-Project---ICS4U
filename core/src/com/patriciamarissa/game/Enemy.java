@@ -445,7 +445,7 @@ public class Enemy {
 	}
 	
 	public void shoot () {
-		lasers.add (new Laser (1, x + 70, y + 75, speed, 1, batch)) ; // PLACEHOLDER X AND Y
+		lasers.add (new Laser (1, x + 35, y + 65, speed, 1, batch)) ; // PLACEHOLDER X AND Y
 	}
 	
 	public void removeLaser (Laser l) {

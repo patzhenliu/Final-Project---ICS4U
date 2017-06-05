@@ -36,7 +36,7 @@ public class LoseScreen {
 		batch.begin();
 		batch.draw (background, 0, 0) ;
 	    batch.draw(page, 300, 50);
-	    batch.draw (highscore,700,0) ;
+	    batch.draw (highscore, 700, 0) ;
 	    batch.end();
 	}
 	

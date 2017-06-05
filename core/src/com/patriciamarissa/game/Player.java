@@ -83,7 +83,9 @@ public class Player {
 		hole = null;
 		minX = -100;
 		maxX = Gdx.graphics.getWidth();
-		lives = 3 ;
+		if (lives <= 0) {
+			resetLives () ;
+		}
 		//lives += powerups [0] ;
 		groundLvl = 100;
 		speed = startSpeed;
