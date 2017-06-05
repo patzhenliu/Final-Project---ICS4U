@@ -66,7 +66,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		speed = 2; //speed on screen moving backwards
 		
 		batch = new SpriteBatch();
-		player = new Player(batch, speed);
+		player = new Player(batch, 10, speed);
 		background = new Background(batch, 0, 3430, 600, speed);
 		background2 = new Background(batch, 3430, 3430, 600, speed);
 		floor = new Floor(batch, 0, 3408, 100, speed);
@@ -92,7 +92,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		pausenum = 6 ;
 		losenum = 7 ;
 		storynum = 8;
-		page = shopnum;
+		page = titlenum;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
@@ -180,6 +180,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void move() {
+		
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
 			player.moveRight();
 			if (page == gamenum) {
@@ -210,7 +211,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				
 		}
 		
-		//System.out.println(page);
+		//System.out.println(isMoving);
 		if (isMoving) {
 			player.move();
 		}
