@@ -28,15 +28,13 @@ public class Shop {
 	private int [] pricelist ;
 	private int [] boughtlist ;
 	private Upgrade[] upgrades;
-	private final int numOfUpgrades = 3;
+	private final int numOfUpgrades = 8;
 	int shopPage;
 	
 	/* lasers (upgradable to 3) (10, 20, 40)
 	 * more life (upgradable to 6, but starts at 3) (10, 20, 40)
 	 * higher jump (upgradable twice, or to whatever point hits top of screen) (10, 20, 40)
 	 * increase money (upgradable) (20, 40, 60)
-	 * double money (one time use) (10)
-	 * double score (one time use) (10)
 	 * slow down time (one time use) (10)
 	 * kill all enemies? (one time use, timed, 10 seconds) (20)
 	 * remove fire (one time use) (10)
@@ -83,7 +81,7 @@ public class Shop {
 			for(int i = 0; i < numOfUpgrades; i++) {
 				int ux = i % 4;
 				int uy = ((int)(i / 4) )% 2; 
-				upgrades[i] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200,
+				upgrades[i] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200, i,
 						new Texture(Gdx.files.internal("upgrades/upgrade" + i + ".png")));
 			}
 			/*in.close();

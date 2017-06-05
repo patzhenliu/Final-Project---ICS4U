@@ -421,15 +421,12 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}*/
 		title.update () ;
 		page = title.giveNextScreen () ;
+		if (page == gamenum) {
+			reset(true);
+		}
 	}
 	
 	public void pauseMenu() {
-		//temporary picture and stuff
-		/*Gdx.gl.glClearColor(0, 0, 0, 1);
-		batch.begin();
-        batch.draw(pauseImg, 270, 250);
-        //batch.draw(playImg, 105, 125);
-        batch.end();*/
 		pause.update () ;
 		page = pause.giveNextScreen () ;
 	}
@@ -450,16 +447,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void loseScreen() {
-		//draws screen when player loses
-		//checks if player hits ENTER - play again
-		/*batch.begin();
-	    batch.draw(loseImg, -100, -120);
-        batch.end();*/
-        
 		lose.update () ;
-		if (lose.giveNextScreen () == gamenum) {
+		page = lose.giveNextScreen () ;
+		if (page == gamenum) {
 			reset(true);
-        	page = gamenum;
 		}
 	}
 	
