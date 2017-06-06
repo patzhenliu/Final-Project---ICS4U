@@ -88,7 +88,7 @@ public class Upgrade {
 	}
 	
 	public void update (int playermon) {
-		updateIcon (80) ;
+		updateIcon (playermon) ;
 	}
 	
 	public void updateIcon (int playermon) {

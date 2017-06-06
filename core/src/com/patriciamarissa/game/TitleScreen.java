@@ -81,7 +81,7 @@ public class TitleScreen {
 		
 		
 		
-		background = new Texture(Gdx.files.internal("menus/Title0.png"));
+		background = new Texture(Gdx.files.internal("menus/title blank.png"));
 		
 		play = new Actor();
 		play.setVisible(true);
