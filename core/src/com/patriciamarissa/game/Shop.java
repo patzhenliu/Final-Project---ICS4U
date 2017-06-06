@@ -92,7 +92,8 @@ public class Shop {
 	
 	public void buy (int index, int [] powers) {
 		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, SLOW TIME, NUKE, KILL FIRE, KILL HOLES
-		return;
+		upgrades [index].buy () ;
+		powers [index] += 1 ;
 	}
 	
 	public int add (int playermon, int c) {

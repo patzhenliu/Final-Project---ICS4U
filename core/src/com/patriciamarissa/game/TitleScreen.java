@@ -59,7 +59,7 @@ public class TitleScreen {
         stage.addActor(button); //Add the button to the stage to perform rendering and take input.
         Gdx.input.setInputProcessor(stage); //Start taking input from the ui
         
-        button.setPosition(360, 237);
+        button.setPosition(400, 237);
         button.addListener( new ClickListener(Buttons.LEFT) {              
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -98,7 +98,7 @@ public class TitleScreen {
 	    
         if (hover) {
         	batch.begin();
-        	batch.draw(clickedPage, 360, 237);
+        	batch.draw(clickedPage, 400, 237);
         	batch.end();
         }
         else {

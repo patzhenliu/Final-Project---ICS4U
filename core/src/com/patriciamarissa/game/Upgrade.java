@@ -125,7 +125,7 @@ public class Upgrade {
 			ccross = cross ;
 			affordable = true ;
 		}
-		else {
+		if (playermon < price || (owned == true && level == 1)) {
 			cicon = greyver ;
 			if (num == money) {
 				if (level == 2) {
@@ -168,15 +168,7 @@ public class Upgrade {
 		owned = false ;
 	}
 	
-	public boolean isOwned () {
-		return owned ;
-	}
-	
-	public boolean isOwnedTwo () {
-		return owned2 ;
-	}
-	
-	public boolean isOwnedThree () {
-		return owned3 ;
+	public boolean isBuyable () {
+		return affordable ;
 	}
 }
