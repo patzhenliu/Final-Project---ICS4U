@@ -1,12 +1,23 @@
 package com.patriciamarissa.game;
 
+import java.util.EventListener;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class TitleScreen {
 	
@@ -18,6 +29,13 @@ public class TitleScreen {
 	Button playButton;
 	Actor play;
 	
+	private Stage stage;
+    private Texture myTexture;
+    private TextureRegion myTextureRegion;
+    private TextureRegionDrawable myTexRegionDrawable;
+    private ImageButton button;
+    
+	
 	public TitleScreen (Batch batch) {
 		title = 1 ;
 		game = 2 ;
@@ -26,6 +44,24 @@ public class TitleScreen {
 		credits = 5 ;
 		pages = new Texture [5] ;
 		this.batch = batch ;
+		
+		myTexture = new Texture(Gdx.files.internal("menus/playButton.png"));
+        myTextureRegion = new TextureRegion(myTexture);
+        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        button = new ImageButton(myTexRegionDrawable);
+        
+        stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
+        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
+        Gdx.input.setInputProcessor(stage); //Start taking input from the ui
+        
+        button.addListener( new ClickListener(Buttons.LEFT) {              
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("PLAY");
+            };
+        });
+		
+		
 		
 		pages [0] = new Texture(Gdx.files.internal("menus/Title0.png"));
 		pages [1] = new Texture(Gdx.files.internal("menus/Title1.png"));
@@ -38,6 +74,8 @@ public class TitleScreen {
 		play = new Actor();
 		play.setVisible(true);
 		play.setColor(255,255,255,255);
+		playButton = new Button();
+		
 	}
 	
 	public void draw () {
@@ -46,7 +84,8 @@ public class TitleScreen {
 	    batch.draw(page, 0, 0);
 	  
 	    batch.end();
-	    play.draw(batch, 255);
+	    stage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
+        stage.draw(); //Draw the ui
 	}
 	
 	public void updatePage () {
