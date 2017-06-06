@@ -436,7 +436,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void shopMenu () {
-		shop.update (player) ;
+		shop.update (money) ;
 		page = shop.giveNextScreen () ;
 	}
 	
