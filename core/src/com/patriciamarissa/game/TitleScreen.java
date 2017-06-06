@@ -70,11 +70,13 @@ public class TitleScreen {
         button.addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+            	System.out.println("ON");
             	hover = true;
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+            	System.out.println("OFF");
             	hover = false;
             }
          });
@@ -129,6 +131,8 @@ public class TitleScreen {
 			page = credits ;
 		}
 		
+		int temp = page;
+		page = title;
 		return page;
 	}
 }
