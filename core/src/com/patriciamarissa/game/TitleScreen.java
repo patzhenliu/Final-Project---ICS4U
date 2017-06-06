@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -24,6 +25,7 @@ public class TitleScreen {
 	private final int title, game, shop, controls, credits ;
 	private Batch batch;
 	private Texture page ;
+	private Texture clickedPage;
 	private Texture [] pages;
 	
 	Button playButton;
@@ -34,7 +36,8 @@ public class TitleScreen {
     private TextureRegion myTextureRegion;
     private TextureRegionDrawable myTexRegionDrawable;
     private ImageButton button;
-    
+    private boolean hover;
+
 	
 	public TitleScreen (Batch batch) {
 		title = 1 ;
@@ -45,6 +48,8 @@ public class TitleScreen {
 		pages = new Texture [5] ;
 		this.batch = batch ;
 		
+		clickedPage = new Texture(Gdx.files.internal("menus/playHover.png"));
+		
 		myTexture = new Texture(Gdx.files.internal("menus/playButton.png"));
         myTextureRegion = new TextureRegion(myTexture);
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
@@ -54,12 +59,25 @@ public class TitleScreen {
         stage.addActor(button); //Add the button to the stage to perform rendering and take input.
         Gdx.input.setInputProcessor(stage); //Start taking input from the ui
         
+        button.setPosition(360, 237);
         button.addListener( new ClickListener(Buttons.LEFT) {              
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("PLAY");
             };
         });
+        
+        button.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+            	hover = true;
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+            	hover = false;
+            }
+         });
 		
 		
 		
@@ -82,10 +100,17 @@ public class TitleScreen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
 	    batch.draw(page, 0, 0);
-	  
 	    batch.end();
+	  
+	    
 	    stage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
         stage.draw(); //Draw the ui
+        if (hover) {
+        	batch.begin();
+        	batch.draw(clickedPage, 360, 237);
+        	batch.end();
+        }
+        
 	}
 	
 	public void updatePage () {
