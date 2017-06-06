@@ -15,6 +15,7 @@ public class Enemy {
 	private final int type, tree, gargoyle, golem, lion ;
 	private Batch batch ;
 	private Texture spritesheet ;
+	private Texture gl8, gl7, gl6, gl5, gl4, gl3, gl2, gl1, gl0 ;
 	private Texture blank ;
 	private Sprite currentsprite ;
 	private Sprite [] sprites ;
@@ -86,18 +87,36 @@ public class Enemy {
 		}
 		else if (type == golem) { // ENEMY TYPE 3: ONLY SHOOTS STRAIGHT BEAM. STANDS STILL.
 			spritesheet = new Texture  (Gdx.files.internal("sprites/fire laser.png")) ;
+			gl8 = new Texture  (Gdx.files.internal("sprites/fl0.png")) ;
+			gl7 = new Texture  (Gdx.files.internal("sprites/fl1.png")) ;
+			gl6 = new Texture  (Gdx.files.internal("sprites/fl2.png")) ;
+			gl5 = new Texture  (Gdx.files.internal("sprites/fl3.png")) ;
+			gl4 = new Texture  (Gdx.files.internal("sprites/fl4.png")) ;
+			gl3 = new Texture  (Gdx.files.internal("sprites/fl5.png")) ;
+			gl2 = new Texture  (Gdx.files.internal("sprites/fl6.png")) ;
+			gl1 = new Texture  (Gdx.files.internal("sprites/fl7.png")) ;
+			gl0 = new Texture  (Gdx.files.internal("sprites/fl8.png")) ;
 			sprites = new Sprite [9] ;
 			deathSprs = new Sprite [7] ;
 
-			sprites [8] = new Sprite (spritesheet, 0, 552, 181, 152) ;
-			sprites [7] = new Sprite (spritesheet, 187, 552, 181, 152) ;
-			sprites [6] = new Sprite (spritesheet, 379, 552, 181, 152) ;
-			sprites [5] = new Sprite (spritesheet, 567, 552, 181, 152) ;
-			sprites [4] = new Sprite (spritesheet, 757, 552, 181, 152) ;
-			sprites [3] = new Sprite (spritesheet, 947, 552, 181, 152) ; // THE FIRING
-			sprites [2] = new Sprite (spritesheet, 1133, 523, 184, 181) ;
-			sprites [1] = new Sprite (spritesheet, 1323, 552, 181, 152) ;
-			sprites [0] = new Sprite (spritesheet, 1518, 552, 181, 152) ;
+			//sprites [8] = new Sprite (spritesheet, 0, 552, 181, 152) ;
+			//sprites [7] = new Sprite (spritesheet, 187, 552, 181, 152) ;
+			//sprites [6] = new Sprite (spritesheet, 379, 552, 181, 152) ;
+			//sprites [5] = new Sprite (spritesheet, 567, 552, 181, 152) ;
+			//sprites [4] = new Sprite (spritesheet, 757, 552, 181, 152) ;
+			//sprites [3] = new Sprite (spritesheet, 947, 552, 181, 152) ; // THE FIRING
+			//sprites [2] = new Sprite (spritesheet, 1133, 523, 184, 181) ;
+			//sprites [1] = new Sprite (spritesheet, 1323, 552, 181, 152) ;
+			//sprites [0] = new Sprite (spritesheet, 1518, 552, 181, 152) ;
+			sprites [8] = new Sprite (gl8) ;
+			sprites [7] = new Sprite (gl7) ;
+			sprites [6] = new Sprite (gl6) ;
+			sprites [5] = new Sprite (gl5) ;
+			sprites [4] = new Sprite (gl4) ;
+			sprites [3] = new Sprite (gl3) ;
+			sprites [2] = new Sprite (gl2) ;
+			sprites [1] = new Sprite (gl1) ;
+			sprites [0] = new Sprite (gl0) ;
 
 			deathSprs [6] = new Sprite (spritesheet, 0, 727, 204, 158) ;
 			deathSprs [5] = new Sprite (spritesheet, 212, 727, 237, 158) ;
@@ -445,7 +464,7 @@ public class Enemy {
 	}
 	
 	public void shoot () {
-		lasers.add (new Laser (1, x + 35, y + 65, speed, 1, batch)) ; // PLACEHOLDER X AND Y
+		lasers.add (new Laser (1, x, y + 50, speed, 1, batch)) ; // PLACEHOLDER X AND Y
 	}
 	
 	public void removeLaser (Laser l) {

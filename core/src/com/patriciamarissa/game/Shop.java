@@ -16,7 +16,6 @@ public class Shop {
 	private Batch batch;
 	private Texture shopImg;
 	private final int title, game, shop ;
-	private int coins ;
 
 	private Texture spritePage;
 	private Sprite ghostSprite;
@@ -48,7 +47,6 @@ public class Shop {
 		title = 1 ;
 		game = 2 ;
 		shop = 3 ;
-		coins = 0 ;
 		
 		spritePage = new Texture(Gdx.files.internal("sprites/shopGhost.png"));
 		speech = new Texture(Gdx.files.internal("sprites/shopSpeech.png"));
@@ -82,7 +80,8 @@ public class Shop {
 				int ux = i % 4;
 				int uy = ((int)(i / 4) )% 2; 
 				upgrades[i] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200, i,
-						new Texture(Gdx.files.internal("upgrades/upgrade" + i + ".png")));
+						new Texture(Gdx.files.internal("upgrades/upgrade" + i + ".png")),
+						new Texture(Gdx.files.internal("upgrades/grey" + i + ".png")));
 			}
 			/*in.close();
 		}
@@ -92,16 +91,19 @@ public class Shop {
 	}
 	
 	public void buy (int index, int [] powers) {
-		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, DOUBLE MONEY, DOUBLE SCORE, SLOW TIME, NUKE, KILL FIRE, KILL HOLES
-		return;
+		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, SLOW TIME, NUKE, KILL FIRE, KILL HOLES
+		upgrades [index].buy () ;
+		powers [index] += 1 ;
 	}
 	
-	public void add (int c) {
-		coins += c ;
+	public int add (int playermon, int c) {
+		playermon += c ;
+		return playermon ;
 	}
 	
-	public void deduct (int d) {
-		coins -= d ;
+	public int deduct (int playermon, int d) {
+		playermon -= d ;
+		return playermon ;
 	}
 	
 	public void draw() {
@@ -118,16 +120,18 @@ public class Shop {
 		drawGhost();
 	}
 	
-	public void updatePage (Player player) {
+	public void update (int playermon) { // needs the player to give an upgrade in case an upgrade is purchased
 		// use mouse coordinates to figure out which img from the list to use
-		animateGhost();
 		// if something is already bought, grey out the image and make it unclickable
 		// else make it so that you can click to buy
 		// and maybe play a cha ching sound?
-	}
-	
-	public void update (Player player) { // needs the player to give an upgrade in case an upgrade is purchased
-		updatePage (player) ;
+		for (int i = shopPage * 8; i < shopPage* 8 + 8; i++) {
+			if (i >= upgrades.length) {
+				break;
+			}
+			upgrades[i].update (playermon);
+		}
+		animateGhost();
 		draw () ;
 	}
 	

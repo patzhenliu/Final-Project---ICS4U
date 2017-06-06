@@ -39,26 +39,17 @@ public class Player {
 		this.batch = batch;
 		startSpeed = speed;
 		this.moveSpeed = moveSpeed;
-		
-		
-		deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
-
-		
+		deathImg = new Texture(Gdx.files.internal("sprites/death.png")) ;
 		importSprite();
 		currentSprite = sprites[0];
-		
 		spriteCount = 0;
 		animationCount = 2;
-		
-		//powerups = new int [10] ; 
-		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, DOUBLE MONEY, DOUBLE SCORE, SLOW TIME, NUKE, KILL FIRE, KILL HOLES
-		
+		powerups = new int [8] ; 
 		groundLvl = 100;
 		jumpHeight = 150;
 		facingForwards = true;
 		lives = 3;
 		reset();
-		
 		hole = null;
 		
 		//deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
@@ -77,7 +68,6 @@ public class Player {
 		
 		if (!facingForwards) {
 			changeDirection();
-			
 		}
 		resetPos();
 		hole = null;
@@ -93,7 +83,6 @@ public class Player {
 		facingForwards = true;
 		isDead = false;
 		dyingSpeed = 20;
-		
 	}
 	
 	public void resetPos() {
