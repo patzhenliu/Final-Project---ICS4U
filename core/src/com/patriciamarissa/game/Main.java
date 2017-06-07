@@ -424,7 +424,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			page = "SHOP";
 		}*/
 		title.update () ;
-		page = title.giveNextScreen () ;
+		page = title.getPage () ;
 		if (page == gamenum) {
 			reset(true);
 		}

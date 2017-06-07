@@ -110,16 +110,12 @@ public class TitleScreen {
         
 	}
 	
-	public void updatePage () {
-		// use mouse coordinates to figure out which img from the list to use
-	}
-	
 	public void update () {
-		updatePage () ;
 		draw () ;
+		updateScreen () ;
 	}
 	
-	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
+	public void updateScreen () { // idk replace the keyboard commands with cursor stuff eventually
 		
 		if (Gdx.input.isKeyJustPressed(Keys.S)) {
 			page = shop ;
@@ -130,9 +126,10 @@ public class TitleScreen {
 		else if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			page = credits ;
 		}
-		
-		int temp = page;
 		page = title;
-		return page;
+	}
+	
+	public int getPage () { // ughhhhhhh this only exists bc the button stuff
+		return page ;
 	}
 }
