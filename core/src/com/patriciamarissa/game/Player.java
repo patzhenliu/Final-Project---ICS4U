@@ -27,7 +27,7 @@ public class Player {
 	private int groundLvl;
 	private int jumpHeight;
 	private int lives;
-	private int [] powerups; // ignore this for now
+	private int [] powerups;
 	private int startSpeed;
 	
 	boolean isJumpingUp;
@@ -44,15 +44,14 @@ public class Player {
 		currentSprite = sprites[0];
 		spriteCount = 0;
 		animationCount = 2;
-		powerups = new int [8] ; 
+		powerups = new int [8] ; // lasers, life, jump, money, time, nuke, fire, holes
+		// IMPLEMENTED: LIFE, JUMP, MONEY
 		groundLvl = 100;
 		jumpHeight = 150;
 		facingForwards = true;
 		lives = 3;
 		reset();
 		hole = null;
-		
-		//deathImg = new Texture(Gdx.files.internal("sprites/death.png"));
 	}
 	
 	public void importSprite() {
@@ -76,8 +75,8 @@ public class Player {
 		if (lives <= 0) {
 			resetLives () ;
 		}
-		//lives += powerups [0] ;
 		groundLvl = 100;
+		jumpHeight = 150 + (125 * (powerups [2])) ;
 		speed = startSpeed;
 		isJumpingUp = false;
 		facingForwards = true;
@@ -102,9 +101,7 @@ public class Player {
 			
 			spriteCount = sprites.length - 1;
 			if (facingForwards) {
-				//System.out.println(facingForwards);
 				changeDirection();
-				//System.out.println(facingForwards);
 			}
 		}
 	}
@@ -113,7 +110,6 @@ public class Player {
 		
 		if (x + speed < maxX) {	
 			x += speed;
-			//System.out.println("MOVING");
 		}
 		if (spriteCount == 0) {
 			
@@ -137,10 +133,8 @@ public class Player {
 	public void changeDirection() {
 		
 		for (int i = 0; i < sprites.length; i++) {
-			//System.out.println(i);
 			sprites[i].flip(true,false);
 		}
-		//sprites[0].flip(true, false);
 		facingForwards = !facingForwards;
 		
 	}
@@ -173,7 +167,7 @@ public class Player {
 			currentSprite = sprites[3];
 		}
 		
-		if (y >= groundLvl + jumpHeight) {
+		if (y >= groundLvl + jumpHeight || Gdx.input.isKeyPressed(Keys.DOWN)) {
 			isJumpingUp = false;
 			currentSprite = sprites[3];
 		}
@@ -291,10 +285,15 @@ public class Player {
 	
 	public void resetLives() {
 		lives = 3;
+		lives += powerups [1] ;
 	}
 	
 	public int [] getPowers () {
 		return powerups ;
+	}
+	
+	public int getMoneyMult () {
+		return powerups [3] ;
 	}
 	
 }

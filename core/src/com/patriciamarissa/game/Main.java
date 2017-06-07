@@ -92,7 +92,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		pausenum = 6 ;
 		losenum = 7 ;
 		storynum = 8;
-		page = titlenum;
+		page = gamenum;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
@@ -122,17 +122,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
 		int platNum = 4; 
-		platforms.add(new Platform(batch, speed, 200, 300));
+		platforms.add(new Platform(batch, speed, 200, 300, player.getMoneyMult()));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
+			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult()));
 		}
-		platforms.add(new Platform(batch, speed, 320, 500));
+		platforms.add(new Platform(batch, speed, 320, 500, player.getMoneyMult()));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
+			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult()));
 		}
-		platforms.add(new Platform(batch, speed, 440, 800));
+		platforms.add(new Platform(batch, speed, 440, 800, player.getMoneyMult()));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
+			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult()));
 		}
 		randomizePlatforms () ;
 	}
@@ -215,7 +215,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		if (isMoving) {
 			player.move();
 		}
-		
 	}
 	
 	public void update() {
@@ -287,7 +286,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			if (platforms.get(i).collideTop(player)) {
 				isOnPlatform = true;
 				if (platforms.get(i).moneyCollision(player)) {
-					money += 1;
+					money += 1 * (player.getMoneyMult () + 1) ;
 				}
 				if (platforms.get(i).fireCollision(player)) {
 					player.die();
@@ -479,7 +478,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				if (i == 0) {
 					index = platforms.size () - 1 ;
 				}
-				platforms.set(i, new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth())) ;
+				platforms.set(i, new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth(), player.getMoneyMult())) ;
 			}
 		}
 	}

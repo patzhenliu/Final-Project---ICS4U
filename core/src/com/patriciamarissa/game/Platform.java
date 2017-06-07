@@ -19,16 +19,17 @@ public class Platform {
 	private int moveSpeed;
 	private int x;
 	private int y;
+	private int mval ;
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
 	private ArrayList<Money> moneyList;
 	private ArrayList<Fire> fireList;
 	
 	
-	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
+	public Platform (Batch batch, int moveSpeed, int y, int prevX, int moneyval) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
-		
+		mval = moneyval ;
 		randLength();
 		//randPosition(prevX, 0);
 		this.y = y;
@@ -56,7 +57,7 @@ public class Platform {
 		
 		moneyList.clear();
 		for (int i = 0; i < num; i++) {
-			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width));
+			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width, mval));
 		}
 	}
 	
