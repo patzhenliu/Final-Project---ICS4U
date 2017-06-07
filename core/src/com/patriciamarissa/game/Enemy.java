@@ -10,6 +10,9 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Enemy {
 	// LION IS WALKIN OVER GAPS AGAIN. GARGOYLE'S NOT GOIN DOWN HOLES.
+	// FIX GENERATION. STILL WISHY WASHY ON GOLEM SPRITES.
+	// IF SMALL GOLEM STAYS, FIX DEATH SPRITES.
+	// TRY CHANGING HOW ENEMIES ARE GENERATED. CHANCE GENERATE THEM ON EACH PLATFORM.
 	private int x, y, hp, speed, spritecount, animatecount, movespeed, deathcount ;
 	private Platform plat ;
 	private final int type, tree, gargoyle, golem, lion ;
