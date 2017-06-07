@@ -307,15 +307,15 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			//background.stop();
 			//platforms.stop();
 		}
-			
-		for (int i = 0; i < holes.size(); i++) {
-			//System.out.println(holes.get(i).collide(player));
-			
-			if (holes.get(i).collide(player)) {
-				player.setGroundLvl(0);
-				player.setInHole(holes.get(i));
+		
+		if (player.deactivateHoles == false) {
+			for (int i = 0; i < holes.size(); i++) {
+				if (holes.get(i).collide(player)) {
+					player.setGroundLvl(0);
+					player.setInHole(holes.get(i));
+				}
+				
 			}
-			
 		}
 		
 		for (int i = 0 ; i < enemies.length ; i ++) { // removing enemies that have gone off the left or finished dying
@@ -391,7 +391,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		floor.draw();
 		floor2.draw();
 		drawPlatforms();
-		drawHoles();
+		if (player.deactivateHoles == false) {
+			drawHoles();
+		}
 		drawEnemies () ;
 		player.draw();
 		drawNum(900, 40, score - score%10);
@@ -574,6 +576,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		generateCourse(); //change platform and hole positions after death
 		if (gameOver) {
 			player.resetLives();
+			player.resetOneTimeUps();
 			score = 0;
 			for (int i = 0 ;  i < enemies.length ; i++) {
 				enemies [i] = null ;

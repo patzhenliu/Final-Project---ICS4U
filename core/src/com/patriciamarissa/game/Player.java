@@ -32,6 +32,10 @@ public class Player {
 	
 	boolean isJumpingUp;
 	boolean facingForwards; //true-right false-left
+	boolean deactivateHoles ;
+	boolean deactivateFire ;
+	boolean nukeEnemies ;
+	boolean slowScreen ;
 	
 	Hole hole;
 	
@@ -45,13 +49,17 @@ public class Player {
 		spriteCount = 0;
 		animationCount = 2;
 		powerups = new int [8] ; // lasers, life, jump, money, time, nuke, fire, holes
-		// IMPLEMENTED: LIFE, JUMP, MONEY
+		// IMPLEMENTED: LIFE, JUMP, MONEY, HOLES
 		groundLvl = 100;
 		jumpHeight = 150;
 		facingForwards = true;
 		lives = 3;
 		reset();
 		hole = null;
+		deactivateHoles = false ;
+		deactivateFire = false ;
+		nukeEnemies = false ;
+		slowScreen = false ;
 	}
 	
 	public void importSprite() {
@@ -82,6 +90,18 @@ public class Player {
 		facingForwards = true;
 		isDead = false;
 		dyingSpeed = 20;
+		if (powerups [4] == 1) {
+			slowScreen = true ;
+		}
+		if (powerups [5] == 1) {
+			nukeEnemies = true ;
+		}
+		if (powerups [6] == 1) {
+			deactivateFire = true ;
+		}
+		if (powerups [7] == 1) {
+			deactivateHoles = true ;
+		}
 	}
 	
 	public void resetPos() {
@@ -182,6 +202,17 @@ public class Player {
 	public void shoot() {
 		//Laser laser = new Laser();
 		return;
+	}
+	
+	public void resetOneTimeUps () {
+		deactivateFire = false ;
+		deactivateHoles = false ;
+		nukeEnemies = false ;
+		slowScreen = false ;
+		powerups [4] = 0 ;
+		powerups [5] = 0 ;
+		powerups [6] = 0 ;
+		powerups [7] = 0 ;
 	}
 	
 	public void die(){
@@ -295,5 +326,4 @@ public class Player {
 	public int getMoneyMult () {
 		return powerups [3] ;
 	}
-	
 }
