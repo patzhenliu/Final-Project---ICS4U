@@ -30,7 +30,7 @@ public class Upgrade {
 	 * GOING TO HAVE TO CHANGE LION TO ACCOMODATE THE HOLE REMOVAL. STILL NEED TO FIX LION AND GARGOYLE MOVEMENT ANYWAYS.
 	 */
 	
-	public Upgrade(Batch batch, int x, int y, int n, Texture image, Texture grey) {
+	public Upgrade(Batch batch, int x, int y, int price, Texture image, Texture grey) {
 		this.batch = batch;
 		square = new Texture(Gdx.files.internal("sprites/upgrade.png"));
 		cross = new Texture(Gdx.files.internal("upgrades/crossout.png"));
@@ -58,7 +58,7 @@ public class Upgrade {
 		
 		this.x = x;
 		this.y = y;
-		num = n ;
+		this.price = price ;
 		owned = false ;
 		owned2 = false ;
 		owned3 = false ;
@@ -69,12 +69,6 @@ public class Upgrade {
 		ccross = greycross ;
 		level = 1 ;
 		
-		if (num == life || num == money || num == nuke) {
-			price = 20 ;
-		}
-		else {
-			price = 10 ;
-		}
 	}
 	
 	public void draw() {
