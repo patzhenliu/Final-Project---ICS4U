@@ -122,17 +122,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
 		int platNum = 4; 
-		platforms.add(new Platform(batch, speed, 200, 300, player.getMoneyMult()));
+		platforms.add(new Platform(batch, speed, 200, 300, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult()));
+			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult(), player.deactivateFire));
 		}
-		platforms.add(new Platform(batch, speed, 320, 500, player.getMoneyMult()));
+		platforms.add(new Platform(batch, speed, 320, 500, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult()));
+			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult(), player.deactivateFire));
 		}
-		platforms.add(new Platform(batch, speed, 440, 800, player.getMoneyMult()));
+		platforms.add(new Platform(batch, speed, 440, 800, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult()));
+			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult(), player.deactivateFire));
 		}
 		randomizePlatforms () ;
 	}
@@ -288,7 +288,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				if (platforms.get(i).moneyCollision(player)) {
 					money += 1 * (player.getMoneyMult () + 1) ;
 				}
-				if (platforms.get(i).fireCollision(player)) {
+				if (platforms.get(i).fireCollision(player) && player.deactivateFire == false) {
 					player.die();
 				}
 				//System.out.println(platforms.get(i).getWidth());
@@ -483,7 +483,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				if (i == 0) {
 					index = platforms.size () - 1 ;
 				}
-				platforms.set(i, new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth(), player.getMoneyMult())) ;
+				platforms.set(i, new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth(), player.getMoneyMult(), player.deactivateFire)) ;
 			}
 		}
 	}
@@ -530,6 +530,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		platforms.get(8).randPosition(0, 3);
 		for (int i = 9; i < 12; i++) {
 			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 3);
+		}
+		for (int i = 0 ; i < platforms.size () ; i++) {
+			platforms.get(i).setFireStatus(player.deactivateFire);
 		}
 	}
 	

@@ -49,7 +49,7 @@ public class Player {
 		spriteCount = 0;
 		animationCount = 2;
 		powerups = new int [8] ; // lasers, life, jump, money, time, nuke, fire, holes
-		// IMPLEMENTED: LIFE, JUMP, MONEY, HOLES
+		// IMPLEMENTED: LIFE, JUMP, MONEY, FIRE, HOLES
 		groundLvl = 100;
 		jumpHeight = 150;
 		facingForwards = true;

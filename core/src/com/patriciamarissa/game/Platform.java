@@ -24,12 +24,14 @@ public class Platform {
 	private int width, length;
 	private ArrayList<Money> moneyList;
 	private ArrayList<Fire> fireList;
+	private boolean deactiveFire ;
 	
 	
-	public Platform (Batch batch, int moveSpeed, int y, int prevX, int moneyval) {
+	public Platform (Batch batch, int moveSpeed, int y, int prevX, int moneyval, boolean df) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
 		mval = moneyval ;
+		deactiveFire = df ;
 		randLength();
 		//randPosition(prevX, 0);
 		this.y = y;
@@ -104,7 +106,9 @@ public class Platform {
 		
 		batch.end();
 		drawMoney();
-		drawFire();
+		if (deactiveFire == false) {
+			drawFire();
+		}
 		//move();
 	}
 	
@@ -188,6 +192,10 @@ public class Platform {
 	
 	public void addSpeed (int s) {
 		moveSpeed += s ;
+	}
+	
+	public void setFireStatus (boolean f) {
+		deactiveFire = f ;
 	}
 	
 	public boolean offRight () {
