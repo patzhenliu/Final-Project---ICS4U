@@ -60,6 +60,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	long speedtimer;
 	
 	boolean isMoving;
+	int timedelay ;
+	Timer speeduptimer ; // because we, for some reason, already have a variable called speedtimer :(
+	Timer nuke ;
 	
 	@Override
 	public void create () {
@@ -80,9 +83,15 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		createPlatforms();
 		createHoles();
 		makeEnemies () ;
-		runTimer () ;
 		isMoving = false;
 		money = 0;
+		timedelay = 10 ;
+		updateTimeDelay () ;
+		speeduptimer = new Timer () ;
+		nuke = new Timer () ;
+		//runTimer () ;
+		startSpeedTimer () ;
+		seconds () ;
 		
 		titlenum = 1 ;
 		gamenum = 2 ;
@@ -110,14 +119,68 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		score = 0;
 	}
 	
-	public void runTimer () { // TESTING PURPOSES, THANKS SIR!
+	public void runTimer () { // THANKS FOR THIS SIR!
 		Timer.schedule (new Task () { 
 			@Override public void run () {
-				//System.out.println ("tick") ;
+				System.out.println ("SPEEDUP") ;
 				increaseSpeed (1) ;
 				}
-		} ,10, 10 ) ; // 0 is delay to starting in seconds, 1 is time in between each tick in seconds
+		} , timedelay, timedelay) ; // first is delay to starting in seconds, second is time in between each tick in seconds
 	}
+	
+	public void seconds () { // IGNORE THIS ITS JUST FOR TESTING PURPOSES
+		Timer.schedule (new Task () { 
+			@Override public void run () {
+				System.out.println ("1") ;
+				}
+		} , 1,1) ; // first is delay to starting in seconds, second is time in between each tick in seconds
+	}
+	
+	public void updateTimeDelay () {
+		if (player.slowScreen == true) {
+			timedelay = 20 ;
+		}
+		else {
+			timedelay = 10 ;
+		}
+	}
+	
+	public void startSpeedTimer () {
+		speeduptimer.schedule(runSpeedTimer(), timedelay, timedelay) ;
+	}
+	
+	public void endSpeedTimer () {
+		speeduptimer.clear () ;
+	}
+	
+	public Task runSpeedTimer () {
+		return (new Task () { 
+			@Override public void run () {
+				System.out.println ("SPEEDUP") ;
+				increaseSpeed (1) ;
+				}
+		}) ;
+	}
+	
+	/*public Task nukeEnemies () {
+		return (new Task () {
+			@Override public void run () {
+				for (int i = 0 ; i < enemies.length ; i++) {
+					if (enemies [i].dying == false) {
+						enemies [i].loseHp (10) ;
+					}
+				}
+			}
+		}) ;
+	}
+	
+	public void startNuke () {
+		nuke.schedule(nukeEnemies (), 0, 1) ;
+	}
+	
+	public void endNuke () {
+		nuke.clear () ;
+	}*/
 	
 	public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
@@ -588,13 +651,15 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				enemies [i] = null ;
 			}
 			makeEnemies () ;
+			endSpeedTimer () ;
+	    	updateTimeDelay () ;
+	    	startSpeedTimer () ;
 		}
 		else {
 			page = gamenum;
 		}
 		isMoving = false;
     	resetSpeed();
-
 	}
 	
 	public void resetSpeed() {

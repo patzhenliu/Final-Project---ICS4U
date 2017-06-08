@@ -56,10 +56,13 @@ public class Player {
 		lives = 3;
 		reset();
 		hole = null;
+		
+		 // THE REASON THESE ARE GIVEN VARIABLE NAMES IS TO BE CLEARER ON WHAT POWERUPS [4], ETC. MEAN EXACTLY.
 		deactivateHoles = false ;
 		deactivateFire = false ;
 		nukeEnemies = false ;
-		slowScreen = false ;
+		powerups [4] = 1 ;
+		slowScreen = true ;
 	}
 	
 	public void importSprite() {
