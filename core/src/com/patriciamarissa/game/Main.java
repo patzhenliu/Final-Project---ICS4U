@@ -280,21 +280,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void update() {
-		drawLives();
-		
-		if (player.dying()) {
-			if (player.getLives() > 0) {
-				reset(false);
-			}
-			else {
-				reset(true) ;
-				page = losenum ;
-			}
-			return;
-		}
-		
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+	public boolean updatePage() {
+		System.out.println(page);
+		/*if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { //why do you do this? ;-; 
 			if (page == losenum) {
 				page = gamenum;
 			}
@@ -304,39 +292,58 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			else if (page == pausenum) {
 				page = gamenum;
 			}
-		}
+			return false;
+		}*/
 		
 		if (page == titlenum) {
 			startMenu();
-			return;
 		}
 		else if (page == losenum) {
 			loseScreen ();
-			return;
+			
 		}
 		else if (page == pausenum) {
 			pauseMenu();
-			return;
+			
 		}
 		else if (page == shopnum) {
 			shopMenu () ;
-			return ;
+			
 		}
 		else if (page == controlsnum) {
 			controlScreen () ;
-			return ;
+			
 		}
 		else if (page == creditsnum) {
 			creditsScreen () ;
-			return ;
+			
 		}
 		else if (page == storynum) {
 			story.update();
 			page = story.giveNextScreen();
-			resetSpeed(); //will put if statement or something because you dont need to do this every time
+			//resetSpeed(); //will put if statement or something because you dont need to do this every time
+			
+		}
+		return true;
+	}
+	
+	public void update() {
+		drawLives();
+		
+		if (player.dying()) {
+			if (player.getLives() > 0) {
+				//reset(false);
+			}
+			else {
+				reset(true) ;
+				page = losenum ;
+			}
 			return;
 		}
 		
+		if (!updatePage()) {
+			return;
+		}
 		
 		boolean isOnPlatform = false;
 		for (int i = 0; i < platforms.size(); i++) {
@@ -349,7 +356,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			if (platforms.get(i).collideTop(player)) {
 				isOnPlatform = true;
 				if (platforms.get(i).moneyCollision(player)) {
-					money += 1 * (player.getMoneyMult () + 1) ;
+					money += player.getMoneyMult () + 1;
 				}
 				if (platforms.get(i).fireCollision(player) && player.deactivateFire == false) {
 					player.die();
@@ -407,6 +414,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		for (Enemy e : enemies) {
 			if (e.collide(player) && !e.dying) {
 				player.die () ;
+				//e.die () ;
 				//e.loseHp(10); // just to ensure they die
 			}
 		}
@@ -466,29 +474,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void startMenu() {
-		//draws start menu
-		//checks if player hits ENTER - play
-		//drawBackground();
-		//if (mouse.isOver(playButton, 200, 300)) {
-			//page = "GAME";
-		//}
-		
-		/*Gdx.gl.glClearColor(0, 0, 0, 1);
-		batch.begin();
-        batch.draw(titleImg, 0, 0);
-        //batch.draw(playImg, 105, 125);
-        batch.end();
-        //playButton.draw(batch, 1);
-		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
-			//menuMusic.dispose();
-			page = "GAME";
-		}
-		else if (Gdx.input.isKeyPressed(Keys.S)) {
-			//menuMusic.dispose();
-			page = "SHOP";
-		}*/
-		title.update () ;
-		page = title.getPage () ;
+		page = title.updatePage () ;
 		if (page == gamenum) {
 			reset(true);
 		}
@@ -540,14 +526,18 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void movePlatforms() {
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).move();
-			if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) {
+			/*if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) {
 				int height = platforms.get(i).getY() ;
 				int index = i - 1 ;
 				if (i == 0) {
 					index = platforms.size () - 1 ;
 				}
+<<<<<<< HEAD
 				platforms.set(i, new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth(), player.getMoneyMult(), player.deactivateFire)) ;
 			}
+=======
+			}*/
+//>>>>>>> patricia/master
 		}
 	}
 	

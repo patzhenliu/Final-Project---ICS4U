@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -28,15 +27,17 @@ public class TitleScreen {
 	private Texture clickedPage;
 	private Texture background;
 	
-	Button playButton;
-	Actor play;
-	
 	private Stage stage;
     private Texture myTexture;
     private TextureRegion myTextureRegion;
     private TextureRegionDrawable myTexRegionDrawable;
     private ImageButton button;
     private boolean hover;
+    
+    private Button playButton;
+    private Button shopButton;
+    private Button controlsButton;
+    private Button creditsButton;
 
 	
 	public TitleScreen (Batch batch) {
@@ -48,47 +49,16 @@ public class TitleScreen {
 		this.batch = batch ;
 		page = title;
 		
-		clickedPage = new Texture(Gdx.files.internal("menus/playHover.png"));
-		
-		myTexture = new Texture(Gdx.files.internal("menus/playButton.png"));
-        myTextureRegion = new TextureRegion(myTexture);
-        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
-        button = new ImageButton(myTexRegionDrawable);
-        
-        stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
-        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
-        Gdx.input.setInputProcessor(stage); //Start taking input from the ui
-        
-        button.setPosition(400, 237);
-        button.addListener( new ClickListener(Buttons.LEFT) {              
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                page = game;
-            };
-        });
-        
-        button.addListener(new InputListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-            	System.out.println("ON");
-            	hover = true;
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-            	System.out.println("OFF");
-            	hover = false;
-            }
-         });
-		
-		
+		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/playButton.png")),
+				new Texture(Gdx.files.internal("menus/playHover.png")), 400, 237);
+		shopButton = new Button(batch, new Texture(Gdx.files.internal("menus/shopButton.png")),
+				new Texture(Gdx.files.internal("menus/shopHover.png")), 420, 187);
+		controlsButton = new Button(batch, new Texture(Gdx.files.internal("menus/controlButton.png")),
+				new Texture(Gdx.files.internal("menus/controlHover.png")), 360, 137);
+		creditsButton = new Button(batch, new Texture(Gdx.files.internal("menus/creditsButton.png")),
+				new Texture(Gdx.files.internal("menus/creditsHover.png")), 395, 87);
 		
 		background = new Texture(Gdx.files.internal("menus/title blank.png"));
-		
-		play = new Actor();
-		play.setVisible(true);
-		play.setColor(255,255,255,255);
-		playButton = new Button();
 		
 	}
 	
@@ -97,39 +67,37 @@ public class TitleScreen {
 		batch.begin();
 	    batch.draw(background, 0, 0);
 	    batch.end();
-	    
-        if (hover) {
-        	batch.begin();
-        	batch.draw(clickedPage, 400, 237);
-        	batch.end();
-        }
-        else {
-        	stage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
-            stage.draw(); //Draw the ui
-        }
+	    playButton.draw();
+	    shopButton.draw();
+	    controlsButton.draw();
+	    creditsButton.draw();
         
 	}
 	
-	public void update () {
+	public int updatePage () {
 		draw () ;
-		updateScreen () ;
-	}
-	
-	public void updateScreen () { // idk replace the keyboard commands with cursor stuff eventually
+		return giveNextScreen();
 		
-		if (Gdx.input.isKeyJustPressed(Keys.S)) {
-			page = shop ;
-		}
-		else if (Gdx.input.isKeyJustPressed(Keys.C)) {
-			page = controls ;
-		}
-		else if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
-			page = credits ;
-		}
-		page = title;
+
 	}
 	
-	public int getPage () { // ughhhhhhh this only exists bc the button stuff
-		return page ;
-	}
+
+	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
+		if (playButton.isClicked()) {
+			return game;
+		}
+		else if (shopButton.isClicked()) {
+				return shop;
+		}
+		else if (controlsButton.isClicked()) {
+				return controls;
+		}
+
+		else if (creditsButton.isClicked()) {
+				return credits;
+		}
+		return title;
+
+		}
+
 }

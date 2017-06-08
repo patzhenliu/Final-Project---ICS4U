@@ -18,14 +18,14 @@ public class Platform {
 	private Sprite platformSprite;
 	private int moveSpeed;
 	private int x;
-	private int y;
 	private int mval ;
+	private int y;
+	
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
 	private ArrayList<Money> moneyList;
 	private ArrayList<Fire> fireList;
 	private boolean deactiveFire ;
-	
 	
 	public Platform (Batch batch, int moveSpeed, int y, int prevX, int moneyval, boolean df) {
 		this.batch = batch;
@@ -128,6 +128,7 @@ public class Platform {
 		for (int i = 0; i < moneyList.size(); i++) {
 			if (moneyList.get(i).collide(player)) {
 				moneyList.remove(i);
+				System.out.println("MONEY");
 				return true;
 			}
 		}

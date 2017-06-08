@@ -69,12 +69,12 @@ public class Money {
 			currentSprite = upsprs3 [0] ;
 		}
 		
+		currentSprite = sprites[0];
 		spriteCount = 0;
 		animationCount = 4;
 		offsetX = rand.nextInt(range - (int)sprites[0].getWidth()) + px;
 		y = py;
-		System.out.println(y);
-		
+	
 	}
 	
 	public void draw(int px) {
@@ -84,16 +84,10 @@ public class Money {
 		batch.end();
 		spin();
 		if (spriteCount == 0) {
-			spriteCount = sprites.length - 1;
+			spriteCount = currentSprites.length - 1;
 		}
 	}
 	
-	public void draw(int x, int y) {
-		currentSprite.setPosition(x, y);
-		batch.begin();
-		currentSprite.draw(batch);
-		batch.end();
-	}
 	
 	public void spin() {
 		if (spriteCount > 0) {
@@ -104,10 +98,6 @@ public class Money {
 			}
 			currentSprite = currentSprites[spriteCount];
 		}
-	}
-	
-	public void setSprites (int uplevel) {
-		
 	}
 	
 	public boolean collide(Player player){
