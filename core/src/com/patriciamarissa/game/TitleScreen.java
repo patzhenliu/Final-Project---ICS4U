@@ -74,28 +74,30 @@ public class TitleScreen {
         
 	}
 	
-	public void updatePage () {
-		// use mouse coordinates to figure out which img from the list to use
-	}
-	
-	public void update () {
-		updatePage () ;
+	public int updatePage () {
 		draw () ;
+		return giveNextScreen();
+		
+
 	}
 	
+
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
 		if (playButton.isClicked()) {
 			return game;
 		}
 		else if (shopButton.isClicked()) {
-			return shop;
+				return shop;
 		}
 		else if (controlsButton.isClicked()) {
-			return controls;
+				return controls;
 		}
+
 		else if (creditsButton.isClicked()) {
-			return credits;
+				return credits;
 		}
 		return title;
-	}
+
+		}
+
 }

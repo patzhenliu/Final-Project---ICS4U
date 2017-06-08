@@ -37,9 +37,7 @@ public class Button {
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
         button = new ImageButton(myTexRegionDrawable);
         
-        stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
-        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
-        Gdx.input.setInputProcessor(stage); //Start taking input from the ui
+        
         
         button.setPosition(x, y);
         button.addListener( new ClickListener(Buttons.LEFT) {              
@@ -63,6 +61,10 @@ public class Button {
             	isHovering = false;
             }
          });
+        
+        stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
+        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
+        Gdx.input.setInputProcessor(stage); //Start taking input from the ui
 	}
 	
 	public void draw() {

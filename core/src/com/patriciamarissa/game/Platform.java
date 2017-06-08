@@ -19,6 +19,7 @@ public class Platform {
 	private int moveSpeed;
 	private int x;
 	private int y;
+	
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
 	private ArrayList<Money> moneyList;
@@ -28,7 +29,6 @@ public class Platform {
 	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
-		
 		randLength();
 		//randPosition(prevX, 0);
 		this.y = y;
@@ -123,6 +123,7 @@ public class Platform {
 		for (int i = 0; i < moneyList.size(); i++) {
 			if (moneyList.get(i).collide(player)) {
 				moneyList.remove(i);
+				System.out.println("MONEY");
 				return true;
 			}
 		}

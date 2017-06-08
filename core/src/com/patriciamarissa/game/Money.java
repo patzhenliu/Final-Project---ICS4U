@@ -12,7 +12,11 @@ public class Money {
 	private Batch batch;
 	private Texture spritePage;
 	private Sprite currentSprite;
-	private Sprite[] sprites;
+	private Sprite [] currentSprites ;
+	private Sprite [] sprites ;
+	private Sprite [] upsprs1 ;
+	private Sprite [] upsprs2 ;
+	private Sprite [] upsprs3 ;
 	
 	private int spriteCount;
 	private int animationCount;
@@ -24,18 +28,53 @@ public class Money {
 		this.batch = batch;
 		spritePage = new Texture(Gdx.files.internal("sprites/money.png"));
 		sprites = new Sprite[4];
-		sprites[0] = new Sprite(spritePage, 56, 58, 50, 48);
-		sprites[1] = new Sprite(spritePage, 6, 58, 46, 48);
-		sprites[2] = new Sprite(spritePage, 160, 58, 10, 48);
-		sprites[3] = new Sprite(spritePage, 110, 58, 46, 48);
-		currentSprite = sprites[0];
+		//upsprs1 = new Sprite [4] ;
+		//upsprs2 = new Sprite [4] ;
+		//upsprs3 = new Sprite [4] ;
 		
+		sprites[0] = new Sprite(spritePage, 56, 6, 50, 48);
+		sprites[1] = new Sprite(spritePage, 6, 6, 46, 48);
+		sprites[2] = new Sprite(spritePage, 160, 6, 10, 48);
+		sprites[3] = new Sprite(spritePage, 110, 6, 46, 48);
+		
+		/*upsprs1[0] = new Sprite(spritePage, 56, 58, 50, 48);
+		upsprs1[1] = new Sprite(spritePage, 6, 58, 46, 48);
+		upsprs1[2] = new Sprite(spritePage, 160, 58, 10, 48);
+		upsprs1[3] = new Sprite(spritePage, 110, 58, 46, 48);
+		
+		upsprs2[0] = new Sprite(spritePage, 71, 110, 67, 65);
+		upsprs2[1] = new Sprite(spritePage, 6, 110, 65, 65);
+		upsprs2[2] = new Sprite(spritePage, 210, 110, 67, 65);
+		upsprs2[3] = new Sprite(spritePage, 140, 110, 67, 65);
+		
+		upsprs3[0] = new Sprite(spritePage, 74, 176, 66, 64);
+		upsprs3[1] = new Sprite(spritePage, 6, 176, 66, 64);
+		upsprs3[2] = new Sprite(spritePage, 209, 176, 66, 64);
+		upsprs3[3] = new Sprite(spritePage, 142, 176, 66, 64);
+		
+		if (value == 0) {
+			currentSprites = sprites ;
+			currentSprite = sprites [0] ;
+		}
+		if (value == 1) {
+			currentSprites = upsprs1 ;
+			currentSprite = upsprs1 [0] ;
+		}
+		if (value == 2) {
+			currentSprites = upsprs2 ;
+			currentSprite = upsprs2 [0] ;
+		}
+		if (value == 3) {
+			currentSprites = upsprs3 ;
+			currentSprite = upsprs3 [0] ;
+		}*/
+		
+		currentSprite = sprites[0];
 		spriteCount = 0;
 		animationCount = 4;
 		offsetX = rand.nextInt(range - (int)sprites[0].getWidth()) + px;
 		y = py;
-		System.out.println(y);
-		
+	
 	}
 	
 	public void draw(int px) {
@@ -49,12 +88,6 @@ public class Money {
 		}
 	}
 	
-	public void draw(int x, int y) {
-		currentSprite.setPosition(x, y);
-		batch.begin();
-		currentSprite.draw(batch);
-		batch.end();
-	}
 	
 	public void spin() {
 		if (spriteCount > 0) {
