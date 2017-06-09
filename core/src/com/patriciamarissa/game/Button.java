@@ -26,62 +26,36 @@ public class Button {
     private ImageButton button;
     private boolean isHovering;
     private boolean isClicked;
+    private Texture img;
+    private int pageNum;
 
-	public Button (Batch batch, Texture img, Texture hover, int x, int y) {
+	public Button (Batch batch, Texture img, Texture hover, int x, int y, int pageNum) {
 		this.batch = batch;
+		this.img = img;
 		this.hover = hover;
 		this.x = x;
 		this.y = y;
+		this.pageNum = pageNum;
 
         myTextureRegion = new TextureRegion(img);
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
         button = new ImageButton(myTexRegionDrawable);
         
-        
-        
-        button.setPosition(x, y);
-        button.addListener( new ClickListener(Buttons.LEFT) {              
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            	System.out.println("CLICKED");
-                isClicked = true;
-            };
-        });
-        
-        button.addListener(new InputListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-            	System.out.println("ON");
-            	isHovering = true;
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-            	System.out.println("OFF");
-            	isHovering = false;
-            }
-         });
-        
-        stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
-        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
-        Gdx.input.setInputProcessor(stage); //Start taking input from the ui
+	}
+	
+	public int getPageNum() {
+		return pageNum;
+	}
+	
+	public void drawHoverImg() {
+		batch.begin();
+    	batch.draw(hover, x, y);
+    	batch.end();
 	}
 	
 	public void draw() {
-		if (isHovering) {
-        	batch.begin();
-        	batch.draw(hover, x, y);
-        	batch.end();
-        }
-        else {
-        	stage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
-            stage.draw(); //Draw the ui
-        }
-	}
-	
-	public boolean isClicked() {
-		boolean temp = isClicked;
-		isClicked = false;
-		return temp;
+		batch.begin();
+    	batch.draw(img, x, y);
+    	batch.end();
 	}
 }

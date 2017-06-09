@@ -92,7 +92,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		pausenum = 6 ;
 		losenum = 7 ;
 		storynum = 8;
-		page = titlenum;
+		page = losenum;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
@@ -218,7 +218,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public boolean updatePage() {
-		System.out.println(page);
+		//System.out.println(page);
 		/*if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { //why do you do this? ;-; 
 			if (page == losenum) {
 				page = gamenum;
