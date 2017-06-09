@@ -66,10 +66,16 @@ public class LoseScreen {
 			if (buttonNum + 1 < buttons.length) {
 				buttonNum += 1;
 			}
+			else {
+				buttonNum = 0;
+			}
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			if (buttonNum - 1 >= 0) {
 				buttonNum -= 1;
+			}
+			else {
+				buttonNum = buttons.length - 1;
 			}
 		}
 	}

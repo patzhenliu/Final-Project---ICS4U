@@ -77,10 +77,10 @@ public class TitleScreen {
 		batch.begin();
 	    batch.draw(background, 0, 0);
 	    batch.end();
-	    playButton.draw();
-	    shopButton.draw();
-	    controlsButton.draw();
-	    creditsButton.draw();
+	    
+	    for (Button b: buttons) {
+	    	b.draw();
+	    }
 	    buttons[buttonNum].drawHoverImg();
         
 	}
@@ -90,10 +90,16 @@ public class TitleScreen {
 			if (buttonNum + 1 < buttons.length) {
 				buttonNum += 1;
 			}
+			else {
+				buttonNum = 0;
+			}
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			if (buttonNum - 1 >= 0) {
 				buttonNum -= 1;
+			}
+			else {
+				buttonNum = buttons.length - 1;
 			}
 		}
 		

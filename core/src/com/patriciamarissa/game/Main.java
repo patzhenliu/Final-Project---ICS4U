@@ -92,7 +92,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		pausenum = 6 ;
 		losenum = 7 ;
 		storynum = 8;
-		page = losenum;
+		page = titlenum;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
@@ -217,20 +217,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public boolean updatePage() {
+	public void updatePage() {
 		//System.out.println(page);
-		/*if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { //why do you do this? ;-; 
-			if (page == losenum) {
-				page = gamenum;
-			}
-			else if (page == gamenum){
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { //why do you do this? ;-; 
+	
+			if (page == gamenum){
 				page = pausenum;
 			}
 			else if (page == pausenum) {
 				page = gamenum;
 			}
-			return false;
-		}*/
+		}
 		
 		if (page == titlenum) {
 			startMenu();
@@ -261,7 +258,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			//resetSpeed(); //will put if statement or something because you dont need to do this every time
 			
 		}
-		return true;
 	}
 	
 	public void update() {
@@ -278,7 +274,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			return;
 		}
 		
-		if (!updatePage()) {
+		updatePage();
+		if (page == pausenum) {
 			return;
 		}
 		

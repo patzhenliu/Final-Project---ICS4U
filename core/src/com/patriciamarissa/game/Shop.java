@@ -173,7 +173,7 @@ public class Shop {
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
 			//System.out.println(shopPage);
-			if (shopPage < (int)(upgrades.length / 8 )){
+			if (shopPage < (int)(upgrades.length / 8 ) - 1){
 				shopPage += 1;
 			}
 			return shop;
