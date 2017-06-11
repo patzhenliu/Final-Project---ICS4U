@@ -459,15 +459,15 @@ public class Enemy {
 		if (hp <= 0) {
 			die () ;
 		}
-		else {
+		/*else {
 			batch.begin () ;
 			batch.draw (blank, x, y) ;
 			batch.end () ;
-		}
+		}*/
 	}
 	
 	public void shoot () {
-		lasers.add (new Laser (1, x, y + 50, speed, 1, batch)) ; // PLACEHOLDER X AND Y
+		lasers.add (new Laser (false, x, y + 50, speed, 1, batch)) ; // PLACEHOLDER X AND Y
 	}
 	
 	public void removeLaser (Laser l) {

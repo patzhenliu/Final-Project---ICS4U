@@ -8,32 +8,39 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Laser {
 	private Batch batch ;
-	private int x, y, speed, power, type ;
-	private final int GOOD, BAD ;
+	private int x, y, speed, power ;
+	boolean isGood ;
 	private Texture img ;
 	private Sprite laser ;
 	
-	public Laser (int t, int x, int y, int s, int p, Batch b) {
+	public Laser (boolean ig, int x, int y, int s, int p, Batch b) {
 		batch = b ;
-		GOOD = 0 ;
-		BAD = 1 ;
-		type = t ;
-		if (type == BAD) {
-			img = new Texture (Gdx.files.internal("sprites/enemy laser.png")) ;
-		}
-		else {
-			img = new Texture (Gdx.files.internal("sprites/user laser.png")) ;
-		}
-		laser = new Sprite (img) ;
+		isGood = ig ;
 		this.x = x ;
 		this.y = y ;
 		speed = s ;
 		power = p ;
+		if (!isGood) {
+			img = new Texture (Gdx.files.internal("sprites/enemy laser.png")) ;
+		}
+		else {
+			img = new Texture (Gdx.files.internal("sprites/player laser.png")) ; // default in case smth goes wrong with if statements
+			if (power == 1) {
+				img = new Texture (Gdx.files.internal("sprites/player laser.png")) ;
+			}
+			if (power == 2) {
+				img = new Texture (Gdx.files.internal("sprites/player laser up.png")) ;
+			}
+			if (power == 3) {
+				img = new Texture (Gdx.files.internal("sprites/player laser up 2.png")) ;
+			}
+		}
+		laser = new Sprite (img) ;
 	}
 	
 	public void move () {
-		if (type == GOOD) { // go right towards the enemy
-			x += speed * 3 ;
+		if (isGood) { // go right towards the enemy
+			x += speed * 2 ;
 		}
 		else { // go left towards the user
 			x -= speed * 3 ;
@@ -67,5 +74,9 @@ public class Laser {
 	
 	public void doDamage (Enemy enemy) {
 		enemy.loseHp (power) ;
+	}
+	
+	public int getX () {
+		return x ;
 	}
 }

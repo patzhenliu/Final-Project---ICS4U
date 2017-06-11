@@ -378,6 +378,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			//platforms.stop();
 		}
 		
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE) && player.getLaserStrength() > 0){
+			player.shoot () ;
+		}
+		
 		if (player.deactivateHoles == false) {
 			for (int i = 0; i < holes.size(); i++) {
 				if (holes.get(i).collide(player)) {
@@ -622,7 +626,25 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				}
 			}
 		}
-		// PLAYER LASERS TO BE ADDED
+		ArrayList <Laser> plasers = player.getLasers () ;
+		if (plasers.size () > 0) {
+			for (int j = 0 ; j < plasers.size () ; j++) {
+				Laser currentlas = plasers.get(j);
+				currentlas.move () ;
+				currentlas.draw () ;
+				if (enemies.length > 0) {
+					for (int i = 0 ; i < enemies.length ; i++) {
+						if (currentlas.collide (enemies [i]) && enemies [i].dying == false && enemies [i].isDead() == false) {
+							currentlas.doDamage (enemies [i]) ;
+							player.removeLaser (currentlas) ;
+						}
+					}
+				}
+				if (currentlas != null && currentlas.getX () >= 1200) {
+					player.removeLaser (currentlas) ;
+				}
+			}
+		}
 	}
 	
 	public void reset(boolean gameOver) {

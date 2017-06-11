@@ -1,5 +1,7 @@
 package com.patriciamarissa.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Player {
 	private Batch batch;
+	private ArrayList <Laser> lasers ;
 	private Texture spritePage;
 	private Sprite currentSprite;
 	private Sprite[] sprites;
@@ -49,11 +52,12 @@ public class Player {
 		spriteCount = 0;
 		animationCount = 2;
 		powerups = new int [8] ; // lasers, life, jump, money, time, nuke, fire, holes
-		// IMPLEMENTED: LIFE, JUMP, MONEY, FIRE, HOLES
+		// IMPLEMENTED: LASERS, LIFE, JUMP, MONEY, FIRE, HOLES
 		groundLvl = 100;
 		jumpHeight = 150;
 		facingForwards = true;
 		lives = 3;
+		lasers = new ArrayList <Laser> () ;
 		reset();
 		hole = null;
 		 // THE REASON THESE ARE GIVEN VARIABLE NAMES IS TO BE CLEARER ON WHAT POWERUPS [4], ETC. MEAN EXACTLY.
@@ -79,6 +83,7 @@ public class Player {
 			changeDirection();
 		}
 		resetPos();
+		lasers.clear();
 		hole = null;
 		minX = -100;
 		maxX = Gdx.graphics.getWidth();
@@ -202,8 +207,15 @@ public class Player {
 	}
 	
 	public void shoot() {
-		//Laser laser = new Laser();
-		return;
+		lasers.add (new Laser (true, x + 10, y + 20, speed, powerups [0], batch)) ; // PLACEHOLDER X AND Y
+	}
+	
+	public void removeLaser (Laser l) {
+		lasers.remove (l) ;
+	}
+	
+	public ArrayList <Laser> getLasers () {
+		return lasers ;
 	}
 	
 	public void resetOneTimeUps () {
@@ -327,5 +339,9 @@ public class Player {
 	
 	public int getMoneyMult () {
 		return powerups [3] ;
+	}
+	
+	public int getLaserStrength () {
+		return powerups [0] ;
 	}
 }
