@@ -34,11 +34,10 @@ public class CreditsScreen {
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			return title ;
 		}
-		else {
-			return credits ;
-		}
+		return credits ;
+		
 	}
 }

@@ -38,6 +38,8 @@ public class TitleScreen {
     private Button shopButton;
     private Button controlsButton;
     private Button creditsButton;
+    private int buttonNum;
+    private Button[] buttons;
 
 	
 	public TitleScreen (Batch batch) {
@@ -49,14 +51,22 @@ public class TitleScreen {
 		this.batch = batch ;
 		page = title;
 		
+		buttonNum = 0;
+		
 		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/playButton.png")),
-				new Texture(Gdx.files.internal("menus/playHover.png")), 400, 237);
+				new Texture(Gdx.files.internal("menus/playHover.png")), 400, 237, game);
 		shopButton = new Button(batch, new Texture(Gdx.files.internal("menus/shopButton.png")),
-				new Texture(Gdx.files.internal("menus/shopHover.png")), 420, 187);
+				new Texture(Gdx.files.internal("menus/shopHover.png")), 420, 187, shop);
 		controlsButton = new Button(batch, new Texture(Gdx.files.internal("menus/controlButton.png")),
-				new Texture(Gdx.files.internal("menus/controlHover.png")), 360, 137);
+				new Texture(Gdx.files.internal("menus/controlHover.png")), 360, 137, controls);
 		creditsButton = new Button(batch, new Texture(Gdx.files.internal("menus/creditsButton.png")),
-				new Texture(Gdx.files.internal("menus/creditsHover.png")), 395, 87);
+				new Texture(Gdx.files.internal("menus/creditsHover.png")), 395, 87, credits);
+		
+		buttons = new Button[4];
+		buttons[0] = playButton;
+		buttons[1] = shopButton;
+		buttons[2] = controlsButton;
+		buttons[3] = creditsButton;
 		
 		background = new Texture(Gdx.files.internal("menus/title blank.png"));
 		
@@ -67,37 +77,43 @@ public class TitleScreen {
 		batch.begin();
 	    batch.draw(background, 0, 0);
 	    batch.end();
-	    playButton.draw();
-	    shopButton.draw();
-	    controlsButton.draw();
-	    creditsButton.draw();
+	    
+	    for (Button b: buttons) {
+	    	b.draw();
+	    }
+	    buttons[buttonNum].drawHoverImg();
         
 	}
 	
 	public int updatePage () {
-		draw () ;
-		return giveNextScreen();
+		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+			if (buttonNum + 1 < buttons.length) {
+				buttonNum += 1;
+			}
+			else {
+				buttonNum = 0;
+			}
+		}
+		else if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+			if (buttonNum - 1 >= 0) {
+				buttonNum -= 1;
+			}
+			else {
+				buttonNum = buttons.length - 1;
+			}
+		}
 		
-
+		draw () ;
+		
+		return giveNextScreen();
 	}
 	
 
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (playButton.isClicked()) {
-			return game;
-		}
-		else if (shopButton.isClicked()) {
-				return shop;
-		}
-		else if (controlsButton.isClicked()) {
-				return controls;
-		}
-
-		else if (creditsButton.isClicked()) {
-				return credits;
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			return buttons[buttonNum].getPageNum();
 		}
 		return title;
-
-		}
+	}
 
 }

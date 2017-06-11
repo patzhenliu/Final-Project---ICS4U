@@ -26,12 +26,16 @@ public class Button {
     private ImageButton button;
     private boolean isHovering;
     private boolean isClicked;
+    private Texture img;
+    private int pageNum;
 
-	public Button (Batch batch, Texture img, Texture hover, int x, int y) {
+	public Button (Batch batch, Texture img, Texture hover, int x, int y, int pageNum) {
 		this.batch = batch;
+		this.img = img;
 		this.hover = hover;
 		this.x = x;
 		this.y = y;
+		this.pageNum = pageNum;
 
         myTextureRegion = new TextureRegion(img);
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
@@ -64,21 +68,19 @@ public class Button {
         Gdx.input.setInputProcessor(stage); //Start taking input from the ui
 	}
 	
-	public void draw() {
-		if (isHovering) {
-        	batch.begin();
-        	batch.draw(hover, x, y);
-        	batch.end();
-        }
-        else {
-        	stage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
-            stage.draw(); //Draw the ui
-        }
+	public int getPageNum() {
+		return pageNum;
 	}
 	
-	public boolean isClicked() {
-		boolean temp = isClicked;
-		isClicked = false;
-		return temp;
+	public void drawHoverImg() {
+		batch.begin();
+    	batch.draw(hover, x, y);
+    	batch.end();
+	}
+	
+	public void draw() {
+		batch.begin();
+    	batch.draw(img, x, y);
+    	batch.end();
 	}
 }

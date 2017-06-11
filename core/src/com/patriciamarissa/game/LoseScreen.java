@@ -12,22 +12,37 @@ public class LoseScreen {
 	private Texture background ;
 	private Texture page ;
 	private Texture highscore ;
-	private Texture [] pages;
+	private Texture loseMenu;
+	
+	private Button playButton;
+	private Button shopButton;
+	private Button homeButton;
+	
+	private Button[] buttons;
+	private int buttonNum;
 	
 	public LoseScreen (Batch batch) {
 		title = 1 ;
 		game = 2 ;
 		shop = 3 ;
 		lose = 7 ;
-		pages = new Texture [4] ;
 		this.batch = batch ;
 		
-		pages [0] = new Texture(Gdx.files.internal("menus/lose0.png"));
-		pages [1] = new Texture(Gdx.files.internal("menus/lose1.png"));
-		pages [2] = new Texture(Gdx.files.internal("menus/lose2.png"));
-		pages [3] = new Texture(Gdx.files.internal("menus/lose3.png"));
+		buttonNum = 0;
+		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/go again w.png")),
+				new Texture(Gdx.files.internal("menus/go again r.png")), 390, 273, game);
+		shopButton = new Button(batch, new Texture(Gdx.files.internal("menus/go shop w.png")),
+				new Texture(Gdx.files.internal("menus/go shop r.png")), 390, 207, shop);
+		homeButton = new Button(batch, new Texture(Gdx.files.internal("menus/go home w.png")),
+				new Texture(Gdx.files.internal("menus/go home r.png")), 390, 153, title);
 		
-		page = pages [0] ;
+		buttons = new Button[3];
+		buttons[0] = playButton;
+		buttons[1] = shopButton;
+		buttons[2] = homeButton;
+		
+		
+		loseMenu = new Texture(Gdx.files.internal("menus/lose blank.png"));
 		background = new Texture(Gdx.files.internal("backgrounds/losebg.png"));
 		highscore = new Texture(Gdx.files.internal("menus/highscore and cc.png"));
 	}
@@ -35,13 +50,34 @@ public class LoseScreen {
 	public void draw () {
 		batch.begin();
 		batch.draw (background, 0, 0) ;
-	    batch.draw(page, 300, 50);
+	    batch.draw(loseMenu, 300, 50);
 	    batch.draw (highscore, 700, 0) ;
 	    batch.end();
+	    
+	    playButton.draw();
+	    shopButton.draw();
+	    homeButton.draw();
+	    
+	    buttons[buttonNum].drawHoverImg();
 	}
 	
 	public void updatePage () {
-		// use mouse coordinates to figure out which img from the list to use
+		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+			if (buttonNum + 1 < buttons.length) {
+				buttonNum += 1;
+			}
+			else {
+				buttonNum = 0;
+			}
+		}
+		else if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+			if (buttonNum - 1 >= 0) {
+				buttonNum -= 1;
+			}
+			else {
+				buttonNum = buttons.length - 1;
+			}
+		}
 	}
 	
 	public void update () {
@@ -51,16 +87,8 @@ public class LoseScreen {
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			return game ;
+			return buttons[buttonNum].getPageNum();
 		}
-		else if (Gdx.input.isKeyJustPressed(Keys.S)) {
-			return shop ;
-		}
-		else if (Gdx.input.isKeyJustPressed(Keys.H)) {
-			return title ;
-		}
-		else {
-			return lose ;
-		}
+		return lose;
 	}
 }
