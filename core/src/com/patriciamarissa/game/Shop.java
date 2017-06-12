@@ -27,15 +27,13 @@ public class Shop {
 	private int [] pricelist ;
 	private int [] boughtlist ;
 	private Upgrade[] upgrades;
-	private final int numOfUpgrades = 8;
+	private final int numOfUpgrades = 6;
 	int shopPage;
 	
 	/* lasers (upgradable to 3) (10, 20, 40)
 	 * more life (upgradable to 6, but starts at 3) (10, 20, 40)
 	 * higher jump (upgradable twice, or to whatever point hits top of screen) (10, 20, 40)
 	 * increase money (upgradable) (20, 40, 60)
-	 * slow down time (one time use) (10)
-	 * kill all enemies? (one time use, timed, 10 seconds) (20)
 	 * remove fire (one time use) (10)
 	 * remove holes (one time use) (10)
 	 * GOING TO HAVE TO CHANGE LION TO ACCOMODATE THE HOLE REMOVAL. STILL NEED TO FIX LION AND GARGOYLE MOVEMENT ANYWAYS.
@@ -62,11 +60,11 @@ public class Shop {
 		
 		spriteCount = 0;
 		animationCount = 5;
-		pricelist = new int [10] ;
+		pricelist = new int [6] ;
 		Arrays.fill (pricelist, 10) ;
+		pricelist [1] = 20 ; // increase lives
 		pricelist [3] = 20 ; // increase money
-		pricelist [7] = 20 ; // nuke the enemies
-		boughtlist = new int [10] ;
+		boughtlist = new int [6] ;
 		Arrays.fill(boughtlist, 0) ;
 		createUpgrades();
 		shopPage = 0;
@@ -79,7 +77,7 @@ public class Shop {
 			for(int i = 0; i < numOfUpgrades; i++) {
 				int ux = i % 4;
 				int uy = ((int)(i / 4) )% 2; 
-				upgrades[i] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200, i,
+				upgrades[i] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200, i, pricelist [i],
 						new Texture(Gdx.files.internal("upgrades/upgrade" + i + ".png")),
 						new Texture(Gdx.files.internal("upgrades/grey" + i + ".png")));
 			}
@@ -91,19 +89,19 @@ public class Shop {
 	}
 	
 	public void buy (int index, int [] powers) {
-		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, SLOW TIME, NUKE, KILL FIRE, KILL HOLES
+		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, KILL FIRE, KILL HOLES
 		upgrades [index].buy () ;
 		powers [index] += 1 ;
 	}
 	
-	public int add (int playermon, int c) {
-		playermon += c ;
-		return playermon ;
+	public int add (int playermoney, int c) {
+		playermoney += c ;
+		return playermoney ;
 	}
 	
-	public int deduct (int playermon, int d) {
-		playermon -= d ;
-		return playermon ;
+	public int deduct (int playermoney, int d) {
+		playermoney -= d ;
+		return playermoney ;
 	}
 	
 	public void draw() {

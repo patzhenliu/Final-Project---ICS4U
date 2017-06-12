@@ -38,7 +38,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	Story story;
 	PauseScreen pause ;
 	
-	int titlenum, gamenum, shopnum, controlsnum, creditsnum, pausenum, losenum, storynum ;
+	int titleNum, gameNum, shopNum, controlsNum, creditsNum, pauseNum, loseNum, storyNum, ynNum ;
 
 	ShapeRenderer rend;
 	Texture [] nums;
@@ -57,9 +57,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	long speedtimer;
 	
 	boolean isMoving;
-	int timedelay ;
-	int oldtimecount ;
-	TimerRunner speeduptimer ;
 	
 	@Override
 	public void create () {
@@ -81,22 +78,19 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		makeEnemies () ;
 		isMoving = false;
 		money = 0;
-		timedelay = 10 ;
-		updateTimeDelay () ;
-		oldtimecount = 0 ;
-		//runTimer () ;
-		speeduptimer = new TimerRunner (timedelay) ;
+		runTimer () ;
 		seconds () ;
 		
-		titlenum = 1 ;
-		gamenum = 2 ;
-		shopnum = 3 ;
-		controlsnum = 4 ;
-		creditsnum = 5 ;
-		pausenum = 6 ;
-		losenum = 7 ;
-		storynum = 8;
-		page = titlenum;
+		titleNum = 1 ;
+		gameNum = 2 ;
+		shopNum = 3 ;
+		controlsNum = 4 ;
+		creditsNum = 5 ;
+		pauseNum = 6 ;
+		loseNum = 7 ;
+		storyNum = 8;
+		ynNum = 9;
+		page = titleNum;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
@@ -114,24 +108,13 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		score = 0;
 	}
 	
-	/*public void runTimer () { // THANKS FOR THIS SIR!
+	public void runTimer () { // THANKS FOR THIS SIR!
 		Timer.schedule (new Task () { 
 			@Override public void run () {
 				System.out.println ("SPEEDUP") ;
 				increaseSpeed (1) ;
 				}
-		} , timedelay, timedelay) ; // first is delay to starting in seconds, second is time in between each tick in seconds
-	}*/
-	
-	public void nukeEnemies () { // THANKS FOR THIS SIR!
-		Timer.schedule (new Task () { 
-			@Override public void run () {
-				System.out.println ("NUKE RUNNING") ;
-				for (Enemy e : enemies) {
-						e.loseHp (10) ;
-				}
-				}
-		} , 0, 1, 9) ;
+		} , 10, 10) ; // first is delay to starting in seconds, second is time in between each tick in seconds
 	}
 	
 	public void seconds () { // IGNORE THIS ITS JUST FOR TESTING PURPOSES
@@ -140,24 +123,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				System.out.println ("1") ;
 				}
 		} , 1,1) ; // first is delay to starting in seconds, second is time in between each tick in seconds
-	}
-	
-	public void updateTimeDelay () {
-		if (player.slowScreen == true) {
-			timedelay = 20 ;
-		}
-		else {
-			timedelay = 10 ;
-		}
-	}
-	
-	public Task runSpeedTimer () {
-		return (new Task () { 
-			@Override public void run () {
-				System.out.println ("SPEEDUP") ;
-				increaseSpeed (1) ;
-				}
-		}) ;
 	}
 	
 	public void createPlatforms() {
@@ -224,14 +189,14 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
 			player.moveRight();
-			if (page == gamenum) {
+			if (page == gameNum) {
 				isMoving = true;
 			}
 		}
 		
 		else if(Gdx.input.isKeyPressed(Keys.LEFT)){
 			player.moveLeft();
-			if (page == gamenum) {
+			if (page == gameNum) {
 				isMoving = true;
 			}
 				
@@ -242,7 +207,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			player.jump();
-			if (page == gamenum) {
+			if (page == gameNum) {
 				isMoving = true;
 			}
 				
@@ -262,38 +227,40 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		//System.out.println(page);
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { //why do you do this? ;-; 
 	
-			if (page == gamenum){
-				page = pausenum;
+			if (page == gameNum){
+				page = pauseNum;
 			}
-			else if (page == pausenum) {
-				page = gamenum;
+			else if (page == pauseNum) {
+				page = gameNum;
 			}
 		}
 		
-		if (page == titlenum) {
+		if (page == titleNum) {
 			startMenu();
 		}
-		else if (page == losenum) {
+		else if (page == loseNum) {
 			loseScreen ();
 			
 		}
-		else if (page == pausenum) {
+		else if (page == pauseNum) {
 			pauseMenu();
 			
 		}
-		else if (page == shopnum) {
+		else if (page == shopNum) {
 			shopMenu () ;
-			
 		}
-		else if (page == controlsnum) {
+		else if (page == ynNum) {
+			areYouSureMenu();
+		}
+		else if (page == controlsNum) {
 			controlScreen () ;
 			
 		}
-		else if (page == creditsnum) {
+		else if (page == creditsNum) {
 			creditsScreen () ;
 			
 		}
-		else if (page == storynum) {
+		else if (page == storyNum) {
 			story.update();
 			page = story.giveNextScreen();
 			//resetSpeed(); //will put if statement or something because you dont need to do this every time
@@ -304,24 +271,19 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void update() {
 		drawLives();
 		
-		if (speeduptimer.getSpeed () > oldtimecount) {
-			increaseSpeed (1) ;
-			oldtimecount += 1 ;
-		}
-		
 		if (player.dying()) {
 			if (player.getLives() > 0) {
 				//reset(false);
 			}
 			else {
 				reset(true, true) ;
-				page = losenum ;
+				page = loseNum ;
 			}
 			return;
 		}
 		
 		updatePage();
-		if (page == pausenum) {
+		if (page == pauseNum || page == ynNum) {
 			return;
 		}
 		
@@ -360,11 +322,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE) && player.getLaserStrength() > 0){
 			player.shoot () ;
-		}
-		
-		if (Gdx.input.isKeyJustPressed(Keys.N) && player.nukeEnemies == true) {
-			nukeEnemies () ;
-			player.nukeEnemies = false ;
 		}
 		
 		if (player.deactivateHoles == false) {
@@ -464,7 +421,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	
 	public void startMenu() {
 		page = title.updatePage () ;
-		if (page == gamenum) {
+		if (page == gameNum) {
 			reset(true, false);
 		}
 	}
@@ -474,10 +431,14 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		page = pause.giveNextScreen () ;
 	}
 	
+	public void areYouSureMenu() {
+		page = pause.areYouSure();
+	}
+	
 	public void shopMenu () {
 		shop.update (money) ;
 		page = shop.giveNextScreen () ;
-		if (page == gamenum) {
+		if (page == gameNum) {
 			reset(true, false);
 		}
 	}
@@ -495,7 +456,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void loseScreen() {
 		lose.update () ;
 		page = lose.giveNextScreen () ;
-		if (page == gamenum) {
+		if (page == gameNum) {
 			reset(true, true);
 		}
 	}
@@ -650,12 +611,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				enemies [i] = null ;
 			}
 			makeEnemies () ;
-	    	updateTimeDelay () ;
-	    	speeduptimer = null ;
-	    	speeduptimer = new TimerRunner (timedelay) ;
 		}
 		else {
-			page = gamenum;
+			page = gameNum;
 		}
 		isMoving = false;
     	resetSpeed();

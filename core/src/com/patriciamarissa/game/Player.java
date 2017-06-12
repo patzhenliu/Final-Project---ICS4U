@@ -37,8 +37,6 @@ public class Player {
 	boolean facingForwards; //true-right false-left
 	boolean deactivateHoles ;
 	boolean deactivateFire ;
-	boolean nukeEnemies ;
-	boolean slowScreen ;
 	
 	Hole hole;
 	
@@ -51,8 +49,7 @@ public class Player {
 		currentSprite = sprites[0];
 		spriteCount = 0;
 		animationCount = 2;
-		powerups = new int [8] ; // lasers, life, jump, money, time, nuke, fire, holes
-		// IMPLEMENTED: LASERS, LIFE, JUMP, MONEY, FIRE, HOLES, kind of nuke
+		powerups = new int [6] ; // lasers, life, jump, money, fire, holes
 		groundLvl = 100;
 		jumpHeight = 150;
 		facingForwards = true;
@@ -60,11 +57,8 @@ public class Player {
 		lasers = new ArrayList <Laser> () ;
 		reset();
 		hole = null;
-		 // THE REASON THESE ARE GIVEN VARIABLE NAMES IS TO BE CLEARER ON WHAT POWERUPS [4], ETC. MEAN EXACTLY.
 		deactivateHoles = false ;
 		deactivateFire = false ;
-		nukeEnemies = false ;
-		slowScreen = true ;
 	}
 	
 	public void importSprite() {
@@ -97,15 +91,9 @@ public class Player {
 		isDead = false;
 		dyingSpeed = 20;
 		if (powerups [4] == 1) {
-			slowScreen = true ;
-		}
-		if (powerups [5] == 1) {
-			nukeEnemies = true ;
-		}
-		if (powerups [6] == 1) {
 			deactivateFire = true ;
 		}
-		if (powerups [7] == 1) {
+		if (powerups [5] == 1) {
 			deactivateHoles = true ;
 		}
 	}
@@ -220,12 +208,8 @@ public class Player {
 	public void resetOneTimeUps () {
 		deactivateFire = false ;
 		deactivateHoles = false ;
-		nukeEnemies = false ;
-		slowScreen = false ;
 		powerups [4] = 0 ;
 		powerups [5] = 0 ;
-		powerups [6] = 0 ;
-		powerups [7] = 0 ;
 	}
 	
 	public void die(){

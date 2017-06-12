@@ -8,7 +8,7 @@ public class Upgrade {
 	private Batch batch;
 	private Texture square, cross, greycross;
 	int x, y, num, price, level;
-	private final int laser, life, jump, money, time, nuke, killf, killh ;
+	private final int laser, life, jump, money, killf, killh ;
 	private boolean owned, owned2, owned3, affordable;
 	private Texture icon, greyver;
 	private Texture upmon2, upmon3 ;
@@ -23,14 +23,12 @@ public class Upgrade {
 	 * more life (upgradable to 6, but starts at 3) (20, 40, 80)
 	 * higher jump (upgradable twice, or to whatever point hits top of screen) (10, 20, 40)
 	 * increase money (upgradable) (20, 40, 80)
-	 * slow down time (one time use) (10)
-	 * kill all enemies? (one time use, timed, 10 seconds) (20)
 	 * remove fire (one time use) (10)
 	 * remove holes (one time use) (10)
 	 * GOING TO HAVE TO CHANGE LION TO ACCOMODATE THE HOLE REMOVAL. STILL NEED TO FIX LION AND GARGOYLE MOVEMENT ANYWAYS.
 	 */
 	
-	public Upgrade(Batch batch, int x, int y, int price, Texture image, Texture grey) {
+	public Upgrade(Batch batch, int x, int y, int num, int price, Texture image, Texture grey) {
 		this.batch = batch;
 		square = new Texture(Gdx.files.internal("sprites/upgrade.png"));
 		cross = new Texture(Gdx.files.internal("upgrades/crossout.png"));
@@ -51,13 +49,12 @@ public class Upgrade {
 		life = 1 ;
 		jump = 2 ;
 		money = 3 ;
-		time = 4 ;
-		nuke = 5 ;
-		killf = 6 ;
-		killh = 7 ;
+		killf = 4 ;
+		killh = 5 ;
 		
 		this.x = x;
 		this.y = y;
+		this.num = num ;
 		this.price = price ;
 		owned = false ;
 		owned2 = false ;
