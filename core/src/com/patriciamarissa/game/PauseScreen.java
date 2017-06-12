@@ -104,7 +104,9 @@ public class PauseScreen {
 			else if (buttons[buttonNum].equals(controlsButton)) {
 				yesButton.setPageNum(CONTROLS);
 			}
-			return buttons[buttonNum].getPageNum();
+			int temp = buttonNum;
+			buttonNum = 0;
+			return buttons[temp].getPageNum();
 		}
 			return PAUSE ;
 	}
