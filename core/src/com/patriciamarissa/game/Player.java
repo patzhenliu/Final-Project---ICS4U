@@ -49,16 +49,18 @@ public class Player {
 		spriteCount = 0;
 		animationCount = 2;
 		powerups = new int [8] ; // lasers, life, jump, money, time, nuke, fire, holes
-		// IMPLEMENTED: LIFE, JUMP, MONEY, HOLES
+		// IMPLEMENTED: LIFE, JUMP, MONEY, FIRE, HOLES
 		groundLvl = 100;
 		jumpHeight = 150;
 		facingForwards = true;
 		lives = 3;
 		reset();
 		hole = null;
+		 // THE REASON THESE ARE GIVEN VARIABLE NAMES IS TO BE CLEARER ON WHAT POWERUPS [4], ETC. MEAN EXACTLY.
 		deactivateHoles = false ;
 		deactivateFire = false ;
 		nukeEnemies = false ;
+		//powerups [4] = 1 ;
 		slowScreen = false ;
 	}
 	
@@ -319,11 +321,11 @@ public class Player {
 		lives += powerups [1] ;
 	}
 	
-	/*public int [] getPowers () {
+	public int [] getPowers () {
 		return powerups ;
 	}
 	
 	public int getMoneyMult () {
 		return powerups [3] ;
-	}*/
+	}
 }

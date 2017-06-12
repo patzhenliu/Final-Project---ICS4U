@@ -60,6 +60,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	long speedtimer;
 	
 	boolean isMoving;
+	int timedelay ;
+	Timer speeduptimer ; // because we, for some reason, already have a variable called speedtimer :(
+	Timer nuke ;
 	
 	@Override
 	public void create () {
@@ -80,9 +83,15 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		createPlatforms();
 		createHoles();
 		makeEnemies () ;
-		runTimer () ;
 		isMoving = false;
 		money = 0;
+		timedelay = 10 ;
+		updateTimeDelay () ;
+		speeduptimer = new Timer () ;
+		nuke = new Timer () ;
+		//runTimer () ;
+		startSpeedTimer () ;
+		seconds () ;
 		
 		titlenum = 1 ;
 		gamenum = 2 ;
@@ -92,7 +101,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		pausenum = 6 ;
 		losenum = 7 ;
 		storynum = 8;
-		page = titlenum;
+		page = gamenum;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
@@ -110,29 +119,83 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		score = 0;
 	}
 	
-	public void runTimer () { // TESTING PURPOSES, THANKS SIR!
+	public void runTimer () { // THANKS FOR THIS SIR!
 		Timer.schedule (new Task () { 
 			@Override public void run () {
-				//System.out.println ("tick") ;
+				System.out.println ("SPEEDUP") ;
 				increaseSpeed (1) ;
 				}
-		} ,10, 10 ) ; // 0 is delay to starting in seconds, 1 is time in between each tick in seconds
+		} , timedelay, timedelay) ; // first is delay to starting in seconds, second is time in between each tick in seconds
 	}
+	
+	public void seconds () { // IGNORE THIS ITS JUST FOR TESTING PURPOSES
+		Timer.schedule (new Task () { 
+			@Override public void run () {
+				System.out.println ("1") ;
+				}
+		} , 1,1) ; // first is delay to starting in seconds, second is time in between each tick in seconds
+	}
+	
+	public void updateTimeDelay () {
+		if (player.slowScreen == true) {
+			timedelay = 20 ;
+		}
+		else {
+			timedelay = 10 ;
+		}
+	}
+	
+	public void startSpeedTimer () {
+		speeduptimer.schedule(runSpeedTimer(), timedelay, timedelay) ;
+	}
+	
+	public void endSpeedTimer () {
+		speeduptimer.clear () ;
+	}
+	
+	public Task runSpeedTimer () {
+		return (new Task () { 
+			@Override public void run () {
+				System.out.println ("SPEEDUP") ;
+				increaseSpeed (1) ;
+				}
+		}) ;
+	}
+	
+	/*public Task nukeEnemies () {
+		return (new Task () {
+			@Override public void run () {
+				for (int i = 0 ; i < enemies.length ; i++) {
+					if (enemies [i].dying == false) {
+						enemies [i].loseHp (10) ;
+					}
+				}
+			}
+		}) ;
+	}
+	
+	public void startNuke () {
+		nuke.schedule(nukeEnemies (), 0, 1) ;
+	}
+	
+	public void endNuke () {
+		nuke.clear () ;
+	}*/
 	
 	public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
 		int platNum = 4; 
-		platforms.add(new Platform(batch, speed, 200, 300));
+		platforms.add(new Platform(batch, speed, 200, 300, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
+			platforms.add(new Platform(batch, speed, 200, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult(), player.deactivateFire));
 		}
-		platforms.add(new Platform(batch, speed, 320, 500));
+		platforms.add(new Platform(batch, speed, 320, 500, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
+			platforms.add(new Platform(batch, speed, 320, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult(), player.deactivateFire));
 		}
-		platforms.add(new Platform(batch, speed, 440, 800));
+		platforms.add(new Platform(batch, speed, 440, 800, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 1; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth()));
+			platforms.add(new Platform(batch, speed, 440, platforms.get(i - 1).getX() + platforms.get(i-1).getWidth(), player.getMoneyMult(), player.deactivateFire));
 		}
 		randomizePlatforms () ;
 	}
@@ -290,9 +353,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			if (platforms.get(i).collideTop(player)) {
 				isOnPlatform = true;
 				if (platforms.get(i).moneyCollision(player)) {
-					money += 1;
+					money += player.getMoneyMult () + 1;
 				}
-				if (platforms.get(i).fireCollision(player)) {
+				if (platforms.get(i).fireCollision(player) && player.deactivateFire == false) {
 					player.die();
 				}
 				//System.out.println(platforms.get(i).getWidth());
@@ -347,7 +410,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		move();
 		for (Enemy e : enemies) {
 			if (e.collide(player) && !e.dying) {
-				e.die () ;
+				player.die () ;
+				//e.die () ;
 				//e.loseHp(10); // just to ensure they die
 			}
 		}
@@ -465,7 +529,12 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				if (i == 0) {
 					index = platforms.size () - 1 ;
 				}
+<<<<<<< HEAD
+				platforms.set(i, new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth(), player.getMoneyMult(), player.deactivateFire)) ;
+			}
+=======
 			}*/
+//>>>>>>> patricia/master
 		}
 	}
 	
@@ -511,6 +580,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		platforms.get(8).randPosition(0, 3);
 		for (int i = 9; i < 12; i++) {
 			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 3);
+		}
+		for (int i = 0 ; i < platforms.size () ; i++) {
+			platforms.get(i).setFireStatus(player.deactivateFire);
 		}
 	}
 	
@@ -566,13 +638,15 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				enemies [i] = null ;
 			}
 			makeEnemies () ;
+			endSpeedTimer () ;
+	    	updateTimeDelay () ;
+	    	startSpeedTimer () ;
 		}
 		else {
 			page = gamenum;
 		}
 		isMoving = false;
     	resetSpeed();
-
 	}
 	
 	public void resetSpeed() {

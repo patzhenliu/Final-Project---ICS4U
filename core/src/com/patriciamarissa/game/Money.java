@@ -24,20 +24,20 @@ public class Money {
 	
 	private Random rand = new Random(System.currentTimeMillis());
 	
-	public Money(Batch batch, int px, int py, int range) {
+	public Money(Batch batch, int px, int py, int range, int value) {
 		this.batch = batch;
 		spritePage = new Texture(Gdx.files.internal("sprites/money.png"));
 		sprites = new Sprite[4];
-		//upsprs1 = new Sprite [4] ;
-		//upsprs2 = new Sprite [4] ;
-		//upsprs3 = new Sprite [4] ;
+		upsprs1 = new Sprite [4] ;
+		upsprs2 = new Sprite [4] ;
+		upsprs3 = new Sprite [4] ;
 		
 		sprites[0] = new Sprite(spritePage, 56, 6, 50, 48);
 		sprites[1] = new Sprite(spritePage, 6, 6, 46, 48);
 		sprites[2] = new Sprite(spritePage, 160, 6, 10, 48);
 		sprites[3] = new Sprite(spritePage, 110, 6, 46, 48);
 		
-		/*upsprs1[0] = new Sprite(spritePage, 56, 58, 50, 48);
+		upsprs1[0] = new Sprite(spritePage, 56, 58, 50, 48);
 		upsprs1[1] = new Sprite(spritePage, 6, 58, 46, 48);
 		upsprs1[2] = new Sprite(spritePage, 160, 58, 10, 48);
 		upsprs1[3] = new Sprite(spritePage, 110, 58, 46, 48);
@@ -67,7 +67,7 @@ public class Money {
 		if (value == 3) {
 			currentSprites = upsprs3 ;
 			currentSprite = upsprs3 [0] ;
-		}*/
+		}
 		
 		currentSprite = sprites[0];
 		spriteCount = 0;
@@ -84,7 +84,7 @@ public class Money {
 		batch.end();
 		spin();
 		if (spriteCount == 0) {
-			spriteCount = sprites.length - 1;
+			spriteCount = currentSprites.length - 1;
 		}
 	}
 	
@@ -96,7 +96,7 @@ public class Money {
 				spriteCount--;
 				animationCount = 4;
 			}
-			currentSprite = sprites[spriteCount];
+			currentSprite = currentSprites[spriteCount];
 		}
 	}
 	

@@ -18,17 +18,20 @@ public class Platform {
 	private Sprite platformSprite;
 	private int moveSpeed;
 	private int x;
+	private int mval ;
 	private int y;
 	
 	private Random rand = new Random(System.currentTimeMillis());
 	private int width, length;
 	private ArrayList<Money> moneyList;
 	private ArrayList<Fire> fireList;
+	private boolean deactiveFire ;
 	
-	
-	public Platform (Batch batch, int moveSpeed, int y, int prevX) {
+	public Platform (Batch batch, int moveSpeed, int y, int prevX, int moneyval, boolean df) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
+		mval = moneyval ;
+		deactiveFire = df ;
 		randLength();
 		//randPosition(prevX, 0);
 		this.y = y;
@@ -56,7 +59,7 @@ public class Platform {
 		
 		moneyList.clear();
 		for (int i = 0; i < num; i++) {
-			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width));
+			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width, mval));
 		}
 	}
 	
@@ -103,7 +106,9 @@ public class Platform {
 		
 		batch.end();
 		drawMoney();
-		drawFire();
+		if (deactiveFire == false) {
+			drawFire();
+		}
 		//move();
 	}
 	
@@ -188,6 +193,10 @@ public class Platform {
 	
 	public void addSpeed (int s) {
 		moveSpeed += s ;
+	}
+	
+	public void setFireStatus (boolean f) {
+		deactiveFire = f ;
 	}
 	
 	public boolean offRight () {

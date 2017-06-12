@@ -41,6 +41,32 @@ public class Button {
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
         button = new ImageButton(myTexRegionDrawable);
         
+        button.setPosition(x, y);
+        button.addListener( new ClickListener(Buttons.LEFT) {              
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            	System.out.println("CLICKED");
+                isClicked = true;
+            };
+        });
+        
+        button.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+            	System.out.println("ON");
+            	isHovering = true;
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+            	System.out.println("OFF");
+            	isHovering = false;
+            }
+         });
+        
+        stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
+        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
+        Gdx.input.setInputProcessor(stage); //Start taking input from the ui
 	}
 	
 	public int getPageNum() {
