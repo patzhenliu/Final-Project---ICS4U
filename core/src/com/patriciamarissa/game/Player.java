@@ -52,7 +52,7 @@ public class Player {
 		spriteCount = 0;
 		animationCount = 2;
 		powerups = new int [8] ; // lasers, life, jump, money, time, nuke, fire, holes
-		// IMPLEMENTED: LASERS, LIFE, JUMP, MONEY, FIRE, HOLES
+		// IMPLEMENTED: LASERS, LIFE, JUMP, MONEY, FIRE, HOLES, kind of nuke
 		groundLvl = 100;
 		jumpHeight = 150;
 		facingForwards = true;
@@ -64,8 +64,7 @@ public class Player {
 		deactivateHoles = false ;
 		deactivateFire = false ;
 		nukeEnemies = false ;
-		//powerups [4] = 1 ;
-		slowScreen = false ;
+		slowScreen = true ;
 	}
 	
 	public void importSprite() {

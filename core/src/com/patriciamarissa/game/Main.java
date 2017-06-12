@@ -23,10 +23,8 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class Main extends ApplicationAdapter implements InputProcessor{
-	// BEHOLD A USELESS COMMENT
 	SpriteBatch batch;
 	Player player;
-	//Pixmap mask ;
 	Background background, background2;
 	Floor floor, floor2;
 	ArrayList <Platform> platforms;
@@ -38,7 +36,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	LoseScreen lose ;
 	ControlsScreen control ;
 	Story story;
-	//MainGame game ;
 	PauseScreen pause ;
 	
 	int titlenum, gamenum, shopnum, controlsnum, creditsnum, pausenum, losenum, storynum ;
@@ -61,8 +58,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	
 	boolean isMoving;
 	int timedelay ;
-	Timer speeduptimer ; // because we, for some reason, already have a variable called speedtimer :(
-	Timer nuke ;
+	int oldtimecount ;
+	TimerRunner speeduptimer ;
 	
 	@Override
 	public void create () {
@@ -74,7 +71,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		background2 = new Background(batch, 3430, 3430, 600, speed);
 		floor = new Floor(batch, 0, 3408, 100, speed);
 		floor2 = new Floor(batch, 3408, 3408, 100, speed);
-		//mask = new Pixmap (Gdx.files.internal("mask.png")) ;
 		lifeImg = new Texture(Gdx.files.internal("sprites/lifeImg.png"));
 		platforms = new ArrayList <Platform> () ;
 		enemies = new Enemy [4] ;
@@ -87,10 +83,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		money = 0;
 		timedelay = 10 ;
 		updateTimeDelay () ;
-		speeduptimer = new Timer () ;
-		nuke = new Timer () ;
+		oldtimecount = 0 ;
 		//runTimer () ;
-		startSpeedTimer () ;
+		speeduptimer = new TimerRunner (timedelay) ;
 		seconds () ;
 		
 		titlenum = 1 ;
@@ -119,13 +114,24 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		score = 0;
 	}
 	
-	public void runTimer () { // THANKS FOR THIS SIR!
+	/*public void runTimer () { // THANKS FOR THIS SIR!
 		Timer.schedule (new Task () { 
 			@Override public void run () {
 				System.out.println ("SPEEDUP") ;
 				increaseSpeed (1) ;
 				}
 		} , timedelay, timedelay) ; // first is delay to starting in seconds, second is time in between each tick in seconds
+	}*/
+	
+	public void nukeEnemies () { // THANKS FOR THIS SIR!
+		Timer.schedule (new Task () { 
+			@Override public void run () {
+				System.out.println ("NUKE RUNNING") ;
+				for (Enemy e : enemies) {
+						e.loseHp (10) ;
+				}
+				}
+		} , 0, 1, 9) ;
 	}
 	
 	public void seconds () { // IGNORE THIS ITS JUST FOR TESTING PURPOSES
@@ -145,14 +151,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void startSpeedTimer () {
-		speeduptimer.schedule(runSpeedTimer(), timedelay, timedelay) ;
-	}
-	
-	public void endSpeedTimer () {
-		speeduptimer.clear () ;
-	}
-	
 	public Task runSpeedTimer () {
 		return (new Task () { 
 			@Override public void run () {
@@ -161,26 +159,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				}
 		}) ;
 	}
-	
-	/*public Task nukeEnemies () {
-		return (new Task () {
-			@Override public void run () {
-				for (int i = 0 ; i < enemies.length ; i++) {
-					if (enemies [i].dying == false) {
-						enemies [i].loseHp (10) ;
-					}
-				}
-			}
-		}) ;
-	}
-	
-	public void startNuke () {
-		nuke.schedule(nukeEnemies (), 0, 1) ;
-	}
-	
-	public void endNuke () {
-		nuke.clear () ;
-	}*/
 	
 	public void createPlatforms() {
 		platforms = new ArrayList<Platform>();
@@ -326,12 +304,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void update() {
 		drawLives();
 		
+		if (speeduptimer.getSpeed () > oldtimecount) {
+			increaseSpeed (1) ;
+			oldtimecount += 1 ;
+		}
+		
 		if (player.dying()) {
 			if (player.getLives() > 0) {
 				//reset(false);
 			}
 			else {
-				reset(true) ;
+				reset(true, true) ;
 				page = losenum ;
 			}
 			return;
@@ -377,6 +360,11 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE) && player.getLaserStrength() > 0){
 			player.shoot () ;
+		}
+		
+		if (Gdx.input.isKeyJustPressed(Keys.N) && player.nukeEnemies == true) {
+			nukeEnemies () ;
+			player.nukeEnemies = false ;
 		}
 		
 		if (player.deactivateHoles == false) {
@@ -477,7 +465,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void startMenu() {
 		page = title.updatePage () ;
 		if (page == gamenum) {
-			reset(true);
+			reset(true, false);
 		}
 	}
 	
@@ -490,7 +478,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		shop.update (money) ;
 		page = shop.giveNextScreen () ;
 		if (page == gamenum) {
-			reset(true);
+			reset(true, false);
 		}
 	}
 	
@@ -508,7 +496,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		lose.update () ;
 		page = lose.giveNextScreen () ;
 		if (page == gamenum) {
-			reset(true);
+			reset(true, true);
 		}
 	}
 	
@@ -604,7 +592,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		makeEnemies () ;
 	}
 	
-	public void updateLasers () { // ADD! PLAYER! LASERS!
+	public void updateLasers () {
 		for (int i = 0 ; i < enemies.length ; i++) {
 			if (enemies [i].getType () == 3) { // a golem
 				ArrayList <Laser> elasers = enemies [i].getLasers () ;
@@ -644,7 +632,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void reset(boolean gameOver) {
+	public void reset(boolean gameOver, boolean resetUps) {
 		background.setX(0);
 		background2.setX(3430);
 		floor.setX(0);
@@ -654,15 +642,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		generateCourse(); //change platform and hole positions after death
 		if (gameOver) {
 			player.resetLives();
-			player.resetOneTimeUps();
+			if (resetUps) {
+				player.resetOneTimeUps();
+			}
 			score = 0;
 			for (int i = 0 ;  i < enemies.length ; i++) {
 				enemies [i] = null ;
 			}
 			makeEnemies () ;
-			endSpeedTimer () ;
 	    	updateTimeDelay () ;
-	    	startSpeedTimer () ;
+	    	speeduptimer = null ;
+	    	speeduptimer = new TimerRunner (timedelay) ;
 		}
 		else {
 			page = gamenum;
