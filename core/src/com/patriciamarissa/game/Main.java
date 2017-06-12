@@ -41,7 +41,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	//MainGame game ;
 	PauseScreen pause ;
 	
-	int titlenum, gamenum, shopnum, controlsnum, creditsnum, pausenum, losenum, storynum ;
+	int titleNum, gameNum, shopNum, controlsNum, creditsNum, pauseNum, loseNum, storyNum, ynNum ;
 
 	ShapeRenderer rend;
 	Texture [] nums;
@@ -102,6 +102,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		losenum = 7 ;
 		storynum = 8;
 		page = gamenum;
+		ynNum = 9;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
@@ -304,6 +305,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			
 		}
 		else if (page == shopnum) {
+		else if (page == ynNum) {
+			areYouSureMenu();
+		}
 			shopMenu () ;
 			
 		}
@@ -338,7 +342,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 		
 		updatePage();
-		if (page == pausenum) {
+		if (page == pauseNum || page == ynNum) {
 			return;
 		}
 		
@@ -480,6 +484,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void pauseMenu() {
 		pause.update () ;
 		page = pause.giveNextScreen () ;
+	}
+	
+	public void areYouSureMenu() {
+		page = pause.areYouSure();
 	}
 	
 	public void shopMenu () {

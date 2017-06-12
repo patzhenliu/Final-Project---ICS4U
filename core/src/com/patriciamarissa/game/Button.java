@@ -84,4 +84,8 @@ public class Button {
     	batch.draw(img, x, y);
     	batch.end();
 	}
+	
+	public void setPageNum(int p) {
+		pageNum = p;
+	}
 }

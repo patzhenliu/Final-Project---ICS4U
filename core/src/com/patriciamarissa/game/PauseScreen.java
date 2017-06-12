@@ -8,33 +8,40 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public class PauseScreen {
 	
 	private Batch batch ;
-	private Texture pauseMenu;
-	private final int title, game, shop, controls, pause ;
+	private Texture pauseMenu, aysMenu;
+	private final int TITLE, GAME, SHOP, CONTROLS, PAUSE, YESNO;
 	
 	private int buttonNum;
-	private Button[] buttons;
+	private Button[] buttons, buttons2;
 	private Button homeButton;
 	private Button playButton;
 	private Button controlsButton;
 	private Button shopButton;
+	private Button yesButton, noButton;
 	
 	public PauseScreen (Batch batch) {
-		title = 1 ;
-		game = 2 ;
-		shop = 3 ;
-		controls = 4 ;
-		pause = 6 ;
+		TITLE = 1 ;
+		GAME = 2 ;
+		SHOP = 3 ;
+		CONTROLS = 4 ;
+		PAUSE = 6 ;
+		YESNO = 9;
 		this.batch = batch ;
 		
 		
 		homeButton = new Button(batch, new Texture(Gdx.files.internal("menus/pause home w.png")),
-				new Texture(Gdx.files.internal("menus/pause home r.png")), 285, 273, title);
+				new Texture(Gdx.files.internal("menus/pause home r.png")), 285, 273, YESNO);
 		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/pause play w.png")),
-				new Texture(Gdx.files.internal("menus/pause play r.png")), 410, 273, game);
+				new Texture(Gdx.files.internal("menus/pause play r.png")), 410, 273, GAME);
 		shopButton = new Button(batch, new Texture(Gdx.files.internal("menus/pause shop w.png")),
-				new Texture(Gdx.files.internal("menus/pause shop r.png")), 500, 273, shop);
+				new Texture(Gdx.files.internal("menus/pause shop r.png")), 500, 273, YESNO);
 		controlsButton = new Button(batch, new Texture(Gdx.files.internal("menus/pause controls w.png")),
-				new Texture(Gdx.files.internal("menus/pause controls r.png")), 610, 273, controls);
+				new Texture(Gdx.files.internal("menus/pause controls r.png")), 610, 273, YESNO);
+		
+		yesButton = new Button(batch, new Texture(Gdx.files.internal("menus/yes w.png")),
+				new Texture(Gdx.files.internal("menus/yes r.png")), 370, 264, PAUSE);
+		noButton = new Button(batch, new Texture(Gdx.files.internal("menus/no w.png")),
+				new Texture(Gdx.files.internal("menus/no r.png")), 540, 267, PAUSE);
 		
 		buttons = new Button[4];
 		buttons[0] = homeButton;
@@ -42,8 +49,12 @@ public class PauseScreen {
 		buttons[2] = shopButton;
 		buttons[3] = controlsButton;
 		
+		buttons2 = new Button[2];
+		buttons2[0] = yesButton;
+		buttons2[1] = noButton;
 		
-		pauseMenu = new Texture(Gdx.files.internal("menus/pause blank.png"));;
+		aysMenu = new Texture(Gdx.files.internal("menus/are you sure blank.png"));
+		pauseMenu = new Texture(Gdx.files.internal("menus/pause blank.png"));
 	}
 	
 	public void draw () {
@@ -58,9 +69,9 @@ public class PauseScreen {
         buttons[buttonNum].drawHoverImg();
 	}
 	
-	public void updatePage () {
+	public void updatePage (Button[] buttonList) {
 		if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-			if (buttonNum + 1 < buttons.length) {
+			if (buttonNum + 1 < buttonList.length) {
 				buttonNum += 1;
 			}
 			else {
@@ -72,20 +83,48 @@ public class PauseScreen {
 				buttonNum -= 1;
 			}
 			else {
-				buttonNum = buttons.length - 1;
+				buttonNum = buttonList.length - 1;
 			}
 		}
 	}
 	
 	public void update () {
-		updatePage () ;
+		updatePage (buttons) ;
 		draw () ;
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			if (buttons[buttonNum].equals(homeButton)) {
+				yesButton.setPageNum(TITLE);
+			}
+			else if (buttons[buttonNum].equals(shopButton)) {
+				yesButton.setPageNum(SHOP);
+			}
+			else if (buttons[buttonNum].equals(controlsButton)) {
+				yesButton.setPageNum(CONTROLS);
+			}
 			return buttons[buttonNum].getPageNum();
 		}
-			return pause ;
+			return PAUSE ;
+	}
+	
+	public int areYouSure() {
+		updatePage(buttons2);
+		
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		batch.begin();
+        batch.draw(aysMenu, 270, 250);
+        batch.end();
+        
+        for (Button b: buttons2) {
+        	b.draw();
+        }
+        buttons2[buttonNum].drawHoverImg();
+        
+        if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+        	return buttons2[buttonNum].getPageNum();
+		}
+		return YESNO;
 	}
 }
