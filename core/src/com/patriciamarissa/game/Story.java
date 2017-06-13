@@ -11,17 +11,28 @@ public class Story implements InputProcessor{
 	private Batch batch;
 	private Texture [] pages;
 	private int pageNum;
-	private final int totPages = 1;
+	private final int totPages = 100;
+	private Texture waitImg;
 	
 	public Story (Batch batch) {
 		pages = new Texture [totPages] ;
 		this.batch = batch ;
 		
+		waitImg = new Texture(Gdx.files.internal("menus/wait.png"));
+		
+		
 		for (int i = 0; i < totPages; i++) {
+			drawWaitImg(); //this doesn't work FOR SOME REASON >:(
 			pages [i] = new Texture(Gdx.files.internal("story/story" + i +".png"));
 		}
 		
 		pageNum = 0;
+	}
+	
+	public void drawWaitImg() {
+		batch.begin();
+		batch.draw(waitImg, 0, 0);
+		batch.end();
 	}
 	
 	public void draw () {

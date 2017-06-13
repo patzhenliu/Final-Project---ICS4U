@@ -110,7 +110,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		lose = new LoseScreen (batch) ;
 		control = new ControlsScreen (batch) ;
 		credits = new CreditsScreen (batch) ;
-		story = new Story(batch);
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -319,9 +318,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			creditsScreen () ;
 			
 		}
-		else if (page == storynum) {
-			story.update();
-			page = story.giveNextScreen();
+		else if (page == storyNum) {
+			
+			storyPage();
 			//resetSpeed(); //will put if statement or something because you dont need to do this every time
 			
 		}
@@ -523,6 +522,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		if (page == gamenum) {
 			reset(true);
 		}
+	}
+	
+	public void storyPage() {
+		//System.out.println("HERE");
+		
+		if (story == null) {
+			story = new Story(batch);
+		}
+		story.update();
+		page = story.giveNextScreen();
+		
 	}
 	
 	public void drawPlatforms() {
