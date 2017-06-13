@@ -98,7 +98,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		lose = new LoseScreen (batch) ;
 		control = new ControlsScreen (batch) ;
 		credits = new CreditsScreen (batch) ;
-		story = new Story(batch);
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -261,10 +260,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			
 		}
 		else if (page == storyNum) {
-			story.update();
-			page = story.giveNextScreen();
+			storyPage();
 			//resetSpeed(); //will put if statement or something because you dont need to do this every time
-			
 		}
 	}
 	
@@ -273,7 +270,16 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		if (player.dying()) {
 			if (player.getLives() > 0) {
-				//reset(false);
+				if (player.getDyingSpeed() == 0) {
+					for (Hole h: holes) {
+						
+						if (h.collide(100, 100, player.getWidth(), player.getHeight())) {
+							System.out.println("HOLE COLLISION");
+							h.randPosition(1000);
+							break;
+						}
+					}
+				}
 			}
 			else {
 				reset(true, true) ;
@@ -462,6 +468,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		if (page == gameNum) {
 			reset(true, true);
 		}
+	}
+	
+	public void storyPage() {
+		//System.out.println("HERE");
+		
+		if (story == null) {
+			story = new Story(batch);
+		}
+		story.update();
+		page = story.giveNextScreen();
+		
 	}
 	
 	public void drawPlatforms() {

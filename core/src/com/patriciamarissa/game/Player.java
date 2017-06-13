@@ -90,6 +90,7 @@ public class Player {
 		facingForwards = true;
 		isDead = false;
 		dyingSpeed = 20;
+		
 		if (powerups [4] == 1) {
 			deactivateFire = true ;
 		}
@@ -326,5 +327,9 @@ public class Player {
 	
 	public int getLaserStrength () {
 		return powerups [0] ;
+	}
+	
+	public int getDyingSpeed() {
+		return dyingSpeed;
 	}
 }

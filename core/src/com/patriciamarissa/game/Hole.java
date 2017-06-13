@@ -73,6 +73,12 @@ public class Hole {
 			return rect.overlaps(holeRect);
 		}
 		
+		public boolean collide(int x, int y, int w, int h){ ///should only be feet colliding not anything
+			Rectangle rect = new Rectangle(x, y, w, h);
+			Rectangle holeRect = new Rectangle(holeSprite.getX() + w, holeSprite.getY(), holeSprite.getWidth() - w * 2, 120);
+			return rect.overlaps(holeRect);
+		}
+		
 		public boolean collide(Sprite enemySprite, float ey){ ///should only be feet colliding not anything
 			Rectangle rect = new Rectangle(enemySprite.getX(), ey, enemySprite.getWidth(), enemySprite.getHeight());
 			Rectangle holeRect = new Rectangle(holeSprite.getX(), holeSprite.getY(), holeSprite.getWidth(), 120);
