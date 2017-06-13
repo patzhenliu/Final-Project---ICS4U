@@ -92,6 +92,7 @@ public class Player {
 		facingForwards = true;
 		isDead = false;
 		dyingSpeed = 20;
+		
 		if (powerups [4] == 1) {
 			slowScreen = true ;
 		}
@@ -328,4 +329,9 @@ public class Player {
 	public int getMoneyMult () {
 		return powerups [3] ;
 	}
+	
+	public int getDyingSpeed() {
+		return dyingSpeed;
+	}
+	
 }

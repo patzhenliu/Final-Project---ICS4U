@@ -332,7 +332,16 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		if (player.dying()) {
 			if (player.getLives() > 0) {
-				//reset(false);
+				if (player.getDyingSpeed() == 0) {
+					for (Hole h: holes) {
+						
+						if (h.collide(100, 100, player.getWidth(), player.getHeight())) {
+							System.out.println("HOLE COLLISION");
+							h.randPosition(1000);
+							break;
+						}
+					}
+				}
 			}
 			else {
 				reset(true) ;

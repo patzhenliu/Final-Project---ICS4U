@@ -47,11 +47,17 @@ public class Story implements InputProcessor{
 		if (pageNum > totPages - 1) {
 			return 1;
 		}
-		else if (touchDown(Gdx.input.getX(0), Gdx.input.getY(0), 0, 1)) {
+		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
 			if (pageNum == totPages - 1) {
 				return 1;
 			}
 			pageNum += 1;
+		}
+		else if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+			if (pageNum - 1 >= 0) {
+				pageNum -= 1;
+			}
+			
 		}
 		return 8;
 	}
