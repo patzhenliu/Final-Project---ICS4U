@@ -22,8 +22,11 @@ public class Shop {
 	private Sprite[] sprites;
 	private int spriteCount;
 	private int animationCount;
+	private int coins ;
 	
 	private Texture speech;
+	private Texture coinsImg ;
+	private Texture [] nums;
 	private int [] pricelist ;
 	private int [] boughtlist ;
 	private Upgrade[] upgrades;
@@ -31,12 +34,11 @@ public class Shop {
 	int shopPage;
 	
 	/* lasers (upgradable to 3) (10, 20, 40)
-	 * more life (upgradable to 6, but starts at 3) (10, 20, 40)
+	 * more life (upgradable to 6, but starts at 3) (20, 40, 80)
 	 * higher jump (upgradable twice, or to whatever point hits top of screen) (10, 20, 40)
-	 * increase money (upgradable) (20, 40, 60)
+	 * increase money (upgradable) (20, 40, 80)
 	 * remove fire (one time use) (10)
 	 * remove holes (one time use) (10)
-	 * GOING TO HAVE TO CHANGE LION TO ACCOMODATE THE HOLE REMOVAL. STILL NEED TO FIX LION AND GARGOYLE MOVEMENT ANYWAYS.
 	 */
 	
 	public Shop(Batch batch) {
@@ -45,9 +47,17 @@ public class Shop {
 		title = 1 ;
 		game = 2 ;
 		shop = 3 ;
+		coins = 0 ;
+		
+		nums = new Texture[10];
+		for(int i = 0; i < nums.length; i++){
+		    String fileName = "text/" + i + ".png";
+		    nums[i] = new Texture(Gdx.files.internal(fileName));
+		}
 		
 		spritePage = new Texture(Gdx.files.internal("sprites/shopGhost.png"));
 		speech = new Texture(Gdx.files.internal("sprites/shopSpeech.png"));
+		coinsImg = new Texture (Gdx.files.internal("menus/coins text for shop.png")) ;
 
 		sprites = new Sprite[5];
 		sprites[0] = new Sprite(spritePage, 190, 278, 130, 120);
@@ -88,6 +98,18 @@ public class Shop {
 		}*/
 	}
 	
+	public void drawNum(int xDisplace, int y, int num) {
+		batch.begin();
+		for(int i = 0; i < Integer.toString(num).length(); i++) {
+			batch.draw(nums[Integer.parseInt(Integer.toString(num).substring(i, i + 1))], i * 20 + xDisplace, y);
+        }
+		batch.end();
+	}
+	
+	public void updateCoins (int c) {
+		coins = c ;
+	}
+	
 	public void buy (int index, int [] powers) {
 		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, KILL FIRE, KILL HOLES
 		upgrades [index].buy () ;
@@ -107,6 +129,7 @@ public class Shop {
 	public void draw() {
 		batch.begin();
 	    batch.draw(shopImg, 0, 0);
+	    batch.draw(coinsImg, 10, 555) ;
 		batch.end();
 		
 		for (int i = shopPage * 8; i < shopPage* 8 + 8; i++) {
@@ -116,6 +139,7 @@ public class Shop {
 			upgrades[i].draw();
 		}
 		drawGhost();
+		drawNum (150, 560, coins) ;
 	}
 	
 	public void update (int playermon) { // needs the player to give an upgrade in case an upgrade is purchased

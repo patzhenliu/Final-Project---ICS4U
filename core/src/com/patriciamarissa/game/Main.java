@@ -272,7 +272,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			if (player.getLives() > 0) {
 				if (player.getDyingSpeed() == 0) {
 					for (Hole h: holes) {
-						
 						if (h.collide(100, 100, player.getWidth(), player.getHeight())) {
 							System.out.println("HOLE COLLISION");
 							h.randPosition(1000);
@@ -623,6 +622,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		generateCourse(); //change platform and hole positions after death
 		if (gameOver) {
 			lose.updateCoins (money) ;
+			shop.updateCoins(money) ;
 			if ((score - score%10) > lose.getHighScore ()) {
 				lose.updateHighScore(score - score%10);
 			}
