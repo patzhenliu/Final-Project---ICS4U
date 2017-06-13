@@ -433,6 +433,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	
 	public void areYouSureMenu() {
 		page = pause.areYouSure();
+		if (page == controlsNum || page == titleNum || page == shopNum) {
+			reset (true, true) ;
+		}
 	}
 	
 	public void shopMenu () {
@@ -602,6 +605,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		player.draw();
 		generateCourse(); //change platform and hole positions after death
 		if (gameOver) {
+			lose.updateCoins (money) ;
+			if ((score - score%10) > lose.getHighScore ()) {
+				lose.updateHighScore(score - score%10);
+			}
 			player.resetLives();
 			if (resetUps) {
 				player.resetOneTimeUps();

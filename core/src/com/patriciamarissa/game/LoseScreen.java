@@ -11,8 +11,9 @@ public class LoseScreen {
 	private Batch batch;
 	private Texture background ;
 	private Texture page ;
-	private Texture highscore ;
+	private Texture highscoreandcoins ;
 	private Texture loseMenu;
+	private Texture [] nums;
 	
 	private Button playButton;
 	private Button shopButton;
@@ -20,13 +21,23 @@ public class LoseScreen {
 	
 	private Button[] buttons;
 	private int buttonNum;
+	private int highscore ;
+	private int coins ;
 	
 	public LoseScreen (Batch batch) {
 		title = 1 ;
 		game = 2 ;
 		shop = 3 ;
 		lose = 7 ;
+		highscore = 0 ;
+		coins = 0 ;
 		this.batch = batch ;
+		
+		nums = new Texture[10];
+		for(int i = 0; i < nums.length; i++){
+		    String fileName = "text/" + i + ".png";
+		    nums[i] = new Texture(Gdx.files.internal(fileName));
+		}
 		
 		buttonNum = 0;
 		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/go again w.png")),
@@ -44,14 +55,14 @@ public class LoseScreen {
 		
 		loseMenu = new Texture(Gdx.files.internal("menus/lose blank.png"));
 		background = new Texture(Gdx.files.internal("backgrounds/losebg.png"));
-		highscore = new Texture(Gdx.files.internal("menus/highscore and cc.png"));
+		highscoreandcoins = new Texture(Gdx.files.internal("menus/highscore and cc.png"));
 	}
 	
 	public void draw () {
 		batch.begin();
 		batch.draw (background, 0, 0) ;
 	    batch.draw(loseMenu, 300, 50);
-	    batch.draw (highscore, 700, 0) ;
+	    batch.draw (highscoreandcoins, 700, 0) ;
 	    batch.end();
 	    
 	    playButton.draw();
@@ -59,6 +70,29 @@ public class LoseScreen {
 	    homeButton.draw();
 	    
 	    buttons[buttonNum].drawHoverImg();
+	    
+		drawNum (875, 90, coins) ;
+		drawNum (875, 20, highscore) ;
+	}
+	
+	public void drawNum(int xDisplace, int y, int num) {
+		batch.begin();
+		for(int i = 0; i < Integer.toString(num).length(); i++) {
+			batch.draw(nums[Integer.parseInt(Integer.toString(num).substring(i, i + 1))], i * 20 + xDisplace, y);
+        }
+		batch.end();
+	}
+	
+	public void updateHighScore (int hs) {
+		highscore = hs ;
+	}
+	
+	public void updateCoins (int c) {
+		coins = c ;
+	}
+	
+	public int getHighScore () {
+		return highscore ;
 	}
 	
 	public void updatePage () {
