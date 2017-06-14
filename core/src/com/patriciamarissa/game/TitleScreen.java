@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class TitleScreen {
 	
-	private final int title, game, shop, controls, credits ;
+	private final int title, game, shop, controls, credits, story ;
 	private Batch batch;
 	private int page ;
 	private Texture clickedPage;
@@ -48,6 +48,7 @@ public class TitleScreen {
 		shop = 3 ;
 		controls = 4 ;
 		credits = 5 ;
+		story = 8;
 		this.batch = batch ;
 		page = title;
 		
@@ -112,6 +113,9 @@ public class TitleScreen {
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			return buttons[buttonNum].getPageNum();
+		}
+		else if (Gdx.input.isKeyPressed(Keys.B) && Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+			return story;
 		}
 		return title;
 	}
