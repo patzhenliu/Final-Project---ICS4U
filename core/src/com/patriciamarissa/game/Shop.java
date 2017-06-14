@@ -12,7 +12,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Shop {
-	
+	// WHAT TO DO
+	// FIX PRICING
+	// FIX MONEY SPRITES
+	// UPDATE GHOST TEXT
 	private Batch batch;
 	private Texture shopImg;
 	private final int title, game, shop ;
@@ -30,8 +33,10 @@ public class Shop {
 	private int [] pricelist ;
 	private int [] boughtlist ;
 	private Upgrade[] upgrades;
+	private Button [] buttons ;
 	private final int numOfUpgrades = 6;
 	int shopPage;
+	int buttonNum ;
 	
 	/* lasers (upgradable to 3) (10, 20, 40)
 	 * more life (upgradable to 6, but starts at 3) (20, 40, 80)
@@ -77,6 +82,7 @@ public class Shop {
 		boughtlist = new int [6] ;
 		Arrays.fill(boughtlist, 0) ;
 		createUpgrades();
+		createButtons () ;
 		shopPage = 0;
 	}
 	
@@ -98,6 +104,18 @@ public class Shop {
 		}*/
 	}
 	
+	private void createButtons () {
+		buttonNum = 0;
+		buttons = new Button[numOfUpgrades];
+		
+		for(int i = 0; i < numOfUpgrades; i++) {
+			int ux = i % 4;
+			int uy = ((int)(i / 4) )% 2; 
+			buttons[i] = new Button(batch, new Texture(Gdx.files.internal("sprites/upgrade button.png")),
+					new Texture(Gdx.files.internal("sprites/upgrade button.png")), 120 + ux * 200, 300 - uy * 200, shop);
+		}
+	}
+	
 	public void drawNum(int xDisplace, int y, int num) {
 		batch.begin();
 		for(int i = 0; i < Integer.toString(num).length(); i++) {
@@ -110,20 +128,19 @@ public class Shop {
 		coins = c ;
 	}
 	
+	public void updateBoughtList (int [] playerlist) {
+		boughtlist = playerlist ;
+	}
+	
+	public void updatePlayersUpgrades (int [] playerlist) {
+		playerlist = boughtlist ;
+	}
+	
 	public void buy (int index, int [] powers) {
 		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, KILL FIRE, KILL HOLES
 		upgrades [index].buy () ;
 		powers [index] += 1 ;
-	}
-	
-	public int add (int playermoney, int c) {
-		playermoney += c ;
-		return playermoney ;
-	}
-	
-	public int deduct (int playermoney, int d) {
-		playermoney -= d ;
-		return playermoney ;
+		coins -= upgrades [index].price ;
 	}
 	
 	public void draw() {
@@ -142,6 +159,40 @@ public class Shop {
 		drawNum (150, 560, coins) ;
 	}
 	
+	public void updateButtons () {
+		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+			if (buttonNum - 1 >= 0) {
+				buttonNum -= 1;
+			}
+			else {
+				buttonNum = buttons.length - 1;
+			}
+		}
+		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+			if (buttonNum + 1 < buttons.length) {
+				buttonNum += 1;
+			}
+			else {
+				buttonNum = 0;
+			}
+		}
+		else if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+			if (buttonNum + 4 < buttons.length) {
+				buttonNum += 4;
+			}
+		}
+		else if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+			if (buttonNum - 4 >= 0) {
+				buttonNum -= 4;
+			}
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			if (upgrades[buttonNum].isBuyable ()) {
+				buy (buttonNum, boughtlist) ;
+			}
+		}
+	}
+	
 	public void update (int playermon) { // needs the player to give an upgrade in case an upgrade is purchased
 		// use mouse coordinates to figure out which img from the list to use
 		// if something is already bought, grey out the image and make it unclickable
@@ -151,10 +202,23 @@ public class Shop {
 			if (i >= upgrades.length) {
 				break;
 			}
-			upgrades[i].update (playermon);
+			upgrades[i].update (playermon) ;
 		}
-		animateGhost();
+		animateGhost() ;
+		updateButtons () ;
+		updateHoverSquare () ;
 		draw () ;
+	}
+	
+	public void updateHoverSquare () {
+		for (int i = 0 ; i < upgrades.length ; i++) {
+			if (buttonNum == i) {
+				upgrades [i].updateSquare(true);
+			}
+			else {
+				upgrades [i].updateSquare(false);
+			}
+		}
 	}
 	
 	public void drawGhost() {

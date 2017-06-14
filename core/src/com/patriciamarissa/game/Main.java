@@ -22,6 +22,15 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+/* OVERALL TO DO LIST
+ * FINISH THE SHOP
+ * FIX WHATEVER IS HAPPENING TO MONEY AND ENEMY GENERATION
+ * FIX THAT STUPID ISSUE WITH ENEMY BOUNDARIES BUT HONESTLY IS IT EVEN NOTICABLE AT THIS POINT
+ * ADD MUSIC
+ * COMMENTS
+ * THAT SHOULD BE IT? IDK ADD TO THIS AS YOU PLEASE
+ */
+
 public class Main extends ApplicationAdapter implements InputProcessor{
 	SpriteBatch batch;
 	Player player;
@@ -77,7 +86,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		createHoles();
 		makeEnemies () ;
 		isMoving = false;
-		money = 0;
+		money = 1000;
 		runTimer () ;
 		seconds () ;
 		
@@ -447,6 +456,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		shop.update (money) ;
 		page = shop.giveNextScreen () ;
 		if (page == gameNum) {
+			shop.updatePlayersUpgrades(player.getPowers());
 			reset(true, false);
 		}
 	}
@@ -630,6 +640,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			if (resetUps) {
 				player.resetOneTimeUps();
 			}
+			shop.updateBoughtList(player.getPowers());
 			score = 0;
 			for (int i = 0 ;  i < enemies.length ; i++) {
 				enemies [i] = null ;

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Upgrade {
 	private Batch batch;
-	private Texture square, cross, greycross;
+	private Texture square, hoversquare, currentsquare, cross, greycross;
 	int x, y, num, price, level;
 	private final int laser, life, jump, money, killf, killh ;
 	private boolean owned, owned2, owned3, affordable;
@@ -31,6 +31,8 @@ public class Upgrade {
 	public Upgrade(Batch batch, int x, int y, int num, int price, Texture image, Texture grey) {
 		this.batch = batch;
 		square = new Texture(Gdx.files.internal("sprites/upgrade.png"));
+		hoversquare = new Texture(Gdx.files.internal("sprites/upgradeHover.png"));
+		currentsquare = square ;
 		cross = new Texture(Gdx.files.internal("upgrades/crossout.png"));
 		greycross = new Texture(Gdx.files.internal("upgrades/crossout grey.png"));
 		mongrey2 = new Texture(Gdx.files.internal("upgrades/money 2 grey.png"));
@@ -70,7 +72,7 @@ public class Upgrade {
 	
 	public void draw() {
 		batch.begin();
-		batch.draw(square, x,  y);
+		batch.draw(currentsquare, x,  y);
 		batch.draw(cicon, x+40, y+40);
 		if (num == killf || num == killh) {
 			batch.draw (ccross, x+40, y+40) ;
@@ -80,6 +82,15 @@ public class Upgrade {
 	
 	public void update (int playermon) {
 		updateIcon (playermon) ;
+	}
+	
+	public void updateSquare (boolean selected) {
+		if (selected) {
+			currentsquare = hoversquare ;
+		}
+		else {
+			currentsquare = square ;
+		}
 	}
 	
 	public void updateIcon (int playermon) {
@@ -116,7 +127,7 @@ public class Upgrade {
 			ccross = cross ;
 			affordable = true ;
 		}
-		if (playermon < price || (owned == true && level == 1)) {
+		if (playermon < price || (owned == true && level == 1 && num > 3) || (level == 3 && owned3 == true)) {
 			cicon = greyver ;
 			if (num == money) {
 				if (level == 2) {
@@ -161,5 +172,9 @@ public class Upgrade {
 	
 	public boolean isBuyable () {
 		return affordable ;
+	}
+	
+	public int getType () {
+		return num ;
 	}
 }
