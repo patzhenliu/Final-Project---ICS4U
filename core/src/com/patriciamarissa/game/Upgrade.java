@@ -33,19 +33,19 @@ public class Upgrade {
 	public Upgrade(Batch batch, int x, int y, int price, Texture image, Texture grey) {
 		this.batch = batch;
 		square = new Texture(Gdx.files.internal("sprites/upgrade.png"));
-		cross = new Texture(Gdx.files.internal("upgrades/crossout.png"));
-		greycross = new Texture(Gdx.files.internal("upgrades/crossout grey.png"));
-		mongrey2 = new Texture(Gdx.files.internal("upgrades/money 2 grey.png"));
-		mongrey3 = new Texture(Gdx.files.internal("upgrades/money 2 grey.png"));
+		cross = new Texture(Gdx.files.internal("upgrades/icons/crossout.png"));
+		greycross = new Texture(Gdx.files.internal("upgrades/icons/crossout grey.png"));
+		mongrey2 = new Texture(Gdx.files.internal("upgrades/icons/money 2 grey.png"));
+		mongrey3 = new Texture(Gdx.files.internal("upgrades/icons/money 2 grey.png"));
 		
-		upmon2 = new Texture(Gdx.files.internal("upgrades/money 2.png"));
-		upmon3 = new Texture(Gdx.files.internal("upgrades/money 3.png"));
-		uplife2 = new Texture(Gdx.files.internal("upgrades/heart 2.png"));
-		uplife3 = new Texture(Gdx.files.internal("upgrades/heart 3.png"));
-		uplas2 = new Texture(Gdx.files.internal("upgrades/laser 2.png"));
-		uplas3 = new Texture(Gdx.files.internal("upgrades/laser 3.png"));
-		upjump2 = new Texture(Gdx.files.internal("upgrades/jump 2.png"));
-		upjump3 = new Texture(Gdx.files.internal("upgrades/jump 3.png"));
+		upmon2 = new Texture(Gdx.files.internal("upgrades/icons/money 2.png"));
+		upmon3 = new Texture(Gdx.files.internal("upgrades/icons/money 3.png"));
+		uplife2 = new Texture(Gdx.files.internal("upgrades/icons/heart 2.png"));
+		uplife3 = new Texture(Gdx.files.internal("upgrades/icons/heart 3.png"));
+		uplas2 = new Texture(Gdx.files.internal("upgrades/icons/laser 2.png"));
+		uplas3 = new Texture(Gdx.files.internal("upgrades/icons/laser 3.png"));
+		upjump2 = new Texture(Gdx.files.internal("upgrades/icons/jump 2.png"));
+		upjump3 = new Texture(Gdx.files.internal("upgrades/icons/jump 3.png"));
 		
 		laser = 0 ;
 		life = 1 ;

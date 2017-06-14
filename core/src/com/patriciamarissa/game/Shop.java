@@ -80,8 +80,8 @@ public class Shop {
 				int ux = i % 4;
 				int uy = ((int)(i / 4) )% 2; 
 				upgrades[i] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200, i,
-						new Texture(Gdx.files.internal("upgrades/upgrade" + i + ".png")),
-						new Texture(Gdx.files.internal("upgrades/grey" + i + ".png")));
+						new Texture(Gdx.files.internal("upgrades/icons/upgrade" + i + ".png")),
+						new Texture(Gdx.files.internal("upgrades/icons/grey" + i + ".png")));
 			}
 			/*in.close();
 		}
