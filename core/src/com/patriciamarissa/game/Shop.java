@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Shop {
 	private Batch batch;
-	private Texture shopImg;
+	private Texture shopImg, homeButton;
 	private final int title, game, shop ;
 
 	private Texture spritePage;
@@ -40,6 +40,7 @@ public class Shop {
 	public Shop(Batch batch) {
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
+		homeButton = new Texture(Gdx.files.internal("menus/returnHome.png"));
 		title = 1 ;
 		game = 2 ;
 		shop = 3 ;
@@ -163,6 +164,7 @@ public class Shop {
 		batch.begin();
 	    batch.draw(shopImg, 0, 0);
 	    batch.draw(coinsImg, 10, 555) ;
+	    batch.draw(homeButton, 0, 0);
 		batch.end();
 		
 		for (int i = shopPage * 8; i < shopPage* 8 + 8; i++) {
@@ -288,11 +290,11 @@ public class Shop {
 			spriteCount = 0;
 			return game ;
 		}
-		else if (Gdx.input.isKeyJustPressed(Keys.T)) {
+		else if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			spriteCount = 0;
 			return title ;
 		}
-		else if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+		/*else if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
 			if (shopPage > 0){
 				shopPage -= 1;
 			}
@@ -304,7 +306,7 @@ public class Shop {
 				shopPage += 1;
 			}
 			return shop;
-		}
+		}*/
 		else {
 			return shop ;
 		}

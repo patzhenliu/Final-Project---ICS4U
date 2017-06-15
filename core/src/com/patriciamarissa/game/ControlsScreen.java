@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class ControlsScreen {
 	private Batch batch;
-	private Texture shopImg;
+	private Texture shopImg, homeButton;
 	private final int title, game, controls ;
 	private int coins ;
 	
@@ -18,6 +18,7 @@ public class ControlsScreen {
 		// THIRD ONE IS PAGE EXPLAINATIONS
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
+		homeButton = new Texture(Gdx.files.internal("menus/returnHome.png"));
 		title = 1 ;
 		game = 2 ;
 		controls = 4 ;
@@ -26,6 +27,7 @@ public class ControlsScreen {
 	public void draw() {
 		batch.begin();
 	    batch.draw(shopImg, 0, 0);
+	    batch.draw(homeButton, 0 ,0);
 		batch.end();
 	}
 	
@@ -39,10 +41,7 @@ public class ControlsScreen {
 	}
 	
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (Gdx.input.isKeyJustPressed(Keys.G)) {
-			return game ;
-		}
-		else if (Gdx.input.isKeyJustPressed(Keys.T)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			return title ;
 		}
 		else {

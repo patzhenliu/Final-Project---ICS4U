@@ -1,0 +1,10 @@
+diff a/core/src/com/patriciamarissa/game/Money.java b/core/src/com/patriciamarissa/game/Money.java	(rejected hunks)
+@@ -84,7 +84,7 @@
+ 		batch.end();
+ 		spin();
+ 		if (spriteCount == 0) {
+-			spriteCount = currentSprites.length - 1;
++			spriteCount = sprites.length - 1;
+ 		}
+ 	}
+ 	
