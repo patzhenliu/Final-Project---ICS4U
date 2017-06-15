@@ -23,7 +23,6 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 /* OVERALL TO DO LIST
- * FINISH THE SHOP
  * FIX WHATEVER IS HAPPENING TO MONEY AND ENEMY GENERATION
  * FIX THAT STUPID ISSUE WITH ENEMY BOUNDARIES BUT HONESTLY IS IT EVEN NOTICABLE AT THIS POINT
  * ADD MUSIC
@@ -648,6 +647,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				enemies [i] = null ;
 			}
 			makeEnemies () ;
+			for (int i = 0 ; i < platforms.size () ; i++) {
+				platforms.get(i).updateMoneySprites (player.getMoneyMult()) ;
+			}
 		}
 		else {
 			page = gameNum;

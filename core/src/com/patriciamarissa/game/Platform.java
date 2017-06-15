@@ -135,6 +135,12 @@ public class Platform {
 		return false;
 	}
 	
+	public void updateMoneySprites (int moneymult) {
+		for (int i = 0; i < moneyList.size(); i++) {
+			moneyList.get(i).updateSprite (moneymult);
+		}
+	}
+	
 	public boolean fireCollision(Player player) { ///NEEDS WORK
 		for (int i = 0; i < fireList.size(); i++) {
 			if (fireList.get(i).collide(player)) {

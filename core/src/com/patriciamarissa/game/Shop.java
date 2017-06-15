@@ -1,9 +1,6 @@
 package com.patriciamarissa.game;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
-import java.io.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -12,8 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Shop {
-	// WHAT TO DO
-	// FIX MONEY SPRITES
 	private Batch batch;
 	private Texture shopImg;
 	private final int title, game, shop ;
@@ -21,7 +16,6 @@ public class Shop {
 	private Texture spritePage;
 	private Sprite ghostSprite;
 	private Sprite [] sprites;
-	//private Texture [] speech ;
 	private Texture [] lifespeech ;
 	private Texture [] jumpspeech ;
 	private Texture [] laserspeech ;
@@ -42,14 +36,6 @@ public class Shop {
 	private final int numOfUpgrades = 6;
 	int shopPage;
 	int buttonNum ;
-	
-	/* lasers (upgradable to 3) (10, 20, 40)
-	 * more life (upgradable to 6, but starts at 3) (20, 40, 80)
-	 * higher jump (upgradable twice, or to whatever point hits top of screen) (10, 20, 40)
-	 * increase money (upgradable) (20, 40, 80)
-	 * remove fire (one time use) (10)
-	 * remove holes (one time use) (10)
-	 */
 	
 	public Shop(Batch batch) {
 		this.batch = batch;

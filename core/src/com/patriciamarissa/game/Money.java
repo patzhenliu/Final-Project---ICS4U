@@ -88,6 +88,21 @@ public class Money {
 		}
 	}
 	
+	public void updateSprite (int moneymult) {
+		if (moneymult == 1) {
+			currentSprites = upsprs1 ;
+			currentSprite = currentSprites [0] ;
+		}
+		if (moneymult == 2) {
+			currentSprites = upsprs2 ;
+			currentSprite = currentSprites [0] ;
+		}
+		if (moneymult == 3) {
+			currentSprites = upsprs3 ;
+			currentSprite = currentSprites [0] ;
+		}
+	}
+	
 	
 	public void spin() {
 		if (spriteCount > 0) {
