@@ -36,7 +36,7 @@ public class Upgrade {
 		cross = new Texture(Gdx.files.internal("upgrades/icons/crossout.png"));
 		greycross = new Texture(Gdx.files.internal("upgrades/icons/crossout grey.png"));
 		mongrey2 = new Texture(Gdx.files.internal("upgrades/icons/money 2 grey.png"));
-		mongrey3 = new Texture(Gdx.files.internal("upgrades/icons/money 2 grey.png"));
+		mongrey3 = new Texture(Gdx.files.internal("upgrades/icons/money 3 grey.png"));
 		
 		upmon2 = new Texture(Gdx.files.internal("upgrades/icons/money 2.png"));
 		upmon3 = new Texture(Gdx.files.internal("upgrades/icons/money 3.png"));
@@ -153,13 +153,8 @@ public class Upgrade {
 			owned3 = true ;
 		}
 		if (num < 4 && level != 3) {
-			levelUp () ;
+			level += 1 ;
 		}
-	}
-	
-	public void levelUp () {
-		level += 1 ;
-		updatePrice () ;
 	}
 	
 	public void updatePrice () {

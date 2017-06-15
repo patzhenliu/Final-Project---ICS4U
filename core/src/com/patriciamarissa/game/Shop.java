@@ -13,9 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Shop {
 	// WHAT TO DO
-	// FIX PRICING
 	// FIX MONEY SPRITES
-	// UPDATE GHOST TEXT
 	private Batch batch;
 	private Texture shopImg;
 	private final int title, game, shop ;
@@ -117,6 +115,7 @@ public class Shop {
 		
 		firespeech = new Texture(Gdx.files.internal("upgrades/Newspeech/fireSB.png")) ;
 		holespeech = new Texture(Gdx.files.internal("upgrades/Newspeech/holeSB.png")) ;
+		soldout = new Texture(Gdx.files.internal("upgrades/Newspeech/soldOutSB.png")) ;
 		
 		currentspeech = laserspeech [0] ;
 	}
@@ -169,6 +168,9 @@ public class Shop {
 		upgrades [index].buy () ;
 		powers [index] += 1 ;
 		coins -= upgrades [index].price ;
+		if (index < 4) {
+			upgrades [index].updatePrice () ;
+		}
 	}
 	
 	public void draw() {
@@ -215,7 +217,7 @@ public class Shop {
 			}
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			if (upgrades[buttonNum].isBuyable ()) {
+			if (upgrades[buttonNum].isBuyable () == true) {
 				buy (buttonNum, boughtlist) ;
 			}
 		}
@@ -235,6 +237,7 @@ public class Shop {
 		animateGhost() ;
 		updateButtons () ;
 		updateHoverSquare () ;
+		updateGhostText () ;
 		draw () ;
 	}
 	
@@ -246,6 +249,30 @@ public class Shop {
 			else {
 				upgrades [i].updateSquare(false);
 			}
+		}
+	}
+	
+	public void updateGhostText () {
+		if (buttonNum == 0) {
+			currentspeech = laserspeech [upgrades [buttonNum].level - 1]; 
+		}
+		else if (buttonNum == 1) {
+			currentspeech = lifespeech [upgrades [buttonNum].level - 1]; 
+		}
+		else if (buttonNum == 2) {
+			currentspeech = jumpspeech [upgrades [buttonNum].level - 1]; 
+		}
+		else if (buttonNum == 3) {
+			currentspeech = moneyspeech [upgrades [buttonNum].level - 1]; 
+		}
+		else if (buttonNum == 4) {
+			currentspeech = firespeech ;
+		}
+		else if (buttonNum == 5) {
+			currentspeech = holespeech ;
+		}
+		if (upgrades [buttonNum].isBuyable () == false) {
+			currentspeech = soldout ;
 		}
 	}
 	
