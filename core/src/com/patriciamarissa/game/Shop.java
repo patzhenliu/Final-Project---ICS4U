@@ -22,12 +22,19 @@ public class Shop {
 
 	private Texture spritePage;
 	private Sprite ghostSprite;
-	private Sprite[] sprites;
+	private Sprite [] sprites;
+	//private Texture [] speech ;
+	private Texture [] lifespeech ;
+	private Texture [] jumpspeech ;
+	private Texture [] laserspeech ;
+	private Texture [] moneyspeech ;
+	private Texture firespeech ;
+	private Texture holespeech ;
+	private Texture currentspeech ;
+	private Texture soldout ;
 	private int spriteCount;
 	private int animationCount;
 	private int coins ;
-	
-	private Texture speech;
 	private Texture coinsImg ;
 	private Texture [] nums;
 	private int [] pricelist ;
@@ -61,7 +68,6 @@ public class Shop {
 		}
 		
 		spritePage = new Texture(Gdx.files.internal("sprites/shopGhost.png"));
-		speech = new Texture(Gdx.files.internal("sprites/shopSpeech.png"));
 		coinsImg = new Texture (Gdx.files.internal("menus/coins text for shop.png")) ;
 
 		sprites = new Sprite[5];
@@ -81,27 +87,49 @@ public class Shop {
 		pricelist [3] = 20 ; // increase money
 		boughtlist = new int [6] ;
 		Arrays.fill(boughtlist, 0) ;
-		createUpgrades();
+		createUpgrades() ;
 		createButtons () ;
+		createSpeech () ;
 		shopPage = 0;
 	}
 	
-	private void createUpgrades() {
-		upgrades = new Upgrade[numOfUpgrades];
-		//try {
-			//Scanner in = new Scanner(new BufferedReader(new FileReader("upgrades/upgrades.txt")));
-			for(int i = 0; i < numOfUpgrades; i++) {
-				int ux = i % 4;
-				int uy = ((int)(i / 4) )% 2; 
-				upgrades[i] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200, i, pricelist [i],
-						new Texture(Gdx.files.internal("upgrades/icons/upgrade" + i + ".png")),
-						new Texture(Gdx.files.internal("upgrades/icons/grey" + i + ".png")));
-			}
-			/*in.close();
+	private void createSpeech () {
+		laserspeech = new Texture [3] ;
+		lifespeech = new Texture [3] ;
+		jumpspeech = new Texture [3] ;
+		moneyspeech = new Texture [3] ;
+		
+		for (int i = 0 ; i < laserspeech.length ; i++) {
+			laserspeech [i] = new Texture(Gdx.files.internal("upgrades/Newspeech/laser" + i + "SB.png")) ;
 		}
-		catch(IOException ex) {
-			System.out.println("upgrades.txt does not exist");
-		}*/
+		
+		for (int i = 0 ; i < lifespeech.length ; i++) {
+			lifespeech [i] = new Texture(Gdx.files.internal("upgrades/Newspeech/life" + i + "SB.png")) ;
+		}
+		
+		for (int i = 0 ; i < jumpspeech.length ; i++) {
+			jumpspeech [i] = new Texture(Gdx.files.internal("upgrades/Newspeech/jump" + i + "SB.png")) ;
+		}
+		
+		for (int i = 0 ; i < moneyspeech.length ; i++) {
+			moneyspeech [i] = new Texture(Gdx.files.internal("upgrades/Newspeech/money" + i + "SB.png")) ;
+		}
+		
+		firespeech = new Texture(Gdx.files.internal("upgrades/Newspeech/fireSB.png")) ;
+		holespeech = new Texture(Gdx.files.internal("upgrades/Newspeech/holeSB.png")) ;
+		
+		currentspeech = laserspeech [0] ;
+	}
+	
+	private void createUpgrades() {
+		upgrades = new Upgrade[numOfUpgrades] ;
+		for(int i = 0; i < numOfUpgrades; i++) {
+			int ux = i % 4;
+			int uy = ((int)(i / 4) )% 2; 
+			upgrades[i] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200, i, pricelist [i],
+					new Texture(Gdx.files.internal("upgrades/icons/upgrade" + i + ".png")),
+					new Texture(Gdx.files.internal("upgrades/icons/grey" + i + ".png")));
+		}
 	}
 	
 	private void createButtons () {
@@ -224,7 +252,7 @@ public class Shop {
 	public void drawGhost() {
 		batch.begin();
 		batch.draw(ghostSprite, 830, 350);
-		batch.draw(speech, 450, 450);
+		batch.draw(currentspeech, 450, 450);
 		batch.end();
 	}
 	
