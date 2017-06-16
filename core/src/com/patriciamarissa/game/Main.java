@@ -8,6 +8,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -68,6 +70,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	
 	boolean isMoving;
 	
+	Music gameMusic;
+	Sound moneySound;
+	
 	@Override
 	public void create () {
 		speed = 2; //speed on screen moving backwards
@@ -90,6 +95,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		money = 1000;
 		runTimer () ;
 		seconds () ;
+		
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
+		moneySound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
 		
 		titleNum = 1 ;
 		gameNum = 2 ;
@@ -247,6 +255,11 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		if (page == titleNum) {
 			startMenu();
 		}
+		
+		else if (page == gameNum) {
+			playGame(); 
+		}
+		
 		else if (page == loseNum) {
 			loseScreen ();
 			
@@ -271,13 +284,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 		else if (page == storyNum) {
 			storyPage();
-			//resetSpeed(); //will put if statement or something because you dont need to do this every time
 		}
 	}
 	
 	public void update() {
-		drawLives();
-		
 		if (player.dying()) {
 			if (player.getLives() > 0) {
 				if (player.getDyingSpeed() == 0) {
@@ -285,6 +295,13 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 						if (h.collide(100, 100, player.getWidth(), player.getHeight())) {
 							System.out.println("HOLE COLLISION");
 							h.randPosition(1000);
+							break;
+						}
+					}
+					for (Enemy e: enemies) {
+						if (e.collide(100, 100, player.getWidth(), player.getHeight())) {
+							//MAKE IT SO THAT IF THE ENEMY IS GOING TO COLLIDE WITH THE PLAYER DURING THE RESPAWN THAT THE ENEMY
+							//DISAPPEARS
 							break;
 						}
 					}
@@ -297,11 +314,72 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			return;
 		}
 		
-		updatePage();
-		if (page == pauseNum || page == ynNum) {
-			return;
+		updatePage();		
+	}
+	
+	public void increaseSpeed (int s) {
+		speed += s;
+		player.setSpeed(player.getSpeed() + s);
+		player.setMoveSpeed(speed);
+		floor.setMoveSpeed(speed);
+		floor2.setMoveSpeed(speed); //ignore that gap in the floor its not important
+		for (Platform p : platforms) {
+			p.setMoveSpeed(speed);
+		}
+		for (Hole h : holes) {
+			h.setMoveSpeed(speed);
+		}
+		for (Enemy e : enemies) {
+			e.setSpeed(speed);
+		}
+	}
+	
+	public void drawFloor () {
+		rend.begin (ShapeType.Filled) ;
+		rend.setColor (0, 0, 0, 255) ; // TEMP VALUES 255, 175, 229, 255
+		rend.rect (0, 0, 1200, 100) ;
+		rend.end () ;
+	}
+	
+
+	@Override
+	public void render () {
+		try{
+			Thread.sleep(33);
+				
+		}
+		catch(InterruptedException  ex) {
+			Thread.currentThread().interrupt();
 		}
 		
+		Gdx.gl.glClearColor(255, 255, 255, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		background.draw();
+		background2.draw();
+		floor.draw();
+		floor2.draw();
+		drawPlatforms();
+		if (player.deactivateHoles == false) {
+			drawHoles();
+		}
+		drawEnemies () ;
+		player.draw();
+		drawNum(900, 40, score - score%10);
+		drawNum(50, 550, money);
+		drawLives();
+		update();
+		
+	}
+	
+	public void startMenu() {
+		page = title.updatePage () ;
+		if (page == gameNum) {
+			reset(true, false);
+		}
+	}
+	
+	public void playGame() {
+		gameMusic.play();
 		boolean isOnPlatform = false;
 		for (int i = 0; i < platforms.size(); i++) {
 			//if (platforms.get(i).collideBottom(player)) {
@@ -314,6 +392,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				isOnPlatform = true;
 				if (platforms.get(i).moneyCollision(player)) {
 					money += player.getMoneyMult () + 1;
+					moneySound.play();
 				}
 				if (platforms.get(i).fireCollision(player) && player.deactivateFire == false) {
 					player.die();
@@ -378,66 +457,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				//e.die () ;
 				//e.loseHp(10); // just to ensure they die
 			}
-		}
-	}
-	
-	public void increaseSpeed (int s) {
-		speed += s;
-		player.setSpeed(player.getSpeed() + s);
-		player.setMoveSpeed(speed);
-		floor.setMoveSpeed(speed);
-		floor2.setMoveSpeed(speed); //ignore that gap in the floor its not important
-		for (Platform p : platforms) {
-			p.setMoveSpeed(speed);
-		}
-		for (Hole h : holes) {
-			h.setMoveSpeed(speed);
-		}
-		for (Enemy e : enemies) {
-			e.setSpeed(speed);
-		}
-	}
-	
-	public void drawFloor () {
-		rend.begin (ShapeType.Filled) ;
-		rend.setColor (0, 0, 0, 255) ; // TEMP VALUES 255, 175, 229, 255
-		rend.rect (0, 0, 1200, 100) ;
-		rend.end () ;
-	}
-	
-
-	@Override
-	public void render () {
-		try{
-			Thread.sleep(33);
-				
-		}
-		catch(InterruptedException  ex) {
-			Thread.currentThread().interrupt();
-		}
-		
-		Gdx.gl.glClearColor(255, 255, 255, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		background.draw();
-		background2.draw();
-		floor.draw();
-		floor2.draw();
-		drawPlatforms();
-		if (player.deactivateHoles == false) {
-			drawHoles();
-		}
-		drawEnemies () ;
-		player.draw();
-		drawNum(900, 40, score - score%10);
-		drawNum(50, 550, money);
-		update();
-		
-	}
-	
-	public void startMenu() {
-		page = title.updatePage () ;
-		if (page == gameNum) {
-			reset(true, false);
 		}
 	}
 	

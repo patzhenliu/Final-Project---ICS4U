@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -37,6 +39,11 @@ public class Shop {
 	int shopPage;
 	int buttonNum ;
 	
+	Music music;
+	Sound clickSound;
+	Sound buySound;
+	Sound brokeSound;
+	
 	public Shop(Batch batch) {
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
@@ -45,6 +52,12 @@ public class Shop {
 		game = 2 ;
 		shop = 3 ;
 		coins = 0 ;
+		
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		buySound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		brokeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		//I DIDNT PLAY MUSIC ANYWHERE YET
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){

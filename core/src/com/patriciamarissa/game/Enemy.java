@@ -450,6 +450,12 @@ public class Enemy {
 		return rect.overlaps(logRect);
 	}
 	
+	public boolean collide(int x, int y, int w, int h){ ///should only be feet colliding not anything
+		Rectangle rect = new Rectangle(x, y, w, h);
+		Rectangle enemyRect = new Rectangle(currentsprite.getX(), currentsprite.getY(), currentsprite.getWidth(), currentsprite.getHeight());
+		return rect.overlaps(enemyRect);
+	}
+	
 	public boolean isOnPlatform() {
 		return plat.collideTop(currentsprite);
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -39,6 +40,8 @@ public class Player {
 	boolean deactivateFire ;
 	
 	Hole hole;
+	Sound jumpSound;
+	Sound dieSound;
 	
 	public Player(Batch batch, int speed, int moveSpeed) {
 		this.batch = batch;
@@ -59,6 +62,9 @@ public class Player {
 		hole = null;
 		deactivateHoles = false ;
 		deactivateFire = false ;
+		
+		jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		dieSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
 	}
 	
 	public void importSprite() {
@@ -141,6 +147,7 @@ public class Player {
 	
 	public void jump() {
 		if (y <= groundLvl) {
+			jumpSound.play();
 			isJumpingUp = true;
 		}
 	}
@@ -214,6 +221,7 @@ public class Player {
 	}
 	
 	public void die(){
+		dieSound.play();
 		isDead = true;
 		lives -= 1 ;
 		if (x < 0) {
