@@ -97,7 +97,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		seconds () ;
 		
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
-		moneySound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		moneySound = Gdx.audio.newSound(Gdx.files.internal("sounds/money1.wav")); //temp
 		
 		titleNum = 1 ;
 		gameNum = 2 ;

@@ -39,7 +39,7 @@ public class LoseScreen {
 		this.batch = batch ;
 		
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
 		//I DIDNT PLAY ANY MUSIC ANYWHERE YET
 		
 		nums = new Texture[10];

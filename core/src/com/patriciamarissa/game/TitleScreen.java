@@ -59,7 +59,7 @@ public class TitleScreen {
 		
 		buttonNum = 0;
 		
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
 		
 		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/playButton.png")),

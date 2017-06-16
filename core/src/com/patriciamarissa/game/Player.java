@@ -63,8 +63,8 @@ public class Player {
 		deactivateHoles = false ;
 		deactivateFire = false ;
 		
-		jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
-		dieSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/jump1.wav")); //temp
+		dieSound = Gdx.audio.newSound(Gdx.files.internal("sounds/die.wav")); //temp
 	}
 	
 	public void importSprite() {

@@ -54,7 +54,7 @@ public class Shop {
 		coins = 0 ;
 		
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
 		buySound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
 		brokeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
 		//I DIDNT PLAY MUSIC ANYWHERE YET
