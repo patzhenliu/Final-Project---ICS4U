@@ -25,8 +25,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 /* OVERALL TO DO LIST
- * There's a problem with platform generation for me SAME OVER HERE BUT I GOT THE PLATFORM OVERLAP ISSUE AGAIN
- * FIX THAT STUPID ISSUE WITH ENEMY BOUNDARIES BUT HONESTLY IS IT EVEN NOTICABLE AT THIS POINT what?
+ * CLEAN UP CODE
  * COMMENTS yes maybe latr
  */
 
@@ -106,7 +105,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		score = 0;
 		speed = 2; //speed on screen moving backwards
-		money = 1000;
+		money = 0;
 		isMoving = false;
 
 		createHoles();
@@ -162,11 +161,11 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				type = 0 ;
 			}
 			if (type != 3) {
-				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
+				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes, player.deactivateHoles)) ;
 			}
 			else { // lion is always on floor
 				// CHANGE THE X SO IT AVOIDS THE HOLES
-				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
+				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes, player.deactivateHoles)) ;
 			}
 		}
 	}
@@ -419,8 +418,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void shopMenu () {
 		shop.update (money) ;
 		page = shop.giveNextScreen () ;
-		if (page == gameNum) {
+		if (page != shopNum) {
 			shop.updatePlayersUpgrades(player.getPowers());
+			money = shop.getMoney () ;
 			reset(true, false);
 		}
 	}
@@ -591,6 +591,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			player.resetLives();
 			if (resetUps) {
 				player.resetOneTimeUps();
+				shop.resetOneTimeUps () ;
 			}
 			shop.updateBoughtList(player.getPowers());
 			score = 0;

@@ -159,6 +159,20 @@ public class Shop {
 		playerlist = boughtlist ;
 	}
 	
+	public void resetOneTimeUps () {
+		int ux = 4 % 4;
+		int uy = ((int)(4 / 4) )% 2; 
+		int ux2 = 5 % 4;
+		int uy2 = ((int)(5 / 4) )% 2; 
+		upgrades [4] = new Upgrade(batch, 120 + ux * 200, 300 - uy * 200, 4, pricelist [4],
+				new Texture(Gdx.files.internal("upgrades/icons/upgrade" + 4 + ".png")),
+				new Texture(Gdx.files.internal("upgrades/icons/grey" + 4 + ".png")));
+		upgrades [5] = new Upgrade(batch, 120 + ux2 * 200, 300 - uy2 * 200, 5, pricelist [5],
+				new Texture(Gdx.files.internal("upgrades/icons/upgrade" + 5 + ".png")),
+				new Texture(Gdx.files.internal("upgrades/icons/grey" + 5 + ".png")));
+		updateUpgrades () ;
+	}
+	
 	public void buy (int index, int [] powers) {
 		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, KILL FIRE, KILL HOLES
 		upgrades [index].buy () ;
@@ -311,5 +325,9 @@ public class Shop {
 		else {
 			return shop ;
 		}
+	}
+	
+	public int getMoney () {
+		return coins ;
 	}
 }

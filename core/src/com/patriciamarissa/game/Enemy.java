@@ -29,8 +29,9 @@ public class Enemy {
 	boolean up ; // true up, false down
 	boolean dying ;
 	private int minX, maxX, minY, maxY;
+	private boolean areHolesDead ;
 	
-	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat, ArrayList <Hole> h) {
+	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat, ArrayList <Hole> h, boolean areHolesDead) {
 		dying = false ;
 		deathcount = 0 ;
 		spritecount = 0 ;
@@ -44,6 +45,7 @@ public class Enemy {
 		this.batch = batch ;
 		this.plat = plat ;
 		this.y = y ;
+		this.areHolesDead = areHolesDead ;
 		holes = h ;
 		lasers = new ArrayList <Laser> () ;
 		if (type == tree) { // stays still on the platform?
@@ -101,16 +103,7 @@ public class Enemy {
 			gl0 = new Texture  (Gdx.files.internal("sprites/fl8.png")) ;
 			sprites = new Sprite [9] ;
 			deathSprs = new Sprite [7] ;
-
-			//sprites [8] = new Sprite (spritesheet, 0, 552, 181, 152) ;
-			//sprites [7] = new Sprite (spritesheet, 187, 552, 181, 152) ;
-			//sprites [6] = new Sprite (spritesheet, 379, 552, 181, 152) ;
-			//sprites [5] = new Sprite (spritesheet, 567, 552, 181, 152) ;
-			//sprites [4] = new Sprite (spritesheet, 757, 552, 181, 152) ;
-			//sprites [3] = new Sprite (spritesheet, 947, 552, 181, 152) ; // THE FIRING
-			//sprites [2] = new Sprite (spritesheet, 1133, 523, 184, 181) ;
-			//sprites [1] = new Sprite (spritesheet, 1323, 552, 181, 152) ;
-			//sprites [0] = new Sprite (spritesheet, 1518, 552, 181, 152) ;
+			
 			sprites [8] = new Sprite (gl8) ;
 			sprites [7] = new Sprite (gl7) ;
 			sprites [6] = new Sprite (gl6) ;
@@ -169,29 +162,35 @@ public class Enemy {
 			maxX = plat.getX () + plat.getWidth () ;
 		}
 		else { // it's a lion.
-			boolean onleft = false ;
-			boolean onright = false ;
-			for (int i = 0 ; i < holes.size () ; i++) {
-				if (holes.get(i).getX () >= this.x + currentsprite.getWidth () && (onright == false || maxX > holes.get(i).getX ())) {
-					// if there's a hole on the right, register its x as the right boundary.
-					// if there's another hole on the right but one's already been registered, check the registered one.
-					// use the closer hole as the boundary.
-					maxX = holes.get(i).getX () ;
-					onright = true ;
-				}
-				if (holes.get(i).getX () + holes.get(i).getWidth () <= this.x && (onleft == false || minX < holes.get(i).getX () + holes.get(i).getWidth ())) {
-					// if there's a hole on the left, register its x as the right boundary.
-					// if there's another hole on the left but one's already been registered, check the registered one.
-					// use the closer hole as the boundary.
-					minX = holes.get(i).getX () + holes.get(i).getWidth () ;
-					onleft = true ;
-				}
-			}
-			if (onright == false) { // no holes on the right.
+			if (areHolesDead) {
+				minX = -1000 ;
 				maxX = 1000 ;
 			}
-			if (onleft == false) { // no holes on the left.
-				minX = 0 ;
+			else {
+				boolean onleft = false ;
+				boolean onright = false ;
+				for (int i = 0 ; i < holes.size () ; i++) {
+					if (holes.get(i).getX () >= this.x + currentsprite.getWidth () && (onright == false || maxX > holes.get(i).getX ())) {
+						// if there's a hole on the right, register its x as the right boundary.
+						// if there's another hole on the right but one's already been registered, check the registered one.
+						// use the closer hole as the boundary.
+						maxX = holes.get(i).getX () ;
+						onright = true ;
+					}
+					if (holes.get(i).getX () + holes.get(i).getWidth () <= this.x && (onleft == false || minX < holes.get(i).getX () + holes.get(i).getWidth ())) {
+						// if there's a hole on the left, register its x as the right boundary.
+						// if there's another hole on the left but one's already been registered, check the registered one.
+						// use the closer hole as the boundary.
+						minX = holes.get(i).getX () + holes.get(i).getWidth () ;
+						onleft = true ;
+					}
+				}
+				if (onright == false) { // no holes on the right.
+					maxX = 1000 ;
+				}
+				if (onleft == false) { // no holes on the left.
+					minX = 0 ;
+				}
 			}
 		}
 		if (type != gargoyle) { // the y vals of any enemy besides the gargoyles do not matter.
@@ -199,20 +198,8 @@ public class Enemy {
 			maxY = 100 ;
 		}
 		else { // it's a gargoyle.
-			boolean overhole = false ;
+			minY = 100 ;
 			maxY = 600 - (int) currentsprite.getHeight () ;
-			for (int i = 0 ; i < holes.size () ; i++) {
-				if (holes.get(i).isAligned (currentsprite, minX)) {
-					overhole = true ;
-					minY = 0 ;
-				}
-				/*if (holes.get(i).partialAlign (currentsprite,minX) <= 5) {
-					overhole = true ;
-				}*/
-			}
-			if (!overhole) {
-				minY = 100 ;
-			}
 		}
 	}
 	
@@ -220,24 +207,6 @@ public class Enemy {
 		if (type == gargoyle || type == lion) {
 			this.x = x ;
 		}
-		/*if (type == lion) {
-			boolean moved = false ;
-			for (int i = 0 ; i < holes.size () ; i++) {
-				if (holes.get(i).isAligned (currentsprite, x) && moved == false) { // the entire sprite is in the hole. shift it over by the hole's size.
-					int shiftover = holes.get(i).getX () + holes.get(i).getWidth () ;
-					this.x = x + shiftover + 5 ;
-					moved = true ;
-				}
-				else if (holes.get(i).partialAlign(currentsprite, x) != 0 && moved == false) { // the sprite is partially hanging into the hole.
-					int shiftover = holes.get(i).partialAlign(currentsprite, x) ;
-					this.x = x + shiftover ;
-					moved = true ;
-				}
-			}
-			if (moved == false) {
-				this.x = x ;
-			}
-		}*/
 		if (type == golem) { // this seems to center them. mostly.
 			this.x = x - 200 ;
 		}
@@ -247,7 +216,7 @@ public class Enemy {
 	}
 	
 	public void draw() {
-		currentsprite.setPosition(x,y); //:PP
+		currentsprite.setPosition(x,y);
 		batch.begin();
 		if (!isDead ()) {
 			currentsprite.draw(batch);
@@ -277,7 +246,7 @@ public class Enemy {
 		if (type == tree) {
 			maxX = minX + plat.getWidth () - (int) currentsprite.getWidth () ;
 		}
-		if (type == lion && maxX == 1000) { // if there wasn't a hole on the right, need to check if a new hole has appeared.
+		if (type == lion && maxX == 1000 && areHolesDead == false) { // if there wasn't a hole on the right, need to check if a new hole has appeared.
 			boolean onright = false ;
 			for (int i = 0 ; i < holes.size () ; i++) {
 				if (holes.get(i).getX () >= this.x + currentsprite.getWidth () && (onright == false || maxX > holes.get(i).getX ())) {
