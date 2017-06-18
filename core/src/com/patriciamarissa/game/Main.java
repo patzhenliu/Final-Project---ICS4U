@@ -491,15 +491,24 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void movePlatforms() {
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).move();
-			if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) {
+			if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) { // went off screen to left
 				int height = platforms.get(i).getY() ;
 				int index = i - 1 ;
 				if (i == 0) {
 					index = platforms.size () - 1 ;
 				}
-				platforms.set(i, new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth(), player.getMoneyMult(), player.deactivateFire)) ;
-				//boolean madeenemy ;
-				//for (int i = 0 ;)
+				Platform newplat = new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth(), player.getMoneyMult(), player.deactivateFire) ;
+				platforms.set(i, newplat) ;
+				boolean madeenemy = false ;
+				for (int j = 0 ; j < enemies.length ; j++) {
+					if (enemies [j] == null && madeenemy == false) {
+						int chance = rand.nextInt (3) ; // 1 in 4 chance an enemy will generate
+						if (chance == 1) {
+							makeEnemy (j, platforms.get(i)) ;
+							madeenemy = true ;
+						}
+					}
+				}
 			}
 		}
 	}
