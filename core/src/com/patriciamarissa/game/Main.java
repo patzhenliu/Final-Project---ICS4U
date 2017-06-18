@@ -28,7 +28,6 @@ import com.badlogic.gdx.utils.Timer.Task;
  * FIX WHATEVER IS HAPPENING TO MONEY AND ENEMY GENERATION no
  * There's a problem with platform generation for me SAME OVER HERE BUT I GOT THE PLATFORM OVERLAP ISSUE AGAIN
  * FIX THAT STUPID ISSUE WITH ENEMY BOUNDARIES BUT HONESTLY IS IT EVEN NOTICABLE AT THIS POINT what?
- * ADD MUSIC ok
  * ADD INSTRUCTIONS
  * ADD CREDITS um ok maybe latr
  * COMMENTS yes maybe latr
@@ -55,6 +54,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	
 	ShapeRenderer rend;
 	Random rand;
+	
 	Music gameMusic;
 	Sound moneySound;
 		
@@ -87,8 +87,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		rend = new ShapeRenderer ();
 		rand = new Random (System.currentTimeMillis());
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
-		moneySound = Gdx.audio.newSound(Gdx.files.internal("sounds/money1.wav")); //temp
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/main game music.mp3"));
+		moneySound = Gdx.audio.newSound(Gdx.files.internal("sounds/money1.wav"));
 
 		lifeImg = new Texture(Gdx.files.internal("sprites/lifeImg.png"));
 		nums = new Texture[10];
@@ -117,7 +117,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		createHoles();
 		makeEnemies () ;
 		runTimer () ;
-		seconds () ;
 	}
 	
 	public void runTimer () { // THANKS FOR THIS SIR!
@@ -127,14 +126,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				increaseSpeed (1) ;
 				}
 		} , 10, 10) ; // first is delay to starting in seconds, second is time in between each tick in seconds
-	}
-	
-	public void seconds () { // IGNORE THIS ITS JUST FOR TESTING PURPOSES
-		Timer.schedule (new Task () { 
-			@Override public void run () {
-				//System.out.println ("1") ;
-				}
-		} , 1,1) ; // first is delay to starting in seconds, second is time in between each tick in seconds
 	}
 	
 	public void createPlatforms() {
@@ -230,30 +221,39 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	
 	public void updatePage() {
 		if (page == titleNum) {
+			gameMusic.pause () ;
 			startMenu();
 		}
 		else if (page == gameNum) {
+			gameMusic.pause () ;
 			playGame(); 
 		}
 		else if (page == loseNum) {
+			gameMusic.pause () ;
 			loseScreen ();	
 		}
 		else if (page == pauseNum) {
+			gameMusic.pause () ;
 			pauseMenu();
 		}
 		else if (page == shopNum) {
+			gameMusic.pause () ;
 			shopMenu () ;
 		}
 		else if (page == ynNum) {
+			gameMusic.pause () ;
 			areYouSureMenu();
 		}
 		else if (page == controlsNum) {
+			gameMusic.pause () ;
 			controlScreen () ;
 		}
 		else if (page == creditsNum) {
+			gameMusic.pause () ;
 			creditsScreen () ;
 		}
 		else if (page == storyNum) {
+			gameMusic.pause () ;
 			storyPage();
 		}
 	}

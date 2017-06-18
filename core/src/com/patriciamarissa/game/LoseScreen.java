@@ -38,7 +38,7 @@ public class LoseScreen {
 		coins = 0 ;
 		this.batch = batch ;
 		
-		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/game over music.mp3"));
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
 		//I DIDNT PLAY ANY MUSIC ANYWHERE YET
 		
@@ -124,12 +124,14 @@ public class LoseScreen {
 	}
 	
 	public void update () {
+		music.play () ;
 		updatePage () ;
 		draw () ;
 	}
 	
-	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
+	public int giveNextScreen () {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			music.stop () ;
 			return buttons[buttonNum].getPageNum();
 		}
 		return lose;

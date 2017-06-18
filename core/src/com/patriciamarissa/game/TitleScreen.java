@@ -60,7 +60,7 @@ public class TitleScreen {
 		buttonNum = 0;
 		
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
-		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
 		
 		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/playButton.png")),
 				new Texture(Gdx.files.internal("menus/playHover.png")), 400, 237, game);
@@ -119,13 +119,15 @@ public class TitleScreen {
 	}
 	
 
-	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
+	public int giveNextScreen () {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			music.stop () ;
 			music.dispose();
 			clickSound.play();
 			return buttons[buttonNum].getPageNum();
 		}
 		else if (Gdx.input.isKeyPressed(Keys.B) && Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+			music.stop () ;
 			return story;
 		}
 		return title;

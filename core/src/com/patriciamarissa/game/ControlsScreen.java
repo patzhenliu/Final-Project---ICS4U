@@ -22,7 +22,7 @@ public class ControlsScreen {
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
 		homeButton = new Texture(Gdx.files.internal("menus/returnHome.png"));
-		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
 		title = 1 ;
 		game = 2 ;
 		controls = 4 ;
@@ -40,8 +40,9 @@ public class ControlsScreen {
 		draw () ;
 	}
 	
-	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
+	public int giveNextScreen () {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			music.stop () ;
 			return title ;
 		}
 		else {
