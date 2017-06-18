@@ -3,38 +3,53 @@ package com.patriciamarissa.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class CreditsScreen {
 	private Batch batch;
-	private Texture shopImg;
+	private Texture img;
 	private final int title, credits ;
+	int y;
 
-	Music music;
+	Music music, winnerMusic;
 	
 	public CreditsScreen (Batch batch) { // TEMP STUFF FOR NOW
 		this.batch = batch;
-		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
+		img = new Texture(Gdx.files.internal("menus/credits.png"));
+		y = 0 - img.getHeight();
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
+		winnerMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/medalceremony.mp3"));
 		title = 1 ;
 		credits = 5 ;
 	}
 	
 	public void draw() {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-	    batch.draw(shopImg, 0, 0);
+	    batch.draw(img, 0, y);
 		batch.end();
 	}
 	
 	public void update () {
-		music.play () ;
+		if (y >= -1400) {
+			music.dispose();
+			winnerMusic.play () ;
+		}
+		else {
+			music.play();
+		}
 		draw () ;
+		y += 3;
 	}
 	
 	public int giveNextScreen () {
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			music.stop () ;
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) || y >= 0) {
+			music.dispose() ;
+			winnerMusic.dispose();
+			y = 0 - img.getHeight();
 			return title ;
 		}
 		return credits ;

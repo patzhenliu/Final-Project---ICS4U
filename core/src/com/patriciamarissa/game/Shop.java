@@ -300,7 +300,7 @@ public class Shop {
 	
 	public int giveNextScreen () {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			music.stop () ;
+			music.dispose() ;
 			spriteCount = 0;
 			return title ;
 		}

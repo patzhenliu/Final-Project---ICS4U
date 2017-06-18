@@ -210,7 +210,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				isMoving = true;
 			}	
 		}
-		else if(Gdx.input.isKeyPressed(Keys.DOWN) && !player.isJumping()){ //not important
+		else if(Gdx.input.isKeyPressed(Keys.DOWN) && !player.isJumping()){ 
 			player.setGroundLvl(100);		
 		}
 

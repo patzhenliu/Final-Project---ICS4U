@@ -131,7 +131,7 @@ public class LoseScreen {
 	
 	public int giveNextScreen () {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			music.stop () ;
+			music.dispose() ;
 			return buttons[buttonNum].getPageNum();
 		}
 		return lose;

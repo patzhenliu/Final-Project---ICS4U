@@ -20,7 +20,7 @@ public class ControlsScreen {
 		// SECOND ONE IS ENEMY EXPLAINATIONS
 		// THIRD ONE IS PAGE EXPLAINATIONS
 		this.batch = batch;
-		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
+		shopImg = new Texture(Gdx.files.internal("menus/controlscreen.png"));
 		homeButton = new Texture(Gdx.files.internal("menus/returnHome.png"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
 		title = 1 ;
