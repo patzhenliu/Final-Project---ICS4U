@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -40,6 +42,9 @@ public class TitleScreen {
     private Button creditsButton;
     private int buttonNum;
     private Button[] buttons;
+    
+    Sound clickSound;
+	Music music;
 
 	
 	public TitleScreen (Batch batch) {
@@ -53,6 +58,9 @@ public class TitleScreen {
 		page = title;
 		
 		buttonNum = 0;
+		
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
 		
 		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/playButton.png")),
 				new Texture(Gdx.files.internal("menus/playHover.png")), 400, 237, game);
@@ -87,6 +95,7 @@ public class TitleScreen {
 	}
 	
 	public int updatePage () {
+		music.play();
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
 			if (buttonNum + 1 < buttons.length) {
 				buttonNum += 1;
@@ -112,6 +121,8 @@ public class TitleScreen {
 
 	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			music.dispose();
+			clickSound.play();
 			return buttons[buttonNum].getPageNum();
 		}
 		else if (Gdx.input.isKeyPressed(Keys.B) && Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {

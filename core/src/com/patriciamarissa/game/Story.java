@@ -3,6 +3,8 @@ package com.patriciamarissa.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,11 +16,16 @@ public class Story implements InputProcessor{
 	private final int totPages = 100;
 	private Texture waitImg;
 	
+	Music music;
+	Sound clickSound;
+	
 	public Story (Batch batch) {
 		pages = new Texture [totPages] ;
 		this.batch = batch ;
 		
 		waitImg = new Texture(Gdx.files.internal("menus/wait.png"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
 		
 		
 		for (int i = 0; i < totPages; i++) {
@@ -47,7 +54,7 @@ public class Story implements InputProcessor{
 	}
 	
 	public void update () {
-		updatePage () ;
+		music.play();
 		draw () ;
 		if (Gdx.input.isKeyJustPressed(Keys.S)) {
 			pageNum = totPages;
@@ -60,6 +67,7 @@ public class Story implements InputProcessor{
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
 			if (pageNum == totPages - 1) {
+				clickSound.play();
 				return 1;
 			}
 			pageNum += 1;
@@ -67,6 +75,7 @@ public class Story implements InputProcessor{
 		else if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
 			if (pageNum - 1 >= 0) {
 				pageNum -= 1;
+				clickSound.play();
 			}
 			
 		}

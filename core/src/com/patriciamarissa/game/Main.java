@@ -8,6 +8,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,24 +25,26 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 /* OVERALL TO DO LIST
- * FOR THE SHOP, ADD TEXT TO GO TO THE HOME SCREEN OR THE GAME. USE ESC AND G. ADD GHOST TEXT: YOU CAN'T AFFORD THIS!
- * FIX WHATEVER IS HAPPENING TO MONEY AND ENEMY GENERATION
- * FIX THAT STUPID ISSUE WITH ENEMY BOUNDARIES BUT HONESTLY IS IT EVEN NOTICABLE AT THIS POINT
- * ADD MUSIC
+ * FIX WHATEVER IS HAPPENING TO MONEY AND ENEMY GENERATION no
+ * There's a problem with platform generation for me SAME OVER HERE BUT I GOT THE PLATFORM OVERLAP ISSUE AGAIN
+ * FIX THAT STUPID ISSUE WITH ENEMY BOUNDARIES BUT HONESTLY IS IT EVEN NOTICABLE AT THIS POINT what?
+ * ADD MUSIC ok
  * ADD INSTRUCTIONS
- * ADD CREDITS
- * COMMENTS
- * THAT SHOULD BE IT? IDK ADD TO THIS AS YOU PLEASE
+ * ADD CREDITS um ok maybe latr
+ * COMMENTS yes maybe latr
+ * THAT SHOULD BE IT? IDK ADD TO THIS AS YOU PLEASE no
  */
 
 public class Main extends ApplicationAdapter implements InputProcessor{
 	SpriteBatch batch;
+	
 	Player player;
 	Background background, background2;
 	Floor floor, floor2;
 	ArrayList <Platform> platforms;
 	ArrayList <Hole> holes;
 	Enemy [] enemies;
+	
 	Shop shop;
 	TitleScreen title ;
 	CreditsScreen credits ;
@@ -49,48 +53,49 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	Story story;
 	PauseScreen pause ;
 	
-	int titleNum, gameNum, shopNum, controlsNum, creditsNum, pauseNum, loseNum, storyNum, ynNum ;
-
 	ShapeRenderer rend;
-	Texture [] nums;
-	int score;
-	int speed;
-	int money;
-
-	private Random rand = new Random(System.currentTimeMillis());
-	Random rand2;
-	
-	int page;
-	Texture titleImg;
-	Texture loseImg;
+	Random rand;
+	Music gameMusic;
+	Sound moneySound;
+		
 	Texture lifeImg;
-	Texture pauseImg;
-	long speedtimer;
+	Texture [] nums;
 	
+	int titleNum, gameNum, shopNum, controlsNum, creditsNum, pauseNum, loseNum, storyNum, ynNum;
+	int page;
+	int score, speed, money;
+	long speedtimer;
 	boolean isMoving;
 	
 	@Override
 	public void create () {
-		speed = 2; //speed on screen moving backwards
-		
 		batch = new SpriteBatch();
 		player = new Player(batch, 10, speed);
 		background = new Background(batch, 0, 3430, 600, speed);
 		background2 = new Background(batch, 3430, 3430, 600, speed);
 		floor = new Floor(batch, 0, 3408, 100, speed);
 		floor2 = new Floor(batch, 3408, 3408, 100, speed);
-		lifeImg = new Texture(Gdx.files.internal("sprites/lifeImg.png"));
 		platforms = new ArrayList <Platform> () ;
 		enemies = new Enemy [4] ;
-		rand2 = new Random ();
+		
+		shop = new Shop(batch) ;
+		title = new TitleScreen (batch) ;
+		pause = new PauseScreen (batch) ;
+		lose = new LoseScreen (batch) ;
+		control = new ControlsScreen (batch) ;
+		credits = new CreditsScreen (batch) ;
+		
 		rend = new ShapeRenderer ();
-		createPlatforms();
-		createHoles();
-		makeEnemies () ;
-		isMoving = false;
-		money = 0;
-		runTimer () ;
-		seconds () ;
+		rand = new Random (System.currentTimeMillis());
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
+		moneySound = Gdx.audio.newSound(Gdx.files.internal("sounds/money1.wav")); //temp
+
+		lifeImg = new Texture(Gdx.files.internal("sprites/lifeImg.png"));
+		nums = new Texture[10];
+		for(int i = 0; i < nums.length; i++){
+		    String fileName = "text/" + i + ".png";
+		    nums[i] = new Texture(Gdx.files.internal(fileName));
+		}
 		
 		titleNum = 1 ;
 		gameNum = 2 ;
@@ -103,19 +108,16 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		ynNum = 9;
 		page = titleNum;
 		
-		shop = new Shop(batch) ;
-		title = new TitleScreen (batch) ;
-		pause = new PauseScreen (batch) ;
-		lose = new LoseScreen (batch) ;
-		control = new ControlsScreen (batch) ;
-		credits = new CreditsScreen (batch) ;
-		
-		nums = new Texture[10];
-		for(int i = 0; i < nums.length; i++){
-		    String fileName = "text/" + i + ".png";
-		    nums[i] = new Texture(Gdx.files.internal(fileName));
-		}
 		score = 0;
+		speed = 2; //speed on screen moving backwards
+		money = 0;
+		isMoving = false;
+
+		createPlatforms();
+		createHoles();
+		makeEnemies () ;
+		runTimer () ;
+		seconds () ;
 	}
 	
 	public void runTimer () { // THANKS FOR THIS SIR!
@@ -130,14 +132,14 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void seconds () { // IGNORE THIS ITS JUST FOR TESTING PURPOSES
 		Timer.schedule (new Task () { 
 			@Override public void run () {
-				System.out.println ("1") ;
+				//System.out.println ("1") ;
 				}
 		} , 1,1) ; // first is delay to starting in seconds, second is time in between each tick in seconds
 	}
 	
 	public void createPlatforms() {
-		platforms = new ArrayList<Platform>();
 		int platNum = 4; 
+		platforms = new ArrayList<Platform>();
 		platforms.add(new Platform(batch, speed, 200, 300, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 0; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 200, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
@@ -195,20 +197,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void move() {
-		
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
 			player.moveRight();
 			if (page == gameNum) {
 				isMoving = true;
 			}
 		}
-		
 		else if(Gdx.input.isKeyPressed(Keys.LEFT)){
 			player.moveLeft();
 			if (page == gameNum) {
 				isMoving = true;
-			}
-				
+			}	
 		}
 		else {
 			player.endSpriteCycle();
@@ -218,42 +217,29 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			player.jump();
 			if (page == gameNum) {
 				isMoving = true;
-			}
-				
+			}	
 		}
 		else if(Gdx.input.isKeyPressed(Keys.DOWN) && !player.isJumping()){ //not important
-			player.setGroundLvl(100);
-				
+			player.setGroundLvl(100);		
 		}
-		
-		//System.out.println(isMoving);
+
 		if (isMoving) {
 			player.move();
 		}
 	}
 	
 	public void updatePage() {
-		//System.out.println(page);
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { //why do you do this? ;-; 
-	
-			if (page == gameNum){
-				page = pauseNum;
-			}
-			else if (page == pauseNum) {
-				page = gameNum;
-			}
-		}
-		
 		if (page == titleNum) {
 			startMenu();
 		}
+		else if (page == gameNum) {
+			playGame(); 
+		}
 		else if (page == loseNum) {
-			loseScreen ();
-			
+			loseScreen ();	
 		}
 		else if (page == pauseNum) {
 			pauseMenu();
-			
 		}
 		else if (page == shopNum) {
 			shopMenu () ;
@@ -263,21 +249,16 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 		else if (page == controlsNum) {
 			controlScreen () ;
-			
 		}
 		else if (page == creditsNum) {
 			creditsScreen () ;
-			
 		}
 		else if (page == storyNum) {
 			storyPage();
-			//resetSpeed(); //will put if statement or something because you dont need to do this every time
 		}
 	}
 	
 	public void update() {
-		drawLives();
-		
 		if (player.dying()) {
 			if (player.getLives() > 0) {
 				if (player.getDyingSpeed() == 0) {
@@ -286,6 +267,11 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 							System.out.println("HOLE COLLISION");
 							h.randPosition(1000);
 							break;
+						}
+					}
+					for (Enemy e: enemies) {
+						if (e != null && e.collide(player) == true) { // if enemy collides, enemy dies. by blazing.
+							e.loseHp(420);
 						}
 					}
 				}
@@ -297,11 +283,15 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			return;
 		}
 		
-		updatePage();
-		if (page == pauseNum || page == ynNum) {
-			return;
+		updatePage();		
+	}
+	
+	public void playGame() {
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			page = pauseNum;
 		}
 		
+		gameMusic.play();
 		boolean isOnPlatform = false;
 		for (int i = 0; i < platforms.size(); i++) {
 			if (player.getY () + player.getHeight () >= 600) {
@@ -311,6 +301,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				isOnPlatform = true;
 				if (platforms.get(i).moneyCollision(player)) {
 					money += player.getMoneyMult () + 1;
+					moneySound.play();
 				}
 				if (platforms.get(i).fireCollision(player) && player.deactivateFire == false) {
 					player.die();
@@ -327,8 +318,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		if (player.getX() < 0 || player.getY() <= 0) {
 			player.die();
-			//background.stop();
-			//platforms.stop();
 		}
 		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE) && player.getLaserStrength() > 0){
@@ -686,7 +675,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
         batch.end();
 	}
 	
-	public void drawNum(int xDisplace, int y, int num) { //i was lazy ill make it nicer
+	public void drawNum(int xDisplace, int y, int num) { //i was lazy ill make it nicer jk
 		//draws numbers
 		batch.begin();
 		for(int i = 0; i < Integer.toString(num).length(); i++) {

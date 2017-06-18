@@ -2,6 +2,8 @@ package com.patriciamarissa.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
@@ -24,6 +26,9 @@ public class LoseScreen {
 	private int highscore ;
 	private int coins ;
 	
+	Music music;
+	Sound clickSound;
+	
 	public LoseScreen (Batch batch) {
 		title = 1 ;
 		game = 2 ;
@@ -32,6 +37,10 @@ public class LoseScreen {
 		highscore = 0 ;
 		coins = 0 ;
 		this.batch = batch ;
+		
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
+		//I DIDNT PLAY ANY MUSIC ANYWHERE YET
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){

@@ -108,6 +108,9 @@ public class PauseScreen {
 			buttonNum = 0;
 			return buttons[temp].getPageNum();
 		}
+		else if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			return GAME;
+		}
 			return PAUSE ;
 	}
 	
