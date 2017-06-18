@@ -211,7 +211,7 @@ public class Shop {
 				buttonNum -= 4;
 			}
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			if (upgrades[buttonNum].isBuyable () == true) {
 				clickSound.play () ;
 				buy (buttonNum, boughtlist) ;

@@ -28,8 +28,6 @@ import com.badlogic.gdx.utils.Timer.Task;
  * FIX WHATEVER IS HAPPENING TO MONEY AND ENEMY GENERATION no
  * There's a problem with platform generation for me SAME OVER HERE BUT I GOT THE PLATFORM OVERLAP ISSUE AGAIN
  * FIX THAT STUPID ISSUE WITH ENEMY BOUNDARIES BUT HONESTLY IS IT EVEN NOTICABLE AT THIS POINT what?
- * ADD INSTRUCTIONS
- * ADD CREDITS um ok maybe latr
  * COMMENTS yes maybe latr
  * THAT SHOULD BE IT? IDK ADD TO THIS AS YOU PLEASE no
  */
@@ -110,7 +108,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		score = 0;
 		speed = 2; //speed on screen moving backwards
-		money = 100;
+		money = 0;
 		isMoving = false;
 
 		createPlatforms();
@@ -413,6 +411,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			drawHoles();
 		}
 		drawEnemies () ;
+		drawLives () ;
 		player.draw();
 		drawNum(900, 40, score - score%10);
 		drawNum(50, 550, money);
