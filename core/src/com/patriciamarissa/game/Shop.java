@@ -41,7 +41,7 @@ public class Shop {
 	int buttonNum ;
 	
 	Music music;
-	Sound clickSound;
+	Sound clickSound, buySound;
 	
 	public Shop(Batch batch) {
 		this.batch = batch;
@@ -51,7 +51,8 @@ public class Shop {
 		coins = 0 ;
 		
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/money1.wav"));
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
+		buySound = Gdx.audio.newSound(Gdx.files.internal("sounds/chaching.wav"));
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -166,6 +167,7 @@ public class Shop {
 		if (index < 4) {
 			upgrades [index].updatePrice () ;
 		}
+		buySound.play();
 	}
 	
 	public void draw() {
@@ -188,6 +190,7 @@ public class Shop {
 		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
 			if (buttonNum - 1 >= 0) {
 				buttonNum -= 1;
+				clickSound.play();
 			}
 			else {
 				buttonNum = buttons.length - 1;
@@ -196,6 +199,7 @@ public class Shop {
 		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
 			if (buttonNum + 1 < buttons.length) {
 				buttonNum += 1;
+				clickSound.play();
 			}
 			else {
 				buttonNum = 0;
@@ -204,14 +208,16 @@ public class Shop {
 		else if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
 			if (buttonNum + 4 < buttons.length) {
 				buttonNum += 4;
+				clickSound.play();
 			}
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			if (buttonNum - 4 >= 0) {
 				buttonNum -= 4;
+				clickSound.play();
 			}
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			if (upgrades[buttonNum].isBuyable () == true) {
 				clickSound.play () ;
 				buy (buttonNum, boughtlist) ;

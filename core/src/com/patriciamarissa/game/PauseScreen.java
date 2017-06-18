@@ -2,6 +2,7 @@ package com.patriciamarissa.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
@@ -19,6 +20,8 @@ public class PauseScreen {
 	private Button shopButton;
 	private Button yesButton, noButton;
 	
+	private Sound clickSound;
+	
 	public PauseScreen (Batch batch) {
 		TITLE = 1 ;
 		GAME = 2 ;
@@ -28,6 +31,7 @@ public class PauseScreen {
 		YESNO = 9;
 		this.batch = batch ;
 		
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 		
 		homeButton = new Button(batch, new Texture(Gdx.files.internal("menus/pause home w.png")),
 				new Texture(Gdx.files.internal("menus/pause home r.png")), 285, 273, YESNO);
@@ -106,6 +110,7 @@ public class PauseScreen {
 			}
 			int temp = buttonNum;
 			buttonNum = 0;
+			clickSound.play();
 			return buttons[temp].getPageNum();
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
@@ -128,6 +133,7 @@ public class PauseScreen {
         buttons2[buttonNum].drawHoverImg();
         
         if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+        	clickSound.play();
         	return buttons2[buttonNum].getPageNum();
 		}
 		return YESNO;

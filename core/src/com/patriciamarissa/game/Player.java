@@ -202,7 +202,18 @@ public class Player {
 	}
 	
 	public void shoot() {
-		lasers.add (new Laser (true, x + 10, y + 20, speed, powerups [0], batch)) ; // PLACEHOLDER X AND Y
+		int laserSpeed = speed;
+		if (facingForwards) {
+			if (laserSpeed < 0) {
+				laserSpeed = -laserSpeed;
+			}
+		}
+		else {
+			if (laserSpeed > 0) {
+				laserSpeed = -laserSpeed;
+			}
+		}
+		lasers.add (new Laser (true, x + 10, y + 20, laserSpeed, powerups [0], batch)) ; // PLACEHOLDER X AND Y
 	}
 	
 	public void removeLaser (Laser l) {
@@ -339,5 +350,9 @@ public class Player {
 	
 	public int getDyingSpeed() {
 		return dyingSpeed;
+	}
+	
+	public boolean getFacingForwards() {
+		return facingForwards;
 	}
 }
