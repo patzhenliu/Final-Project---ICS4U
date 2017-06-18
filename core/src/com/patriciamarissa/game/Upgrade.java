@@ -25,7 +25,6 @@ public class Upgrade {
 	 * increase money (upgradable) (20, 40, 80)
 	 * remove fire (one time use) (10)
 	 * remove holes (one time use) (10)
-	 * GOING TO HAVE TO CHANGE LION TO ACCOMODATE THE HOLE REMOVAL. STILL NEED TO FIX LION AND GARGOYLE MOVEMENT ANYWAYS.
 	 */
 	
 	public Upgrade(Batch batch, int x, int y, int num, int price, Texture image, Texture grey) {
