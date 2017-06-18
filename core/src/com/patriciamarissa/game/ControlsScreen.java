@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class ControlsScreen {
 	private Batch batch;
-	private Texture shopImg, homeButton;
+	private Texture shopImg;
 	private final int title, game, controls ;
 	private int coins ;
 	
@@ -21,7 +21,6 @@ public class ControlsScreen {
 		// THIRD ONE IS PAGE EXPLAINATIONS
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("menus/controlscreen.png"));
-		homeButton = new Texture(Gdx.files.internal("menus/returnHome.png"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
 		title = 1 ;
 		game = 2 ;
@@ -31,7 +30,6 @@ public class ControlsScreen {
 	public void draw() {
 		batch.begin();
 	    batch.draw(shopImg, 0, 0);
-	    batch.draw(homeButton, 0 ,0);
 		batch.end();
 	}
 	

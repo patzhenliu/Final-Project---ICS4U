@@ -416,6 +416,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		player.draw();
 		drawNum(900, 40, score - score%10);
 		drawNum(50, 550, money);
+		drawLives();
 		update();
 		
 	}
