@@ -30,11 +30,12 @@ public class Platform {
 	public Platform (Batch batch, int moveSpeed, int y, int prevX, int moneyval, boolean df) {
 		this.batch = batch;
 		this.moveSpeed = moveSpeed;
+		this.y = y;
+		x = prevX ;
 		mval = moneyval ;
 		deactiveFire = df ;
 		randLength();
 		//randPosition(prevX, 0);
-		this.y = y;
 		platformImg = new Texture(Gdx.files.internal("backgrounds/platform.png"));
 		platformSprite = new Sprite(platformImg);
 		width = (int)(platformSprite.getWidth() * length);
@@ -53,10 +54,10 @@ public class Platform {
 		platrect = new Rectangle (x, y, w, h) ;
 		platimg = new Texture ("platform.png") ;
 		plat = new Sprite (platimg) ;*/
+		System.out.println ("x is " + x) ;
 	}
 	
 	public void createMoney(int num) {
-		
 		moneyList.clear();
 		for (int i = 0; i < num; i++) {
 			moneyList.add(new Money(batch, x, y + (int)platformSprite.getHeight(), width, mval));
@@ -64,7 +65,6 @@ public class Platform {
 	}
 	
 	public void createFire(int num) {
-		
 		fireList.clear();
 		for (int i = 0; i < num; i++) {
 			fireList.add(new Fire(batch, x, y + (int)platformSprite.getHeight(), width));
@@ -84,10 +84,10 @@ public class Platform {
 	
 	public void move() {
 		x -= moveSpeed;
-		if(x < 0 - width) {
-			x = rand.nextInt(200) + 1000;
+		//if(x < 0 - width) {
+			//x = rand.nextInt(200) + 1000;
 			//createMoney(rand.nextInt(5));
-		}
+		//}
 		//System.out.println (x) ;
 		//if(x < 0 - width) {
 			//x = rand.nextInt(200) + 1000;
@@ -124,7 +124,7 @@ public class Platform {
 		}
 	}
 	
-	public boolean moneyCollision(Player player) { ///NEEDS WORK
+	public boolean moneyCollision(Player player) {
 		for (int i = 0; i < moneyList.size(); i++) {
 			if (moneyList.get(i).collide(player)) {
 				moneyList.remove(i);
@@ -141,7 +141,7 @@ public class Platform {
 		}
 	}
 	
-	public boolean fireCollision(Player player) { ///NEEDS WORK
+	public boolean fireCollision(Player player) {
 		for (int i = 0; i < fireList.size(); i++) {
 			if (fireList.get(i).collide(player)) {
 				fireList.remove(i);

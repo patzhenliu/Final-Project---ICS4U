@@ -25,11 +25,9 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 /* OVERALL TO DO LIST
- * FIX WHATEVER IS HAPPENING TO MONEY AND ENEMY GENERATION no
  * There's a problem with platform generation for me SAME OVER HERE BUT I GOT THE PLATFORM OVERLAP ISSUE AGAIN
  * FIX THAT STUPID ISSUE WITH ENEMY BOUNDARIES BUT HONESTLY IS IT EVEN NOTICABLE AT THIS POINT what?
  * COMMENTS yes maybe latr
- * THAT SHOULD BE IT? IDK ADD TO THIS AS YOU PLEASE no
  */
 
 public class Main extends ApplicationAdapter implements InputProcessor{
@@ -132,26 +130,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		platforms.add(new Platform(batch, speed, 200, 300, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 0; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 200, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
-			int chance = rand.nextInt (2) ;
-			if (chance == 1) {
-				makeEnemy (platforms.get(i)) ;
-			}
+			makeEnemy (platforms.get(i)) ;
 		}
 		platforms.add(new Platform(batch, speed, 320, 500, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 0; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 320, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
-			int chance = rand.nextInt (2) ;
-			if (chance == 1) {
-				makeEnemy (platforms.get(i)) ;
-			}
+			makeEnemy (platforms.get(i)) ;
 		}
 		platforms.add(new Platform(batch, speed, 440, 800, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 0; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 440, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
-			int chance = rand.nextInt (2) ;
-			if (chance == 1) {
-				makeEnemy (platforms.get(i)) ;
-			}
+			makeEnemy (platforms.get(i)) ;
 		}
 	}
 	
@@ -164,12 +153,11 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	/*public void makeEnemies () {
-		// Batch batch, int t, int x, int y, int s
-		for (int i = 0 ; i < 4 ; i ++) {
-			int p = rand.nextInt (platforms.size ()) ;
+	public void makeEnemy (Platform plat) {
+		int chance = rand.nextInt (3) ;
+		if (chance == 1) {
+			System.out.println ("bam") ;
 			int type = rand.nextInt (4) ;
-			Platform plat = platforms.get (p) ;
 			if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
 				type = 0 ;
 			}
@@ -177,23 +165,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
 			}
 			else { // lion is always on floor
+				// CHANGE THE X SO IT AVOIDS THE HOLES
 				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
 			}
-		}
-	}*/
-	
-	public void makeEnemy (Platform plat) {
-		System.out.println ("bam") ;
-		int type = rand.nextInt (4) ;
-		if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
-			type = 0 ;
-		}
-		if (type != 3) {
-			enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
-		}
-		else { // lion is always on floor
-			// CHANGE THE X SO IT AVOIDS THE HOLES
-			enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
 		}
 	}
 	
@@ -495,17 +469,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			platforms.get(i).move();
 			if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) { // went off screen to left
 				int height = platforms.get(i).getY() ;
-				int index = i - 1 ;
-				if (i == 0) {
-					index = platforms.size () - 1 ;
-				}
-				Platform newplat = new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth(), player.getMoneyMult(), player.deactivateFire) ;
+				Platform newplat = new Platform(batch, speed, height, 1000 + rand.nextInt (1000), player.getMoneyMult(), player.deactivateFire) ;
 				platforms.set(i, newplat) ;
 				platforms.get(i).createMoney (rand.nextInt (5)) ;
-				int chance = rand.nextInt (2) ; // 1 in 4 chance an enemy will generate
-				if (chance == 1) {
-					makeEnemy (platforms.get(i)) ;
-				}
+				makeEnemy (platforms.get(i)) ;
 			}
 		}
 	}
@@ -544,26 +511,17 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		platforms.get(0).randPosition(0, 1);
 		for (int i = 1; i < 4; i++) {
 			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 1);
-			int chance = rand.nextInt (2) ;
-			if (chance == 1) {
-				makeEnemy (platforms.get(i)) ;
-			}
+			makeEnemy (platforms.get(i)) ;
 		}
 		platforms.get(4).randPosition(0, 2);
 		for (int i = 5; i < 8; i++) {
 			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 2);
-			int chance = rand.nextInt (2) ;
-			if (chance == 1) {
 				makeEnemy (platforms.get(i)) ;
-			}
 		}
 		platforms.get(8).randPosition(0, 3);
 		for (int i = 9; i < 12; i++) {
 			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 3);
-			int chance = rand.nextInt (2) ;
-			if (chance == 1) {
 				makeEnemy (platforms.get(i)) ;
-			}
 		}
 		for (int i = 0 ; i < platforms.size () ; i++) {
 			platforms.get(i).setFireStatus(player.deactivateFire);

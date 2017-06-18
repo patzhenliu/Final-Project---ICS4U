@@ -34,7 +34,7 @@ public class Fire {
 		
 		spriteCount = 0;
 		animationCount = 20;
-		offsetX = rand.nextInt(range - (int)sprites[0].getWidth()) + px;
+		offsetX = rand.nextInt(range - (int)sprites[0].getWidth());
 		y = py;
 		System.out.println(y);
 		

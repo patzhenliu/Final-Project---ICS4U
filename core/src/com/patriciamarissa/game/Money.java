@@ -72,9 +72,9 @@ public class Money {
 		currentSprite = sprites[0];
 		spriteCount = 0;
 		animationCount = 4;
-		offsetX = rand.nextInt(range - (int)sprites[0].getWidth()) + px;
+		offsetX = rand.nextInt(range - (int)sprites[0].getWidth());
 		y = py;
-	
+		System.out.println ("px is " + px + ", offset is" + offsetX) ;
 	}
 	
 	public void draw(int px) {
