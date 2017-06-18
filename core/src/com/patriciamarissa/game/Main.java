@@ -40,7 +40,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	Floor floor, floor2;
 	ArrayList <Platform> platforms;
 	ArrayList <Hole> holes;
-	Enemy [] enemies;
+	ArrayList <Enemy> enemies;
 	
 	Shop shop;
 	TitleScreen title ;
@@ -74,7 +74,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		floor = new Floor(batch, 0, 3408, 100, speed);
 		floor2 = new Floor(batch, 3408, 3408, 100, speed);
 		platforms = new ArrayList <Platform> () ;
-		enemies = new Enemy [4] ;
+		enemies = new ArrayList <Enemy> () ;
 		
 		shop = new Shop(batch) ;
 		title = new TitleScreen (batch) ;
@@ -111,9 +111,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		money = 0;
 		isMoving = false;
 
-		createPlatforms();
 		createHoles();
-		makeEnemies () ;
+		createPlatforms();
+		//makeEnemies () ;
 		runTimer () ;
 	}
 	
@@ -132,16 +132,27 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		platforms.add(new Platform(batch, speed, 200, 300, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 0; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 200, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
+			int chance = rand.nextInt (2) ;
+			if (chance == 1) {
+				makeEnemy (platforms.get(i)) ;
+			}
 		}
 		platforms.add(new Platform(batch, speed, 320, 500, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 0; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 320, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
+			int chance = rand.nextInt (2) ;
+			if (chance == 1) {
+				makeEnemy (platforms.get(i)) ;
+			}
 		}
 		platforms.add(new Platform(batch, speed, 440, 800, player.getMoneyMult(), player.deactivateFire));
 		for(int i = 0; i < platNum; i++) {	
 			platforms.add(new Platform(batch, speed, 440, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
+			int chance = rand.nextInt (2) ;
+			if (chance == 1) {
+				makeEnemy (platforms.get(i)) ;
+			}
 		}
-		//randomizePlatforms () ;
 	}
 	
 	public void createHoles() {
@@ -153,9 +164,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void makeEnemies () {
+	/*public void makeEnemies () {
 		// Batch batch, int t, int x, int y, int s
-		for (int i = 0 ; i < enemies.length ; i ++) {
+		for (int i = 0 ; i < 4 ; i ++) {
 			int p = rand.nextInt (platforms.size ()) ;
 			int type = rand.nextInt (4) ;
 			Platform plat = platforms.get (p) ;
@@ -163,25 +174,26 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				type = 0 ;
 			}
 			if (type != 3) {
-				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
+				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
 			}
 			else { // lion is always on floor
-				enemies [i] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
+				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
 			}
 		}
-	}
+	}*/
 	
-	public void makeEnemy (int index, Platform plat) {
+	public void makeEnemy (Platform plat) {
+		System.out.println ("bam") ;
 		int type = rand.nextInt (4) ;
 		if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
 			type = 0 ;
 		}
-		if (type != 3) { // rand.nextInt (300) + 1200
-			enemies [index] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
+		if (type != 3) {
+			enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes)) ;
 		}
 		else { // lion is always on floor
 			// CHANGE THE X SO IT AVOIDS THE HOLES
-			enemies [index] = (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
+			enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes)) ;
 		}
 	}
 	
@@ -268,7 +280,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 						}
 					}
 					for (Enemy e: enemies) {
-						if (e != null && e.collide(player) == true) { // if enemy collides, enemy dies. by blazing.
+						if (e.collide(player) == true) { // if enemy collides, enemy dies. by blazing.
 							e.loseHp(420);
 						}
 					}
@@ -332,15 +344,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			}
 		}
 		
-		for (int i = 0 ; i < enemies.length ; i ++) { // removing enemies that have gone off the left or finished dying
-			if (enemies [i] == null || enemies [i].getX () + enemies [i].getWidth () <= 0 || enemies [i].isDead () == true) {
-				enemies [i] = null ;
-				//for (int j = 0 ; j < platforms.size () ; j++) {
-					//if (platforms.get (j).offRight()) {
-						//enemies [i] = null ;
-						//makeEnemy (i, platforms.get(j)) ;
-					//}
-				//}
+		for (int i = 0 ; i < enemies.size () ; i++) { // removing enemies that have gone off the left or finished dying
+			if (enemies.get(i).getX () + enemies.get(i).getWidth () <= 0 || enemies.get(i).isDead () == true) {
+				enemies.remove(i) ;
 			}
 		}
 		
@@ -357,7 +363,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 		move();
 		for (Enemy e : enemies) {
-			if (e != null && e.collide(player) && !e.dying) {
+			if (e.collide(player) && !e.dying) {
 				player.die () ;
 			}
 		}
@@ -376,9 +382,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			h.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
-			if (e != null) {
-				e.setSpeed(speed);
-			}
+			e.setSpeed(speed);
 		}
 	}
 	
@@ -466,8 +470,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void storyPage() {
-		//System.out.println("HERE");
-		
 		if (story == null) {
 			story = new Story(batch);
 		}
@@ -499,15 +501,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				}
 				Platform newplat = new Platform(batch, speed, height, platforms.get(index).getX() + platforms.get(index).getWidth(), player.getMoneyMult(), player.deactivateFire) ;
 				platforms.set(i, newplat) ;
-				boolean madeenemy = false ;
-				for (int j = 0 ; j < enemies.length ; j++) {
-					if (enemies [j] == null && madeenemy == false) {
-						int chance = rand.nextInt (3) ; // 1 in 4 chance an enemy will generate
-						if (chance == 1) {
-							makeEnemy (j, platforms.get(i)) ;
-							madeenemy = true ;
-						}
-					}
+				platforms.get(i).createMoney (rand.nextInt (5)) ;
+				int chance = rand.nextInt (2) ; // 1 in 4 chance an enemy will generate
+				if (chance == 1) {
+					makeEnemy (platforms.get(i)) ;
 				}
 			}
 		}
@@ -521,44 +518,52 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	
 	public void drawEnemies () {
 		for (Enemy e : enemies) {
-			if (e != null) {
-				e.draw () ;
-			}
+			e.draw () ;
 		}
 	}
 	
 	public void moveEnemies () {
 		for (Enemy e : enemies) {
-			if (e != null) {
-				e.moveWithPlat () ;
-				if (!e.dying) {
-					e.move () ;
-				}
-				else {
-					e.animateDeath () ;
-				}
+			e.moveWithPlat () ;
+			if (!e.dying) {
+				e.move () ;
+			}
+			else {
+				e.animateDeath () ;
 			}
 		}
 	}
 	
 	public void generateCourse() {
-		randomizePlatforms();
 		randomizeHoles();
-		randomizeEnemies () ;
+		enemies.clear () ;
+		randomizePlatforms();
 	}
 	
 	public void randomizePlatforms() {
 		platforms.get(0).randPosition(0, 1);
 		for (int i = 1; i < 4; i++) {
 			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 1);
+			int chance = rand.nextInt (2) ;
+			if (chance == 1) {
+				makeEnemy (platforms.get(i)) ;
+			}
 		}
 		platforms.get(4).randPosition(0, 2);
 		for (int i = 5; i < 8; i++) {
 			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 2);
+			int chance = rand.nextInt (2) ;
+			if (chance == 1) {
+				makeEnemy (platforms.get(i)) ;
+			}
 		}
 		platforms.get(8).randPosition(0, 3);
 		for (int i = 9; i < 12; i++) {
 			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 3);
+			int chance = rand.nextInt (2) ;
+			if (chance == 1) {
+				makeEnemy (platforms.get(i)) ;
+			}
 		}
 		for (int i = 0 ; i < platforms.size () ; i++) {
 			platforms.get(i).setFireStatus(player.deactivateFire);
@@ -572,27 +577,20 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void randomizeEnemies () {
-		for (int i = 0 ; i < enemies.length ; i ++) {
-			enemies [i] = null ;
-		}
-		makeEnemies () ;
-	}
-	
 	public void updateLasers () {
-		for (int i = 0 ; i < enemies.length ; i++) {
-			if (enemies [i] != null && enemies [i].getType () == 3) { // a golem
-				ArrayList <Laser> elasers = enemies [i].getLasers () ;
+		for (int i = 0 ; i < enemies.size () ; i++) {
+			if (enemies.get(i).getType () == 3) { // a golem
+				ArrayList <Laser> elasers = enemies.get(i).getLasers () ;
 				if (elasers.size () > 0) {
 					for (int j = 0 ; j < elasers.size () ; j++) {
 						elasers.get(j).move () ;
 						elasers.get(j).draw () ;
 						if (elasers.get(j).collide (player)) {
 							elasers.get(j).doDamage (player) ;
-							enemies [i].removeLaser (elasers.get(j)) ;
+							enemies.get(i).removeLaser (elasers.get(j)) ;
 						}
-						if (enemies [i].getX () + enemies [i].getSprite ().getWidth () <= 0) {
-							enemies [i].removeLaser (elasers.get(j)) ;
+						if (enemies.get(i).getX () + enemies.get(i).getSprite ().getWidth () <= 0) {
+							enemies.get(i).removeLaser (elasers.get(j)) ;
 						}
 					}
 				}
@@ -604,10 +602,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				Laser currentlas = plasers.get(j);
 				currentlas.move () ;
 				currentlas.draw () ;
-				if (enemies.length > 0) {
-					for (int i = 0 ; i < enemies.length ; i++) {
-						if (enemies [i] != null && currentlas.collide (enemies [i]) && enemies [i].dying == false && enemies [i].isDead() == false) {
-							currentlas.doDamage (enemies [i]) ;
+				if (enemies.size () > 0) {
+					for (int i = 0 ; i < enemies.size () ; i++) {
+						if (currentlas.collide (enemies.get(i)) && enemies.get(i).dying == false && enemies.get(i).isDead() == false) {
+							currentlas.doDamage (enemies.get(i)) ;
 							player.removeLaser (currentlas) ;
 						}
 					}
@@ -626,7 +624,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		floor2.setX(3408);
 		player.reset();
 		player.draw();
-		generateCourse(); //change platform and hole positions after death
 		if (gameOver) {
 			lose.updateCoins (money) ;
 			shop.updateCoins(money) ;
@@ -639,10 +636,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			}
 			shop.updateBoughtList(player.getPowers());
 			score = 0;
-			for (int i = 0 ;  i < enemies.length ; i++) {
-				enemies [i] = null ;
-			}
-			makeEnemies () ;
+			enemies.clear () ;
 			for (int i = 0 ; i < platforms.size () ; i++) {
 				platforms.get(i).updateMoneySprites (player.getMoneyMult()) ;
 			}
@@ -650,6 +644,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		else {
 			page = gameNum;
 		}
+		generateCourse(); //change platform and hole positions after death
 		isMoving = false;
     	resetSpeed();
 	}
@@ -669,9 +664,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			h.setMoveSpeed(speed);
 		}
 		for (Enemy e : enemies) {
-			if (e != null) {
-				e.setSpeed(speed);
-			}
+			e.setSpeed(speed);
 		}
 	}
 	
