@@ -110,7 +110,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		score = 0;
 		speed = 2; //speed on screen moving backwards
-		money = 0;
+		money = 100;
 		isMoving = false;
 
 		createPlatforms();

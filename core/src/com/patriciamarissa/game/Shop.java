@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class Shop {
 	private Batch batch;
 	private Texture shopImg, homeButton;
-	private final int title, game, shop ;
+	private final int title, shop ;
 
 	private Texture spritePage;
 	private Sprite ghostSprite;
@@ -26,6 +26,7 @@ public class Shop {
 	private Texture holespeech ;
 	private Texture currentspeech ;
 	private Texture soldout ;
+	private Texture yourebroke ;
 	private int spriteCount;
 	private int animationCount;
 	private int coins ;
@@ -41,23 +42,17 @@ public class Shop {
 	
 	Music music;
 	Sound clickSound;
-	Sound buySound;
-	Sound brokeSound;
 	
 	public Shop(Batch batch) {
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
 		homeButton = new Texture(Gdx.files.internal("menus/returnHome.png"));
 		title = 1 ;
-		game = 2 ;
 		shop = 3 ;
 		coins = 0 ;
 		
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
-		buySound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
-		brokeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
-		//I DIDNT PLAY MUSIC ANYWHERE YET
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/money1.wav"));
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -116,6 +111,7 @@ public class Shop {
 		firespeech = new Texture(Gdx.files.internal("upgrades/Newspeech/fireSB.png")) ;
 		holespeech = new Texture(Gdx.files.internal("upgrades/Newspeech/holeSB.png")) ;
 		soldout = new Texture(Gdx.files.internal("upgrades/Newspeech/soldOutSB.png")) ;
+		yourebroke = new Texture(Gdx.files.internal("upgrades/Newspeech/noMoneySB.png")) ;
 		
 		currentspeech = laserspeech [0] ;
 	}
@@ -219,27 +215,26 @@ public class Shop {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			if (upgrades[buttonNum].isBuyable () == true) {
+				clickSound.play () ;
 				buy (buttonNum, boughtlist) ;
 			}
 		}
 	}
 	
-	public void update (int playermon) { // needs the player to give an upgrade in case an upgrade is purchased
-		// use mouse coordinates to figure out which img from the list to use
-		// if something is already bought, grey out the image and make it unclickable
-		// else make it so that you can click to buy
-		// and maybe play a cha ching sound?
-		for (int i = shopPage * 8; i < shopPage* 8 + 8; i++) {
-			if (i >= upgrades.length) {
-				break;
-			}
-			upgrades[i].update (playermon) ;
-		}
+	public void update (int playermon) {
+		music.play () ;
 		animateGhost() ;
 		updateButtons () ;
 		updateHoverSquare () ;
+		updateUpgrades () ;
 		updateGhostText () ;
 		draw () ;
+	}
+	
+	public void updateUpgrades () {
+		for (Upgrade u : upgrades) {
+			u.updateIcon(coins);
+		}
 	}
 	
 	public void updateHoverSquare () {
@@ -273,7 +268,12 @@ public class Shop {
 			currentspeech = holespeech ;
 		}
 		if (upgrades [buttonNum].isBuyable () == false) {
-			currentspeech = soldout ;
+			if (upgrades [buttonNum].isBecausePlayerBroke(coins)) {
+				currentspeech = yourebroke ;
+			}
+			else {
+				currentspeech = soldout ;
+			}
 		}
 	}
 	
@@ -298,28 +298,12 @@ public class Shop {
 		}
 	}
 	
-	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
-		if (Gdx.input.isKeyJustPressed(Keys.G)) {
-			spriteCount = 0;
-			return game ;
-		}
-		else if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+	public int giveNextScreen () {
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			music.stop () ;
 			spriteCount = 0;
 			return title ;
 		}
-		/*else if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
-			if (shopPage > 0){
-				shopPage -= 1;
-			}
-			return shop;
-		}
-		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-			//System.out.println(shopPage);
-			if (shopPage < (int)(upgrades.length / 8 ) - 1){
-				shopPage += 1;
-			}
-			return shop;
-		}*/
 		else {
 			return shop ;
 		}

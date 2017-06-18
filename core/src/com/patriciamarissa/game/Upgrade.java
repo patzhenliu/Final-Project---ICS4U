@@ -79,10 +79,6 @@ public class Upgrade {
 		batch.end();
 	}
 	
-	public void update (int playermon) {
-		updateIcon (playermon) ;
-	}
-	
 	public void updateSquare (boolean selected) {
 		if (selected) {
 			currentsquare = hoversquare ;
@@ -138,6 +134,15 @@ public class Upgrade {
 			}
 			ccross = greycross ;
 			affordable = false ;
+		}
+	}
+	
+	public boolean isBecausePlayerBroke (int playermon) {
+		if (playermon < price ) {
+			return true ;
+		}
+		else {
+			return false ;
 		}
 	}
 	
