@@ -1,11 +1,9 @@
 diff a/core/src/com/patriciamarissa/game/Main.java b/core/src/com/patriciamarissa/game/Main.java	(rejected hunks)
-@@ -60,6 +60,9 @@
- 	long speedtimer;
- 	
- 	boolean isMoving;
-+	int timedelay ;
-+	Timer speeduptimer ; // because we, for some reason, already have a variable called speedtimer :(
-+	Timer nuke ;
- 	
- 	@Override
- 	public void create () {
+@@ -255,6 +255,7 @@
+ 					//hole or enemy will disappear if it collides with the player when respawning
+ 					for (Hole h: holes) {
+ 						if (h.collide(100, 100, player.getWidth(), player.getHeight())) {
++							System.out.println("HOLE COLLISION");
+ 							h.randPosition(1000);
+ 							break;
+ 						}
