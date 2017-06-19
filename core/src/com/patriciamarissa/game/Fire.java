@@ -21,6 +21,7 @@ public class Fire {
 	private Random rand = new Random(System.currentTimeMillis());
 	
 	public Fire(Batch batch, int px, int py, int range) {
+		// constructor
 		this.batch = batch;
 		spritePage = new Texture(Gdx.files.internal("sprites/Fire.png"));
 		

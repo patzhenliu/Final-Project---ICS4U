@@ -14,6 +14,7 @@ public class ControlsScreen {
 	Music music;
 	
 	public ControlsScreen (Batch batch) {
+		// constructor
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("menus/controlscreen.png"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
@@ -29,6 +30,7 @@ public class ControlsScreen {
 	}
 	
 	public void update () {
+		// updates the page
 		music.play();
 		draw () ;
 	}

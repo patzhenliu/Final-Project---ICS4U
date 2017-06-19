@@ -14,6 +14,7 @@ public class Background {
     private int moveSpeed;
 	
 	public Background(Batch batch, int x, int width, int height, int moveSpeed) {
+		// constructor
 		this.batch = batch;
 		this.width = width;
 		this.moveSpeed = moveSpeed;
@@ -39,7 +40,7 @@ public class Background {
 		x -= moveSpeed;
 	}
 	
-	public void setX(int x) {
+	public void setX(int x) { // used when setting x back to the beginning
 		this.x = x;
 	}
 }

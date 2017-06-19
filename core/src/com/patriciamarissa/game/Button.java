@@ -14,6 +14,7 @@ public class Button {
     private int pageNum;
 
 	public Button (Batch batch, Texture img, Texture hover, int x, int y, int pageNum) {
+		// constructor
 		this.batch = batch;
 		this.img = img;
 		this.hover = hover;
@@ -23,6 +24,7 @@ public class Button {
 	}
 	
 	public int getPageNum() {
+		// returns what page to go to next
 		return pageNum;
 	}
 	
@@ -40,7 +42,7 @@ public class Button {
     	batch.end();
 	}
 	
-	public void setPageNum(int p) {
+	public void setPageNum(int p) { // set where you want the button to send you to when its clicked
 		pageNum = p;
 	}
 }
