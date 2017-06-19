@@ -41,7 +41,7 @@ public class Shop {
 	int buttonNum ;
 	
 	Music music;
-	Sound clickSound, buySound;
+	Sound clickSound, buySound, errorSound;
 	
 	public Shop(Batch batch) {
 		this.batch = batch;
@@ -53,6 +53,7 @@ public class Shop {
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 		buySound = Gdx.audio.newSound(Gdx.files.internal("sounds/chaching.wav"));
+		errorSound = Gdx.audio.newSound(Gdx.files.internal("sounds/error.wav"));
 		
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -233,8 +234,10 @@ public class Shop {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			if (upgrades[buttonNum].isBuyable () == true) {
-				clickSound.play () ;
 				buy (buttonNum, boughtlist) ;
+			}
+			else {
+				errorSound.play();
 			}
 		}
 	}

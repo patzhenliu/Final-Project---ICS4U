@@ -6,7 +6,6 @@ import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -123,7 +122,7 @@ public class Main extends ApplicationAdapter{
 	public void runTimer () { //COMMENT
 		Timer.schedule (new Task () { 
 			@Override public void run () {
-				System.out.println ("SPEEDUP") ;
+				//System.out.println ("SPEEDUP") ;
 				increaseSpeed (1) ;
 				}
 		} , 10, 10) ; // first is delay to starting in seconds, second is time in between each tick in seconds
