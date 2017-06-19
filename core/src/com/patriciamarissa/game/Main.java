@@ -300,7 +300,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			player.setGroundLvl(100);
 		}
 		
-		if (player.getX() < 0 || player.getY() <= 0) {
+		if (player.getX() < 0 || player.getY() <= 0) { // fell off the screen
 			player.die();
 		}
 		
@@ -318,7 +318,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			}
 		}
 		
-		for (int i = 0 ; i < enemies.size () ; i++) { // removing enemies that have gone off the left or finished dying
+		for (int i = 0 ; i < enemies.size () ; i++) { 
+			// removing enemies that have gone off the left or finished dying
 			if (enemies.get(i).getX () + enemies.get(i).getWidth () <= 0 || enemies.get(i).isDead () == true) {
 				enemies.remove(i) ;
 			}
@@ -478,7 +479,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void movePlatforms() { //COMMENT
+	public void movePlatforms() {
+		// moves all platforms with the screen. if a platform has gone off the screen, replace it with a new one
+		// that will come in from the right.
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).move();
 			if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) { // went off screen to left
@@ -504,7 +507,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void moveEnemies () { //COMMENT
+	public void moveEnemies () {
+		// enemies are moved with the screen, also do their own walk cycle unless theyre dying
 		for (Enemy e : enemies) {
 			e.moveWithPlat () ;
 			if (!e.dying) {
@@ -523,7 +527,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		randomizePlatforms();
 	}
 	
-	public void randomizePlatforms() { //COMMENT
+	public void randomizePlatforms() {
 		//randomizes the positions of the platforms
 		for (int j = 0; j < 3; j++) { //3 rows of platforms
 			platforms.get(j * platNum).randPosition(0, 1);
@@ -546,9 +550,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void updateLasers () { //COMMENT
-		for (int i = 0 ; i < enemies.size () ; i++) {
-			if (enemies.get(i).getType () == 3) { // a golem
+	public void updateLasers () {
+		// moves and draws the player and enemy lasers, and checks to see if theres any collision taking place
+		for (int i = 0 ; i < enemies.size () ; i++) { // dealing with enemy lasers
+			if (enemies.get(i).getType () == 3) { // a golem, only kind that can shoot
 				ArrayList <Laser> elasers = enemies.get(i).getLasers () ;
 				if (elasers.size () > 0) {
 					for (int j = 0 ; j < elasers.size () ; j++) {
@@ -556,9 +561,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 						elasers.get(j).draw () ;
 						if (elasers.get(j).collide (player)) {
 							elasers.get(j).doDamage (player) ;
-							enemies.get(i).removeLaser (elasers.get(j)) ;
+							enemies.get(i).removeLaser (elasers.get(j)) ; // remove lasers that have collided
 						}
 						if (enemies.get(i).getX () + enemies.get(i).getSprite ().getWidth () <= 0) {
+							// enemy went off screen to left, get rid of their lasers
 							enemies.get(i).removeLaser (elasers.get(j)) ;
 						}
 					}
@@ -566,7 +572,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			}
 		}
 		ArrayList <Laser> plasers = player.getLasers () ;
-		if (plasers.size () > 0) {
+		if (plasers.size () > 0) { // dealing with player lasers
 			for (int j = 0 ; j < plasers.size () ; j++) {
 				Laser currentlas = plasers.get(j);
 				currentlas.move () ;
@@ -579,16 +585,16 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 						}
 					}
 				}
-				if (currentlas != null && currentlas.getX () >= 1200) {
+				if (currentlas != null && currentlas.getX () >= 1200) { // get rid of lasers that went off the right
 					player.removeLaser (currentlas) ;
 				}
 			}
 		}
 	}
 	
-	public void reset(boolean gameOver, boolean resetUps) { //COMMENT
+	public void reset(boolean gameOver, boolean resetUps) {
 		//all elements in the game are reset to their original position and speed
-		//one time use upgrades in the shop can be repurchased
+		//one time use upgrades in the shop can be repurchased if you're exiting out of the main game
 		background.setX(0);
 		background2.setX(3430);
 		floor.setX(0);
