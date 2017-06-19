@@ -69,7 +69,7 @@ public class Player {
 		deactivateHoles = false ;
 		deactivateFire = false ;
 		
-		reset();
+		reset(true);
 	}
 	
 	public void importSprite() {
@@ -82,12 +82,12 @@ public class Player {
 		sprites[3] = new Sprite(spritePage, 80, 50, 31, 50);
 	}
 	
-	public void reset() {
+	public void reset(boolean resetLives) {
 		//sets variables to their original values
 		if (!facingForwards) {
 			changeDirection();
 		}
-		if (lives <= 0) {
+		if (resetLives) {
 			resetLives () ;
 		}
 		
@@ -268,7 +268,7 @@ public class Player {
 				batch.end();
 			}
 			else {
-				reset();
+				reset(false);
 			}
 			return true;
 			

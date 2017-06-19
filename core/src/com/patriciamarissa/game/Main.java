@@ -248,6 +248,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void playGame() {
 		//checks player death
 		if (player.dying()) {
+			gameMusic.dispose();
+			System.out.println(player.getLives());
 			if (player.getLives() > 0) {
 				if (player.getDyingSpeed() == 0) {
 					//hole or enemy will disappear if it collides with the player when respawning
@@ -266,6 +268,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				}
 			}
 			else {
+				System.out.println("MAY DEATH RAIN UPON YOU");
 				//resets all everything in the game and brings user to the
 				//lose screen when player dies completely (no lives left)
 				reset(true, true) ;
@@ -595,7 +598,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		background2.setX(3430);
 		floor.setX(0);
 		floor2.setX(3408);
-		player.reset();
+		player.reset(true);
 		player.draw();
 		if (gameOver) {
 			lose.updateCoins (money) ;
