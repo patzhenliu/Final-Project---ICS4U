@@ -136,7 +136,9 @@ public class LoseScreen {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			//ENTER to play again, shop or return to start menu
 			music.dispose() ;
-			return buttons[buttonNum].getPageNum();
+			int temp = buttonNum;
+			buttonNum = 0;
+			return buttons[temp].getPageNum();
 		}
 		return lose;
 	}

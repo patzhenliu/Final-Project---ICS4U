@@ -104,11 +104,14 @@ public class TitleScreen {
 			music.stop () ;
 			music.dispose();
 			clickSound.play();
-			return buttons[buttonNum].getPageNum();
+			int temp = buttonNum;
+			buttonNum = 0;
+			return buttons[temp].getPageNum();
 		}
 		else if (Gdx.input.isKeyPressed(Keys.B) && Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
 			//special combination of keys to activate story
 			music.stop () ;
+			buttonNum = 0;
 			return story;
 		}
 		return title;
