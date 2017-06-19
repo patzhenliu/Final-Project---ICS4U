@@ -424,48 +424,39 @@ public class Enemy {
 		lasers.add (new Laser (false, x, y + 50, speed, 1, batch)) ;
 	}
 	
-	public void removeLaser (Laser l) {
+	public void removeLaser (Laser l) { // removes laser from golem's laser list
 		lasers.remove (l) ;
 	}
 	
-	public Sprite getSprite () {
+	public Sprite getSprite () { // returns current sprite
 		return currentsprite ;
 	}
 	
-	public ArrayList <Laser> getLasers () {
+	public ArrayList <Laser> getLasers () { // returns golem's lasers
 		return lasers ;
 	}
 	
-	public int getHp () {
+	public int getHp () { // returns hp
 		return hp ;
 	}
 	
-	public int getSpeed () {
+	public int getSpeed () { // returns the movespeed that goes with the platforms, not the enemy's independent speed
 		return speed ;
 	}
 	
-	public void setSpeed (int s) {
+	public void setSpeed (int s) { // sets the moving-with-platform speed. used whenever there's a speedup.
 		speed = s ;
 	}
 	
-	public int getType () {
+	public int getType () { // returns what kind of enemy this enemy is
 		return type ;
 	}
 	
-	public int getX () {
+	public int getX () { // returns x
 		return x ;
 	}
 	
-	public int getWidth () {
+	public int getWidth () { // returns current width
 		return (int)currentsprite.getWidth () ;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	public void setBoundaries(int min, int max) {
-		minX = min;
-		maxX = max;
 	}
 }
