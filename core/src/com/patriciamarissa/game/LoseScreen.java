@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class LoseScreen {
-	
 	private final int title, game, shop, lose ;
 	private Batch batch;
 	private Texture background ;
@@ -28,7 +27,7 @@ public class LoseScreen {
 	Music music;
 	Sound clickSound;
 	
-	public LoseScreen (Batch batch) {
+	public LoseScreen (Batch batch) { // constructor
 		this.batch = batch ;
 		title = 1 ;
 		game = 2 ;
@@ -93,15 +92,15 @@ public class LoseScreen {
 		batch.end();
 	}
 	
-	public void updateHighScore (int hs) {
+	public void updateHighScore (int hs) { // only called when there's a new high score
 		highscore = hs ;
 	}
 	
-	public void updateCoins (int c) {
+	public void updateCoins (int c) { // updates total amount of coins
 		coins = c ;
 	}
 	
-	public int getHighScore () {
+	public int getHighScore () { // used for determining if the current score beats the old high
 		return highscore ;
 	}
 	
@@ -125,7 +124,7 @@ public class LoseScreen {
 		}
 	}
 	
-	public void update () {
+	public void update () { // updates everything
 		music.play () ;
 		updatePage () ;
 		draw () ;

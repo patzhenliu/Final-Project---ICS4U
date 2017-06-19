@@ -7,7 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-public class Story{
+public class Story{ // a beautiful tale that will make all who witness it weep.
 	private Batch batch;
 	private Texture [] pages;
 	private int pageNum;
@@ -16,7 +16,7 @@ public class Story{
 	Music music;
 	Sound clickSound;
 	
-	public Story (Batch batch) {
+	public Story (Batch batch) { // constructor
 		pages = new Texture [totPages] ;
 		this.batch = batch ;
 		

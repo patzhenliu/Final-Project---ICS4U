@@ -42,6 +42,7 @@ public class Player {
 	Sound dieSound;
 	
 	public Player(Batch batch, int speed, int moveSpeed) {
+		// constructor
 		this.batch = batch;
 
 		jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/jump1.wav")); //temp
@@ -229,11 +230,11 @@ public class Player {
 		lasers.add (new Laser (true, x + 10, y + 20, laserSpeed, powerups [0], batch)) ; // PLACEHOLDER X AND Y
 	}
 	
-	public void removeLaser (Laser l) {
+	public void removeLaser (Laser l) { // removes the laser from player's laser list
 		lasers.remove (l) ;
 	}
 	
-	public ArrayList <Laser> getLasers () {
+	public ArrayList <Laser> getLasers () { // returns player's lasers, used for their movement and enemy collision
 		return lasers ;
 	}
 	
@@ -276,7 +277,7 @@ public class Player {
 		return isDead;
 	}
 	
-	public void stopJump() {
+	public void stopJump() { // used when max height is reached or when player wants to drop from their jump
 		isJumpingUp = false;
 	}
 	
@@ -289,7 +290,7 @@ public class Player {
 		return currentSprite;
 	}
 	
-	public void setGroundLvl(int gl) {
+	public void setGroundLvl(int gl) { // used whenever ground level changes, like when landing on a platform
 		groundLvl = gl;
 	}
 	
@@ -306,20 +307,17 @@ public class Player {
 	}
 	
 	public void setBoundaries(int min, int max) {
+		// used when a player falls into a hole, to prevent them from clipping from the hole into the floor
 		minX = min;
 		maxX = max;
 	}
 	
-	public void setInHole(Hole h) {
+	public void setInHole(Hole h) { // fell in a hole? thats the playa's hole now
 		hole = h;
 	}
 	
-	public void losePower (int index) {
+	public void losePower (int index) { // used when removing the one-time powerups
 		powerups [index] = 0 ;
-	}
-	
-	public int getJumpHeight() { //not in use
-		return jumpHeight;
 	}
 	
 	public int getX() {
@@ -341,32 +339,34 @@ public class Player {
 		return y ;
 	}
 	
-	public void setMoveSpeed(int moveSpeed) {
+	public void setMoveSpeed(int moveSpeed) { // sets speed player moves with environment
 		this.moveSpeed = moveSpeed;
 	}
 	
-	public void resetLives() {
+	public void resetLives() { // called after a gameover, fully restores player's lives
 		lives = 3;
 		lives += powerups [1] ;
 	}
 	
-	public int [] getPowers () {
+	public int [] getPowers () { // needed to edit the powerup list in shop
 		return powerups ;
 	}
 	
 	public int getMoneyMult () {
+		// returns what the money val is multiplied by so when u collect in main, coins increases by the multiplier
 		return powerups [3] ;
 	}
 	
-	public int getLaserStrength () {
+	public int getLaserStrength () { // returns how hard the enemy'll get hit
 		return powerups [0] ;
 	}
 	
-	public int getDyingSpeed() {
+	public int getDyingSpeed() { // gives the dying speed.
 		return dyingSpeed;
 	}
 	
 	public boolean getFacingForwards() {
+		// does things like determine which sprites to use, which way to shoot the player lasers
 		return facingForwards;
 	}
 }

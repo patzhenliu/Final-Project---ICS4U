@@ -17,6 +17,7 @@ public class Floor {
     private int moveSpeed;
 	
 	public Floor(Batch batch, int x, int width, int height, int moveSpeed) {
+		// constructor
 		this.batch = batch;
 		this.width = width;
 		this.moveSpeed = moveSpeed;

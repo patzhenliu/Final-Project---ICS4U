@@ -24,7 +24,7 @@ public class TitleScreen {
 	Music music;
 
 	
-	public TitleScreen (Batch batch) {
+	public TitleScreen (Batch batch) { // constructor
 		this.batch = batch ;
 		
 		title = 1 ;
@@ -35,7 +35,7 @@ public class TitleScreen {
 		story = 8;
 		
 		//music and sounds
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
 		
 		buttonNum = 0;
@@ -98,7 +98,7 @@ public class TitleScreen {
 	}
 	
 
-	public int giveNextScreen () {
+	public int giveNextScreen () { // returns what page to go to next
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			//ENTER to change pages
 			music.stop();

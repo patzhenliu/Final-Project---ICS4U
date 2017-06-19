@@ -11,14 +11,15 @@ public class Upgrade {
 	private final int laser, life, jump, money, killf, killh ;
 	private boolean owned, owned3, affordable;
 	private Texture icon, greyver;
-	private Texture upmon2, upmon3 ;
+	private Texture upmon2, upmon3 ; // upgraded nomey 2, upgraded money 3
 	private Texture uplife2, uplife3 ;
 	private Texture uplas2, uplas3 ;
 	private Texture upjump2, upjump3 ;
-	private Texture mongrey2, mongrey3 ;
+	private Texture mongrey2, mongrey3 ; // grey money 2, grey money 3; money sprites look different with each upgrade
 	private Texture cicon, ccross ; // current icon, current cross
 	
-	/* lasers (upgradable to 3) (10, 20, 40)
+	/* AVAILABLE ITEMS IN THE SHOP:
+	 * lasers (upgradable to 3) (10, 20, 40)
 	 * more life (upgradable to 6, but starts at 3) (20, 40, 80)
 	 * higher jump (upgradable twice, or to whatever point hits top of screen) (10, 20, 40)
 	 * increase money (upgradable) (20, 40, 80)
@@ -27,6 +28,7 @@ public class Upgrade {
 	 */
 	
 	public Upgrade(Batch batch, int x, int y, int num, int price, Texture image, Texture grey) {
+		// constructor
 		this.batch = batch;
 		square = new Texture(Gdx.files.internal("sprites/upgrade.png"));
 		hoversquare = new Texture(Gdx.files.internal("sprites/upgradeHover.png"));
@@ -64,10 +66,9 @@ public class Upgrade {
 		cicon = grey ;
 		ccross = greycross ;
 		level = 1 ;
-		
 	}
 	
-	public void draw() {
+	public void draw() { // draws the box and the current sprite, whether its grey or colored
 		batch.begin();
 		batch.draw(currentsquare, x,  y);
 		batch.draw(cicon, x+40, y+40);
@@ -77,7 +78,7 @@ public class Upgrade {
 		batch.end();
 	}
 	
-	public void updateSquare (boolean selected) {
+	public void updateSquare (boolean selected) { // determines which box sprite to use depending on if its selected
 		if (selected) {
 			currentsquare = hoversquare ;
 		}
@@ -86,8 +87,9 @@ public class Upgrade {
 		}
 	}
 	
-	public void updateIcon (int playermon) {
-		if (playermon >= price) {
+	public void updateIcon (int playermon) { 
+		// updates icon color and whether the upgrade can be bought based on player's money
+		if (playermon >= price) { // player can buy it, make it a colored icon, if upgradable, corresponding to level
 			cicon = icon ;
 			if (level == 2) {
 				if (num == money) {
@@ -121,6 +123,7 @@ public class Upgrade {
 			affordable = true ;
 		}
 		if (playermon < price || (owned == true && level == 1 && num > 3) || (level == 3 && owned3 == true)) {
+			// if the player is too broke or the item's been bought out, grey it out and make it unbuyable
 			cicon = greyver ;
 			if (num == money) {
 				if (level == 2) {
@@ -136,6 +139,8 @@ public class Upgrade {
 	}
 	
 	public boolean isBecausePlayerBroke (int playermon) {
+		// returns whether reasoning for not being able to buy is because the player is broke.
+		// this affects the ghost's text in the shop.
 		if (playermon < price ) {
 			return true ;
 		}
@@ -144,7 +149,9 @@ public class Upgrade {
 		}
 	}
 	
-	public void buy () {
+	public void buy () { 
+		// increases level if upgradable, checks off that it's been bought at the current level.
+		// there isn't an owned2 because knowing if you've bought a midpoint upgrade can just be determined by level.
 		if (level == 1) {
 			owned = true ;
 		}
@@ -156,19 +163,19 @@ public class Upgrade {
 		}
 	}
 	
-	public void updatePrice () {
+	public void updatePrice () { // doubles price
 		price = price * 2 ;
 	}
 	
-	public void setOwnedFalse () {
+	public void setOwnedFalse () { // for the one-time upgrades, makes them not owned when exiting main game
 		owned = false ;
 	}
 	
-	public boolean isBuyable () {
+	public boolean isBuyable () { // shop needs to know if upgrade can be bought when registering player hitting enter
 		return affordable ;
 	}
 	
-	public int getType () {
+	public int getType () { // if it returns 4 or higher, its a one-time upgrade; else, its an upgradable upgrade
 		return num ;
 	}
 }
