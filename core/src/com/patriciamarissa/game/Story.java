@@ -7,8 +7,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Story{
+public class Story implements InputProcessor{
 	private Batch batch;
 	private Texture [] pages;
 	private int pageNum;
@@ -21,7 +22,7 @@ public class Story{
 		pages = new Texture [totPages] ;
 		this.batch = batch ;
 		
-		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/main game music.mp3"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
 		
 		//import images
@@ -34,6 +35,7 @@ public class Story{
 	
 	public void draw () {
 		//draws current page on screen
+		TextureRegion page = new TextureRegion(pages[pageNum], 0, 0, 900, 600);
 		batch.begin();
 	    batch.draw(pages[pageNum], 0, 0, 1000, 600);
 	    batch.end();
@@ -69,5 +71,53 @@ public class Story{
 			
 		}
 		return 8;
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
