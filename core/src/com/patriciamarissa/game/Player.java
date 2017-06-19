@@ -65,6 +65,7 @@ public class Player {
 		powerups = new int [6] ; // lasers, life, jump, money, fire, holes
 		lasers = new ArrayList <Laser> () ;
 		
+		facingForwards = true;
 		deactivateHoles = false ;
 		deactivateFire = false ;
 		
