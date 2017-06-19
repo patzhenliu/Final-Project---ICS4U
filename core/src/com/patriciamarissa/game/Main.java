@@ -278,6 +278,7 @@ public class Main extends ApplicationAdapter{
 							e.loseHp(420);
 						}
 					}
+					isMoving = false;
 				}
 			}
 			else {

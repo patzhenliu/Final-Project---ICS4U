@@ -55,13 +55,17 @@ public class CreditsScreen {
 		y += 3;
 	}
 	
+	public void stopMusic() {
+		music.dispose() ;
+		winnerMusic.dispose();
+		staticSound.dispose();
+	}
+	
 	public int giveNextScreen () {
 		//press buttons to go to different pages
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) || y >= 0) {
 			//ESC to return to start menu
-			music.dispose() ;
-			winnerMusic.dispose();
-			staticSound.dispose();
+			stopMusic();
 			y = 0 - img.getHeight();
 			return title ;
 		}
