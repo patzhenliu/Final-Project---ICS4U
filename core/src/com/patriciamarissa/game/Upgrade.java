@@ -9,7 +9,7 @@ public class Upgrade {
 	private Texture square, hoversquare, currentsquare, cross, greycross;
 	int x, y, num, price, level;
 	private final int laser, life, jump, money, killf, killh ;
-	private boolean owned, owned2, owned3, affordable;
+	private boolean owned, owned3, affordable;
 	private Texture icon, greyver;
 	private Texture upmon2, upmon3 ;
 	private Texture uplife2, uplife3 ;
@@ -57,7 +57,6 @@ public class Upgrade {
 		this.num = num ;
 		this.price = price ;
 		owned = false ;
-		owned2 = false ;
 		owned3 = false ;
 		affordable = false ;
 		icon = image;
@@ -148,9 +147,6 @@ public class Upgrade {
 	public void buy () {
 		if (level == 1) {
 			owned = true ;
-		}
-		if (level == 2) {
-			owned2 = true ;
 		}
 		if (level == 3) {
 			owned3 = true ;

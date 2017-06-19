@@ -15,11 +15,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-/* OVERALL TO DO LIST
- * CLEAN UP CODE
- * COMMENTS yes maybe latr
- */
-
 public class Main extends ApplicationAdapter{
 	SpriteBatch batch;
 	
@@ -111,15 +106,16 @@ public class Main extends ApplicationAdapter{
 		holeNum = 2;
 		platNum = 4;
 
-		createHoles(holeNum);
+		createHoles(holeNum); // these 4 were lengthy enough to be put into their own methods
 		createPlatforms(platNum, 300, 200);
 		createPlatforms(platNum, 500, 320);
 		createPlatforms(platNum, 800, 440);
-		//makeEnemies () ;
 		runTimer () ;
 	}
 	
-	public void runTimer () { //COMMENT
+	public void runTimer () {
+		// determines the time intervals between each speedup of the game. speedups occur every 10 seconds.
+		// this was taken entirely from an example you gave us. thank you, sir!
 		Timer.schedule (new Task () { 
 			@Override public void run () {
 				//System.out.println ("SPEEDUP") ;
@@ -145,19 +141,19 @@ public class Main extends ApplicationAdapter{
 		}
 	}
 	
-	public void makeEnemy (Platform plat) { //COMMENT
-		int chance = rand.nextInt (3) ;
+	public void makeEnemy (Platform plat) {
+		// 50% chance that an enemy aligned with the plat parameter will be made.
+		// type of enemy is randomized.
+		int chance = rand.nextInt (2) ;
 		if (chance == 1) {
-			//System.out.println ("bam") ;
 			int type = rand.nextInt (4) ;
 			if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
 				type = 0 ;
 			}
-			if (type != 3) {
+			if (type != 3) { // anything except the lion
 				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes, player.deactivateHoles)) ;
 			}
 			else { // lion is always on floor
-				// CHANGE THE X SO IT AVOIDS THE HOLES
 				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes, player.deactivateHoles)) ;
 			}
 		}
@@ -268,7 +264,7 @@ public class Main extends ApplicationAdapter{
 			System.out.println(player.getLives());
 			if (player.getLives() > 0) {
 				if (player.getDyingSpeed() == 0) {
-					//hole or enemy will disappear if it collides with the player when respawning
+					//hole or enemy will disappear if it collides with the player when respawning to prevent a death loop
 					for (Hole h: holes) {
 						if (h.collide(100, 100, player.getWidth(), player.getHeight())) {
 							h.randPosition(1000);
@@ -276,7 +272,7 @@ public class Main extends ApplicationAdapter{
 						}
 					}
 					for (Enemy e: enemies) {
-						if (e.collide(player) == true) { // if enemy collides, enemy dies. by blazing.
+						if (e.collide(player) == true) {
 							e.loseHp(420);
 						}
 					}
@@ -297,19 +293,19 @@ public class Main extends ApplicationAdapter{
 		gameMusic.play();
 		boolean isOnPlatform = false;
 		for (int i = 0; i < platforms.size(); i++) {
-			if (player.getY () + player.getHeight () >= 600) {
+			if (player.getY () + player.getHeight () >= 600) { // top of screen, stop the jump
 				player.stopJump () ;
 			}
 			if (platforms.get(i).collideTop(player)) {
 				isOnPlatform = true;
-				if (platforms.get(i).moneyCollision(player)) {
+				if (platforms.get(i).moneyCollision(player)) { // get that cash dolla
 					money += player.getMoneyMult () + 1;
 					moneySound.play();
 				}
 				if (platforms.get(i).fireCollision(player) && player.deactivateFire == false) {
 					player.die();
 				}
-				if (!player.isJumping()) {
+				if (!player.isJumping()) { // ground level is the platform the player just jumped off of
 					player.setGroundLvl(platforms.get(i).getY() + platforms.get(i).getHeight());
 				}	
 			}
@@ -319,7 +315,7 @@ public class Main extends ApplicationAdapter{
 			player.setGroundLvl(100);
 		}
 		
-		if (player.getX() < 0 || player.getY() <= 0) {
+		if (player.getX() < 0 || player.getY() <= 0) { // fell off the screen
 			player.die();
 		}
 		
@@ -337,7 +333,8 @@ public class Main extends ApplicationAdapter{
 			}
 		}
 		
-		for (int i = 0 ; i < enemies.size () ; i++) { // removing enemies that have gone off the left or finished dying
+		for (int i = 0 ; i < enemies.size () ; i++) { 
+			// removing enemies that have gone off the left or finished dying
 			if (enemies.get(i).getX () + enemies.get(i).getWidth () <= 0 || enemies.get(i).isDead () == true) {
 				enemies.remove(i) ;
 			}
@@ -431,7 +428,7 @@ public class Main extends ApplicationAdapter{
 	
 	public void shopMenu () {
 		//updates page with everything concerning the shop
-		shop.update (money) ;
+		shop.update () ;
 		page = shop.giveNextScreen () ;
 		if (page != shopNum) {
 			shop.updatePlayersUpgrades(player.getPowers());
@@ -484,7 +481,9 @@ public class Main extends ApplicationAdapter{
 		}
 	}
 	
-	public void movePlatforms() { //COMMENT
+	public void movePlatforms() {
+		// moves all platforms with the screen. if a platform has gone off the screen, replace it with a new one
+		// that will come in from the right.
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).move();
 			if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) { // went off screen to left
@@ -510,7 +509,8 @@ public class Main extends ApplicationAdapter{
 		}
 	}
 	
-	public void moveEnemies () { //COMMENT
+	public void moveEnemies () {
+		// enemies are moved with the screen, also do their own walk cycle unless theyre dying
 		for (Enemy e : enemies) {
 			e.moveWithPlat () ;
 			if (!e.dying) {
@@ -529,7 +529,7 @@ public class Main extends ApplicationAdapter{
 		randomizePlatforms();
 	}
 	
-	public void randomizePlatforms() { //COMMENT
+	public void randomizePlatforms() {
 		//randomizes the positions of the platforms
 		for (int j = 0; j < 3; j++) { //3 rows of platforms
 			platforms.get(j * platNum).randPosition(0, 1);
@@ -552,9 +552,10 @@ public class Main extends ApplicationAdapter{
 		}
 	}
 	
-	public void updateLasers () { //COMMENT
-		for (int i = 0 ; i < enemies.size () ; i++) {
-			if (enemies.get(i).getType () == 3) { // a golem
+	public void updateLasers () {
+		// moves and draws the player and enemy lasers, and checks to see if theres any collision taking place
+		for (int i = 0 ; i < enemies.size () ; i++) { // dealing with enemy lasers
+			if (enemies.get(i).getType () == 3) { // a golem, only kind that can shoot
 				ArrayList <Laser> elasers = enemies.get(i).getLasers () ;
 				if (elasers.size () > 0) {
 					for (int j = 0 ; j < elasers.size () ; j++) {
@@ -562,9 +563,10 @@ public class Main extends ApplicationAdapter{
 						elasers.get(j).draw () ;
 						if (elasers.get(j).collide (player)) {
 							elasers.get(j).doDamage (player) ;
-							enemies.get(i).removeLaser (elasers.get(j)) ;
+							enemies.get(i).removeLaser (elasers.get(j)) ; // remove lasers that have collided
 						}
 						if (enemies.get(i).getX () + enemies.get(i).getSprite ().getWidth () <= 0) {
+							// enemy went off screen to left, get rid of their lasers
 							enemies.get(i).removeLaser (elasers.get(j)) ;
 						}
 					}
@@ -572,7 +574,7 @@ public class Main extends ApplicationAdapter{
 			}
 		}
 		ArrayList <Laser> plasers = player.getLasers () ;
-		if (plasers.size () > 0) {
+		if (plasers.size () > 0) { // dealing with player lasers
 			for (int j = 0 ; j < plasers.size () ; j++) {
 				Laser currentlas = plasers.get(j);
 				currentlas.move () ;
@@ -585,16 +587,16 @@ public class Main extends ApplicationAdapter{
 						}
 					}
 				}
-				if (currentlas != null && currentlas.getX () >= 1200) {
+				if (currentlas != null && currentlas.getX () >= 1200) { // get rid of lasers that went off the right
 					player.removeLaser (currentlas) ;
 				}
 			}
 		}
 	}
 	
-	public void reset(boolean gameOver, boolean resetUps) { //COMMENT
+	public void reset(boolean gameOver, boolean resetUps) {
 		//all elements in the game are reset to their original position and speed
-		//one time use upgrades in the shop can be repurchased
+		//one time use upgrades in the shop can be repurchased if you're exiting out of the main game
 		background.setX(0);
 		background2.setX(3430);
 		floor.setX(0);

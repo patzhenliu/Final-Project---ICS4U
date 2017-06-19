@@ -25,7 +25,6 @@ public class Floor {
 		background = new TextureRegion(backgroundImg, 0, 0, width, height);
 		
 		this.x = x;
-		int y = Gdx.graphics.getHeight();
 	}
 	
 	public void draw() {
