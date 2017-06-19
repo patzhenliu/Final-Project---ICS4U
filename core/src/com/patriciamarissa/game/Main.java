@@ -427,7 +427,7 @@ public class Main extends ApplicationAdapter{
 	
 	public void shopMenu () {
 		//updates page with everything concerning the shop
-		shop.update (money) ;
+		shop.update () ;
 		page = shop.giveNextScreen () ;
 		if (page != shopNum) {
 			shop.updatePlayersUpgrades(player.getPowers());

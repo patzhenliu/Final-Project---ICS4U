@@ -44,6 +44,7 @@ public class Shop {
 	Sound clickSound, buySound;
 	
 	public Shop(Batch batch) {
+		// constructor
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("menus/shop.png"));
 		title = 1 ;
@@ -87,6 +88,7 @@ public class Shop {
 	}
 	
 	private void createSpeech () {
+		// loads in all of the ghost's speech, first goes to the speech that goes with the first box
 		laserspeech = new Texture [3] ;
 		lifespeech = new Texture [3] ;
 		jumpspeech = new Texture [3] ;
@@ -116,7 +118,7 @@ public class Shop {
 		currentspeech = laserspeech [0] ;
 	}
 	
-	private void createUpgrades() {
+	private void createUpgrades() { // loads in all the upgrade images and makes the upgrade objects
 		upgrades = new Upgrade[numOfUpgrades] ;
 		for(int i = 0; i < numOfUpgrades; i++) {
 			int ux = i % 4;
@@ -127,7 +129,7 @@ public class Shop {
 		}
 	}
 	
-	private void createButtons () {
+	private void createButtons () { // makes a button for each box on the page
 		buttonNum = 0;
 		buttons = new Button[numOfUpgrades];
 		
@@ -139,7 +141,7 @@ public class Shop {
 		}
 	}
 	
-	public void drawNum(int xDisplace, int y, int num) {
+	public void drawNum(int xDisplace, int y, int num) { // draws your money in the corner
 		batch.begin();
 		for(int i = 0; i < Integer.toString(num).length(); i++) {
 			batch.draw(nums[Integer.parseInt(Integer.toString(num).substring(i, i + 1))], i * 20 + xDisplace, y);
@@ -147,19 +149,22 @@ public class Shop {
 		batch.end();
 	}
 	
-	public void updateCoins (int c) {
+	public void updateCoins (int c) { // updates shop's coins to match player's coins
 		coins = c ;
 	}
 	
-	public void updateBoughtList (int [] playerlist) {
+	public void updateBoughtList (int [] playerlist) { 
+		// matches the player's list; done when entering the shop, purpose is in case one time powerups have been reset
 		boughtlist = playerlist ;
 	}
 	
-	public void updatePlayersUpgrades (int [] playerlist) {
+	public void updatePlayersUpgrades (int [] playerlist) { 
+		// makes the player's list match shop list; done when exiting the shop
 		playerlist = boughtlist ;
 	}
 	
 	public void resetOneTimeUps () {
+		// completely remakes the one-time powerups, because setting their levels to 0 made them stuck there.
 		int ux = 4 % 4;
 		int uy = ((int)(4 / 4) )% 2; 
 		int ux2 = 5 % 4;
@@ -174,17 +179,17 @@ public class Shop {
 	}
 	
 	public void buy (int index, int [] powers) {
-		// LIVES, LASERS, HIGH JUMP, INCREASE MONEY, KILL FIRE, KILL HOLES
+		// buys the powerup at the index
 		upgrades [index].buy () ;
 		powers [index] += 1 ;
 		coins -= upgrades [index].price ;
-		if (index < 4) {
+		if (index < 4) { // upgradable
 			upgrades [index].updatePrice () ;
 		}
 		buySound.play();
 	}
 	
-	public void draw() {
+	public void draw() { // draws the shop
 		batch.begin();
 	    batch.draw(shopImg, 0, 0);
 	    batch.draw(coinsImg, 10, 555) ;
@@ -200,7 +205,7 @@ public class Shop {
 		drawNum (150, 560, coins) ;
 	}
 	
-	public void updateButtons () {
+	public void updateButtons () { // registers which key has been pressed and acts accordingly
 		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
 			if (buttonNum - 1 >= 0) {
 				buttonNum -= 1;
@@ -239,7 +244,7 @@ public class Shop {
 		}
 	}
 	
-	public void update (int playermon) {
+	public void update () { // updates everything
 		music.play () ;
 		animateGhost() ;
 		updateButtons () ;
@@ -249,13 +254,13 @@ public class Shop {
 		draw () ;
 	}
 	
-	public void updateUpgrades () {
+	public void updateUpgrades () { // changes the icon colors depending on the player's money
 		for (Upgrade u : upgrades) {
 			u.updateIcon(coins);
 		}
 	}
 	
-	public void updateHoverSquare () {
+	public void updateHoverSquare () { // darkens the box thats currently selected
 		for (int i = 0 ; i < upgrades.length ; i++) {
 			if (buttonNum == i) {
 				upgrades [i].updateSquare(true);
@@ -266,7 +271,9 @@ public class Shop {
 		}
 	}
 	
-	public void updateGhostText () {
+	public void updateGhostText () { 
+		// changes the ghost's text depending on the currently selected box
+		// and whether or not its sold out or if the player cant afford it
 		if (buttonNum == 0) {
 			currentspeech = laserspeech [upgrades [buttonNum].level - 1]; 
 		}
@@ -295,14 +302,14 @@ public class Shop {
 		}
 	}
 	
-	public void drawGhost() {
+	public void drawGhost() { // draws ghost
 		batch.begin();
 		batch.draw(ghostSprite, 830, 350);
 		batch.draw(currentspeech, 450, 450);
 		batch.end();
 	}
 	
-	public void animateGhost() {
+	public void animateGhost() { // animates ghost
 		if (spriteCount == 0) {
 			spriteCount = sprites.length - 1;
 		}
@@ -316,7 +323,7 @@ public class Shop {
 		}
 	}
 	
-	public int giveNextScreen () {
+	public int giveNextScreen () { // checks to see if the player has inputted that they want to go to another screen
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			music.dispose() ;
 			spriteCount = 0;
