@@ -119,8 +119,10 @@ public class Main extends ApplicationAdapter{
 		Timer.schedule (new Task () { 
 			@Override public void run () {
 				//System.out.println ("SPEEDUP") ;
-				increaseSpeed (1) ;
+				if (isMoving) {
+					increaseSpeed (1) ;
 				}
+			}
 		} , 10, 10) ; // first is delay to starting in seconds, second is time in between each tick in seconds
 	}
 	
