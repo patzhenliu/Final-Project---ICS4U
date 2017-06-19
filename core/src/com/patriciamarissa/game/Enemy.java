@@ -9,16 +9,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Enemy {
-	// LION IS WALKIN OVER GAPS AGAIN. GARGOYLE'S NOT GOIN DOWN HOLES.
-	// FIX GENERATION. STILL WISHY WASHY ON GOLEM SPRITES.
-	// IF SMALL GOLEM STAYS, FIX DEATH SPRITES.
-	// TRY CHANGING HOW ENEMIES ARE GENERATED. CHANCE GENERATE THEM ON EACH PLATFORM.
 	private int x, y, hp, speed, spritecount, animatecount, movespeed, deathcount ;
 	private Platform plat ;
 	private final int type, tree, gargoyle, golem, lion ;
 	private Batch batch ;
 	private Texture spritesheet ;
-	private Texture gl8, gl7, gl6, gl5, gl4, gl3, gl2, gl1, gl0 ;
+	private Texture gl8, gl7, gl6, gl5, gl4, gl3, gl2, gl1, gl0 ; // golem pics seperate bc they each got resized
 	private Sprite currentsprite ;
 	private Sprite [] sprites ;
 	private Sprite [] deathSprs ; // not sprites since knowing their widths and height isnt necessary
@@ -31,6 +27,7 @@ public class Enemy {
 	private boolean areHolesDead ;
 	
 	public Enemy (Batch batch, int t, int x, int y, int s, Platform plat, ArrayList <Hole> h, boolean areHolesDead) {
+		// constructor
 		dying = false ;
 		deathcount = 0 ;
 		spritecount = 0 ;
@@ -47,7 +44,7 @@ public class Enemy {
 		this.areHolesDead = areHolesDead ;
 		holes = h ;
 		lasers = new ArrayList <Laser> () ;
-		if (type == tree) { // stays still on the platform?
+		if (type == tree) { // ENEMY TYPE 1: WALKS AROUND ON PLATFORM
 			spritesheet = new Texture  (Gdx.files.internal("sprites/walking.png")) ;
 			sprites = new Sprite [4] ;
 			deathSprs = new Sprite [5] ;
@@ -154,14 +151,22 @@ public class Enemy {
 			movespeed = 8 ;
 		}
 		
-		createX (x) ;
+		if (type == gargoyle || type == lion) {
+			this.x = x ;
+		}
+		if (type == golem) { // pushing their sprite over to fully fit on the plat
+			this.x = x - 200 ;
+		}
+		if (type == tree) { // pushing their sprite over to fully fit on the plat
+			this.x = x - 100 ;
+		}
 		
-		if (type != lion) { // it either doesn't move on the x axis or it's a tree.
+		if (type != lion) { // lion adheres to the floor, but with all else it doesnt matter
 			minX = plat.getX () ;
 			maxX = plat.getX () + plat.getWidth () ;
 		}
 		else { // it's a lion.
-			if (areHolesDead) {
+			if (areHolesDead) { // no holes, no restrictions on how far it can go on the screen
 				minX = -1000 ;
 				maxX = 1000 ;
 			}
@@ -202,19 +207,7 @@ public class Enemy {
 		}
 	}
 	
-	public void createX (int x) { // centers the platform sprites. the x taken in is the far end of the plat.
-		if (type == gargoyle || type == lion) {
-			this.x = x ;
-		}
-		if (type == golem) { // this seems to center them. mostly.
-			this.x = x - 200 ;
-		}
-		if (type == tree) {
-			this.x = x - 100 ;
-		}
-	}
-	
-	public void draw() {
+	public void draw() { // as long as the enemy is living, draw it
 		currentsprite.setPosition(x,y);
 		batch.begin();
 		if (!isDead ()) {
@@ -223,7 +216,7 @@ public class Enemy {
 		batch.end();
 	}
 	
-	public void changeDirection() {
+	public void changeDirection() { // flip which way the enemy is going, and their sprites if not a gargoyle
 		if (type != gargoyle) {
 			for (Sprite i : sprites) {
 				i.flip(true,false);
@@ -235,12 +228,12 @@ public class Enemy {
 		}
 	}
 	
-	public void moveWithPlat () {
+	public void moveWithPlat () { // moves with rest of screen
 		x -= speed ;
 		updateBoundaries () ;
 	}
 	
-	public void updateBoundaries () {
+	public void updateBoundaries () { // boundaries must change as platform moves
 		minX -= speed ;
 		if (type == tree) {
 			maxX = minX + plat.getWidth () - (int) currentsprite.getWidth () ;
@@ -264,7 +257,7 @@ public class Enemy {
 		x -= movespeed;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1;
-			if (right) {
+			if (right) { // if moving left but boolean right is still true, change it to move left
 				changeDirection();
 			}
 		}
@@ -274,7 +267,7 @@ public class Enemy {
 		x += movespeed;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1;
-			if (!right) {
+			if (!right) { // if moving right but boolean right is false, change it so it'll keep moving right
 				changeDirection();
 			}
 		}
@@ -284,7 +277,7 @@ public class Enemy {
 		y += movespeed ;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1 ;
-			if (!up) {
+			if (!up) { // if moving up but up is false, change it to keep moving up
 				changeDirection () ;
 			}
 		}
@@ -294,27 +287,27 @@ public class Enemy {
 		y -= movespeed ;
 		if (spritecount == 0) {
 			spritecount = sprites.length - 1 ;
-			if (up) {
+			if (up) { // if moving down but boolean up is true, change it so it stays moving down
 				changeDirection () ;
 			}
 		}
 	}
 	
-	public void move () { // the golem and the rock don't move, but the golem does shoot a laser.
+	public void move () { // enemy's movement independent of the screen movement. golem doesn't move, but its lasers do.
 		if (type == lion) {
 			if (right) { // going right
-				if (currentsprite.getX () + currentsprite.getWidth () < maxX) {
+				if (currentsprite.getX () + currentsprite.getWidth () < maxX) { // hasn't hit max right yet
 					moveRight () ;
 				}
-				else {
+				else { // hit max right, go left
 					moveLeft () ;
 				}
 			}
 			else if (!right) { // going left
-				if (x - movespeed > minX) {
+				if (x - movespeed > minX) { // hasnt hit min left yet
 					moveLeft () ;
 				}
-				else {
+				else { // hit min left, go right
 					moveRight () ;
 				}
 			}
@@ -344,7 +337,7 @@ public class Enemy {
 				if (y < maxY) {
 					moveUp () ;
 				}
-				else {
+				else { // hit the roof, go down
 					moveDown () ;
 				}
 			}
@@ -352,7 +345,7 @@ public class Enemy {
 				if (y - movespeed > minY) {
 					moveDown ()  ;
 				}	
-				else {
+				else { // hit the floor, go up
 					moveUp () ;
 				}
 			}
@@ -377,19 +370,20 @@ public class Enemy {
 		}
 		currentsprite.setPosition (x, y) ;
 		
-		if (type == golem && currentsprite == sprites [5]) {
+		if (type == golem && currentsprite == sprites [5]) { // make the golem shoot when it shines the brightest!
 			shoot () ;
 		}
 	}
 	
 	public void die () {
-		dying = true ; // COMMENCE THE DYING ANIMATION
+		// start dying animation, but not fully dead yet, so animation is still visible
+		dying = true ;
 		spritecount = deathSprs.length - 1 ;
 		animatecount = 3 ;
 		currentsprite = deathSprs [0] ;
 	}
 	
-	public void animateDeath () {
+	public void animateDeath () { // uses a different sprite list than the regular animate, therefore seperate method
 		if (spritecount > 0) {
 			animatecount--;
 			if (animatecount == 0) {
@@ -403,6 +397,7 @@ public class Enemy {
 	}
 	
 	public boolean isDead () { // once it finishes the death animation cycle, officially pronounce it as dead
+		// truly dead and it'll be removed from enemies/won't be drawn
 		if (deathcount == deathSprs.length - 1) {
 			return true ;
 		}
@@ -411,37 +406,22 @@ public class Enemy {
 		}
 	}
 	
-	public boolean collide (Player player) {
+	public boolean collide (Player player) { // return whether or not it collided with the player
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
 		Rectangle logRect = new Rectangle(x, y, currentsprite.getWidth (), currentsprite.getHeight ());
 		return rect.overlaps(logRect);
 	}
 	
-	public boolean collide(int x, int y, int w, int h){ ///should only be feet colliding not anything
-		Rectangle rect = new Rectangle(x, y, w, h);
-		Rectangle enemyRect = new Rectangle(currentsprite.getX(), currentsprite.getY(), currentsprite.getWidth(), currentsprite.getHeight());
-		return rect.overlaps(enemyRect);
-	}
-	
-	public boolean isOnPlatform() {
-		return plat.collideTop(currentsprite);
-	}
-	
-	public void loseHp (int damage) { // make the sprite flicker when damage is taken
+	public void loseHp (int damage) { // get damaged
 		hp -= damage ;
-		if (hp <= 0) {
+		if (hp <= 0) { // killed
 			die () ;
 		}
-		/*else {
-			batch.begin () ;
-			batch.draw (blank, x, y) ;
-			batch.end () ;
-		}*/
 	}
 	
-	public void shoot () {
-		lasers.add (new Laser (false, x, y + 50, speed, 1, batch)) ; // PLACEHOLDER X AND Y
+	public void shoot () { // golem shoots
+		lasers.add (new Laser (false, x, y + 50, speed, 1, batch)) ;
 	}
 	
 	public void removeLaser (Laser l) {
