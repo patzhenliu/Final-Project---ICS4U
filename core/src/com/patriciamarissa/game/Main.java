@@ -116,7 +116,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		createPlatforms(platNum, 300, 200);
 		createPlatforms(platNum, 500, 320);
 		createPlatforms(platNum, 800, 440);
-		//makeEnemies () ;
 		runTimer () ;
 	}
 	
@@ -147,7 +146,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void makeEnemy (Platform plat) { //COMMENT
-		int chance = rand.nextInt (3) ;
+		int chance = rand.nextInt (2) ;
 		if (chance == 1) {
 			//System.out.println ("bam") ;
 			int type = rand.nextInt (4) ;

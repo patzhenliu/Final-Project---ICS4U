@@ -7,7 +7,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Story implements InputProcessor{
 	private Batch batch;
@@ -35,7 +34,6 @@ public class Story implements InputProcessor{
 	
 	public void draw () {
 		//draws current page on screen
-		TextureRegion page = new TextureRegion(pages[pageNum], 0, 0, 900, 600);
 		batch.begin();
 	    batch.draw(pages[pageNum], 0, 0, 1000, 600);
 	    batch.end();
