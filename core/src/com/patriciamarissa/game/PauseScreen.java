@@ -23,6 +23,7 @@ public class PauseScreen {
 	private Sound clickSound;
 	
 	public PauseScreen (Batch batch) {
+		// constructor
 		TITLE = 1 ;
 		GAME = 2 ;
 		SHOP = 3 ;
@@ -94,7 +95,7 @@ public class PauseScreen {
 		}
 	}
 	
-	public void update () {
+	public void update () { // updates everything
 		updatePage (buttons) ;
 		draw () ;
 	}

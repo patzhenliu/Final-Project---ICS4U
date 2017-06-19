@@ -15,7 +15,7 @@ public class Platform {
 	private Sprite platformSprite;
 	private int moveSpeed;
 	private int x;
-	private int mval ;
+	private int mval ; // money value
 	private int y;
 	
 	private Random rand = new Random(System.currentTimeMillis());
@@ -25,6 +25,7 @@ public class Platform {
 	private boolean deactiveFire ;
 	
 	public Platform (Batch batch, int moveSpeed, int prevX, int y, int moneyval, boolean df) {
+		// constructor
 		this.batch = batch;
 		
 		platformImg = new Texture(Gdx.files.internal("backgrounds/platform.png"));
@@ -73,7 +74,7 @@ public class Platform {
 		length = rand.nextInt(10) + 5;
 	}
 	
-	public void move() {
+	public void move() { // move the plat with its environment
 		x -= moveSpeed;
 	}
 	
@@ -106,7 +107,7 @@ public class Platform {
 		}
 	}
 	
-	public void updateMoneySprites (int moneymult) { //COMMENT
+	public void updateMoneySprites (int moneymult) { // makes sure the money sprites match their current values
 		for (int i = 0; i < moneyList.size(); i++) {
 			moneyList.get(i).updateSprite (moneymult);
 		}
@@ -178,19 +179,19 @@ public class Platform {
 		return (x + width)/2 ;
 	}
 	
-	public void setMoveSpeed (int moveSpeed) {
+	public void setMoveSpeed (int moveSpeed) { // sets speed, used in resetting speeds in main
 		this.moveSpeed = moveSpeed ;
 	}
 	
-	public void addSpeed (int s) {
+	public void addSpeed (int s) { // speed up
 		moveSpeed += s ;
 	}
 	
-	public void setFireStatus (boolean f) {
+	public void setFireStatus (boolean f) { // sets whether or not fire is in play
 		deactiveFire = f ;
 	}
 	
-	public boolean offRight () {
+	public boolean offRight () { // returns whether the platform has yet to come onto the screen
 		if (x >= 1000) {
 			return true ;
 		}

@@ -14,7 +14,7 @@ public class Money {
 	private Sprite currentSprite;
 	private Sprite [] currentSprites ;
 	private Sprite [] sprites ;
-	private Sprite [] upsprs1 ;
+	private Sprite [] upsprs1 ; // upgrade sprites 1
 	private Sprite [] upsprs2 ;
 	private Sprite [] upsprs3 ;
 	
@@ -25,6 +25,7 @@ public class Money {
 	private Random rand = new Random(System.currentTimeMillis());
 	
 	public Money(Batch batch, int px, int py, int range, int value) {
+		// constructor
 		this.batch = batch;
 		spritePage = new Texture(Gdx.files.internal("sprites/money.png"));
 		sprites = new Sprite[4];
@@ -90,7 +91,7 @@ public class Money {
 		}
 	}
 	
-	public void updateSprite (int moneymult) { //COMMENT
+	public void updateSprite (int moneymult) { // changes the sprites depending on what the money is worth
 		if (moneymult == 1) {
 			currentSprites = upsprs1 ;
 			currentSprite = currentSprites [0] ;
