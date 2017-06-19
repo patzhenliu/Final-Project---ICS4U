@@ -6,7 +6,6 @@ import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -16,7 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-public class Main extends ApplicationAdapter implements InputProcessor{
+public class Main extends ApplicationAdapter{
 	SpriteBatch batch;
 	
 	Player player;
@@ -240,6 +239,23 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		updatePage();		
 	}
 	
+	public void drawGame() {
+		//draws all elements of the game
+		Gdx.gl.glClearColor(255, 255, 255, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		drawBackground();
+		drawFloor();
+		drawPlatforms();
+		if (player.deactivateHoles == false) {
+			drawHoles();
+		}
+		drawEnemies () ;
+		player.draw();
+		drawNum(900, 40, score - score%10);
+		drawNum(50, 550, money);
+		drawLives();
+	}
+	
 	public void playGame() {
 		//checks player death
 		if (player.dying()) {
@@ -250,7 +266,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 					//hole or enemy will disappear if it collides with the player when respawning to prevent a death loop
 					for (Hole h: holes) {
 						if (h.collide(100, 100, player.getWidth(), player.getHeight())) {
-							System.out.println("HOLE COLLISION");
 							h.randPosition(1000);
 							break;
 						}
@@ -263,7 +278,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				}
 			}
 			else {
-				System.out.println("MAY DEATH RAIN UPON YOU");
 				//resets all everything in the game and brings user to the
 				//lose screen when player dies completely (no lives left)
 				reset(true, true) ;
@@ -372,10 +386,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		background2.draw();
 	}
 	
-
 	@Override
 	public void render () {
-		//all elements in the game are drawn
+		//game is drawn
 		//calls update to update the page of the game
 		try{
 			Thread.sleep(33);
@@ -385,19 +398,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			Thread.currentThread().interrupt();
 		}
 		
-		Gdx.gl.glClearColor(255, 255, 255, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		drawBackground();
-		drawFloor();
-		drawPlatforms();
-		if (player.deactivateHoles == false) {
-			drawHoles();
-		}
-		drawEnemies () ;
-		player.draw();
-		drawNum(900, 40, score - score%10);
-		drawNum(50, 550, money);
-		drawLives();
+		drawGame();
 		update();
 		
 	}
@@ -669,53 +670,5 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void dispose () {
 		batch.dispose () ;
 		rend.dispose () ;
-	}
-
-	@Override
-	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
