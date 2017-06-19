@@ -320,7 +320,7 @@ public class Shop {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			music.dispose() ;
 			spriteCount = 0;
-			return title ;
+			return title;
 		}
 		else {
 			return shop ;
