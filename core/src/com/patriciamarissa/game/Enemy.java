@@ -19,7 +19,6 @@ public class Enemy {
 	private Batch batch ;
 	private Texture spritesheet ;
 	private Texture gl8, gl7, gl6, gl5, gl4, gl3, gl2, gl1, gl0 ;
-	private Texture blank ;
 	private Sprite currentsprite ;
 	private Sprite [] sprites ;
 	private Sprite [] deathSprs ; // not sprites since knowing their widths and height isnt necessary

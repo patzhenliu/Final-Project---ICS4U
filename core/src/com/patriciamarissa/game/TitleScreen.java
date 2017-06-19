@@ -1,41 +1,18 @@
 package com.patriciamarissa.game;
 
-import java.util.EventListener;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class TitleScreen {
 	
 	private final int title, game, shop, controls, credits, story ;
 	private Batch batch;
-	private int page ;
-	private Texture clickedPage;
 	private Texture background;
 	
-	private Stage stage;
-    private Texture myTexture;
-    private TextureRegion myTextureRegion;
-    private TextureRegionDrawable myTexRegionDrawable;
-    private ImageButton button;
-    private boolean hover;
-    
     private Button playButton;
     private Button shopButton;
     private Button controlsButton;
@@ -48,20 +25,20 @@ public class TitleScreen {
 
 	
 	public TitleScreen (Batch batch) {
+		this.batch = batch ;
+		
 		title = 1 ;
 		game = 2 ;
 		shop = 3 ;
 		controls = 4 ;
 		credits = 5 ;
 		story = 8;
-		this.batch = batch ;
-		page = title;
 		
-		buttonNum = 0;
-		
+		//music and sounds
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
 		
+		buttonNum = 0;
 		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/playButton.png")),
 				new Texture(Gdx.files.internal("menus/playHover.png")), 400, 237, game);
 		shopButton = new Button(batch, new Texture(Gdx.files.internal("menus/shopButton.png")),
@@ -82,6 +59,7 @@ public class TitleScreen {
 	}
 	
 	public void draw () {
+		//draws background and buttons
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
 	    batch.draw(background, 0, 0);
@@ -95,6 +73,7 @@ public class TitleScreen {
 	}
 	
 	public int updatePage () {
+		//use arrow keys to change highlighted button
 		music.play();
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
 			if (buttonNum + 1 < buttons.length) {
@@ -121,12 +100,14 @@ public class TitleScreen {
 
 	public int giveNextScreen () {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			//ENTER to change pages
 			music.stop () ;
 			music.dispose();
 			clickSound.play();
 			return buttons[buttonNum].getPageNum();
 		}
 		else if (Gdx.input.isKeyPressed(Keys.B) && Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+			//special combination of keys to activate story
 			music.stop () ;
 			return story;
 		}

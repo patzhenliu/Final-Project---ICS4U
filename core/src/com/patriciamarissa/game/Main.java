@@ -1,7 +1,6 @@
 package com.patriciamarissa.game;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -11,16 +10,9 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
@@ -59,11 +51,13 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	int titleNum, gameNum, shopNum, controlsNum, creditsNum, pauseNum, loseNum, storyNum, ynNum;
 	int page;
 	int score, speed, money;
+	int holeNum, platNum;
 	long speedtimer;
 	boolean isMoving;
 	
 	@Override
 	public void create () {
+		//creating objects
 		batch = new SpriteBatch();
 		player = new Player(batch, 10, speed);
 		background = new Background(batch, 0, 3430, 600, speed);
@@ -82,9 +76,12 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		rend = new ShapeRenderer ();
 		rand = new Random (System.currentTimeMillis());
+		
+		//import music and sounds
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/main game music.mp3"));
 		moneySound = Gdx.audio.newSound(Gdx.files.internal("sounds/money1.wav"));
 
+		//import images
 		lifeImg = new Texture(Gdx.files.internal("sprites/lifeImg.png"));
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
@@ -92,6 +89,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		    nums[i] = new Texture(Gdx.files.internal(fileName));
 		}
 		
+		holes = new ArrayList<Hole>(); 
+		platforms = new ArrayList<Platform>();
+		
+		//int representing different pages in the game
 		titleNum = 1 ;
 		gameNum = 2 ;
 		shopNum = 3 ;
@@ -105,16 +106,21 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		score = 0;
 		speed = 2; //speed on screen moving backwards
-		money = 0;
+		money = 1000;
 		isMoving = false;
+		
+		holeNum = 2;
+		platNum = 4;
 
-		createHoles();
-		createPlatforms();
+		createHoles(holeNum);
+		createPlatforms(platNum, 300, 200);
+		createPlatforms(platNum, 500, 320);
+		createPlatforms(platNum, 800, 440);
 		//makeEnemies () ;
 		runTimer () ;
 	}
 	
-	public void runTimer () { // THANKS FOR THIS SIR!
+	public void runTimer () { //COMMENT
 		Timer.schedule (new Task () { 
 			@Override public void run () {
 				System.out.println ("SPEEDUP") ;
@@ -123,36 +129,24 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		} , 10, 10) ; // first is delay to starting in seconds, second is time in between each tick in seconds
 	}
 	
-	public void createPlatforms() {
-		int platNum = 4; 
-		platforms = new ArrayList<Platform>();
-		platforms.add(new Platform(batch, speed, 200, 300, player.getMoneyMult(), player.deactivateFire));
-		for(int i = 0; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 200, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
-			makeEnemy (platforms.get(i)) ;
-		}
-		platforms.add(new Platform(batch, speed, 320, 500, player.getMoneyMult(), player.deactivateFire));
-		for(int i = 0; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 320, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
-			makeEnemy (platforms.get(i)) ;
-		}
-		platforms.add(new Platform(batch, speed, 440, 800, player.getMoneyMult(), player.deactivateFire));
-		for(int i = 0; i < platNum; i++) {	
-			platforms.add(new Platform(batch, speed, 440, platforms.get(i).getX() + platforms.get(i).getWidth(), player.getMoneyMult(), player.deactivateFire));
+	public void createPlatforms(int num, int x, int y) {
+		//creates platnum number of platforms 
+		platforms.add(new Platform(batch, speed, x, y, player.getMoneyMult(), player.deactivateFire));
+		for(int i = 0; i < num; i++) {	
+			platforms.add(new Platform(batch, speed, platforms.get(i).getX() + platforms.get(i).getWidth(), y,player.getMoneyMult(), player.deactivateFire));
 			makeEnemy (platforms.get(i)) ;
 		}
 	}
 	
-	public void createHoles() {
-		holes = new ArrayList<Hole>();
-		int holeNum = 2; 
+	public void createHoles(int num) {
+		//creates and adds num number of holes to the arraylist holes
 		holes.add(new Hole(batch, speed, 500));
-		for(int i = 0; i < holeNum; i++) {	
+		for(int i = 0; i < num; i++) {	
 			holes.add(new Hole(batch, speed, holes.get(i).getX() + holes.get(i).getWidth()));
 		}
 	}
 	
-	public void makeEnemy (Platform plat) {
+	public void makeEnemy (Platform plat) { //COMMENT
 		int chance = rand.nextInt (3) ;
 		if (chance == 1) {
 			System.out.println ("bam") ;
@@ -171,6 +165,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void move() {
+		//detects when keys are pressed to update player movements
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
 			player.moveRight();
 			if (page == gameNum) {
@@ -184,6 +179,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			}	
 		}
 		else {
+			//player stops walking if no key is pressed
 			player.endSpriteCycle();
 		}
 		
@@ -193,16 +189,20 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				isMoving = true;
 			}	
 		}
-		else if(Gdx.input.isKeyPressed(Keys.DOWN) && !player.isJumping()){ 
+		else if(Gdx.input.isKeyPressed(Keys.DOWN) && !player.isJumping()){
+			//player's y coordinate is set as the ground
 			player.setGroundLvl(100);		
 		}
 
 		if (isMoving) {
+			//will update player's movements/position if a key was pressed
 			player.move();
 		}
 	}
 	
 	public void updatePage() {
+		//checks which page the game is currently on
+		//calls their respective function to draw and update
 		if (page == titleNum) {
 			gameMusic.pause () ;
 			startMenu();
@@ -242,9 +242,15 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void update() {
+		updatePage();		
+	}
+	
+	public void playGame() {
+		//checks player death
 		if (player.dying()) {
 			if (player.getLives() > 0) {
 				if (player.getDyingSpeed() == 0) {
+					//hole or enemy will disappear if it collides with the player when respawning
 					for (Hole h: holes) {
 						if (h.collide(100, 100, player.getWidth(), player.getHeight())) {
 							System.out.println("HOLE COLLISION");
@@ -260,16 +266,13 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 				}
 			}
 			else {
+				//resets all everything in the game and brings user to the
+				//lose screen when player dies completely (no lives left)
 				reset(true, true) ;
 				page = loseNum ;
 			}
 			return;
 		}
-		
-		updatePage();		
-	}
-	
-	public void playGame() {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			page = pauseNum;
 		}
@@ -343,11 +346,12 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void increaseSpeed (int s) {
+		//everything in the game moves in the opposite direction faster
 		speed += s;
 		player.setSpeed(player.getSpeed() + s);
 		player.setMoveSpeed(speed);
 		floor.setMoveSpeed(speed);
-		floor2.setMoveSpeed(speed); //ignore that gap in the floor its not important
+		floor2.setMoveSpeed(speed);
 		for (Platform p : platforms) {
 			p.setMoveSpeed(speed);
 		}
@@ -360,15 +364,20 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void drawFloor () {
-		rend.begin (ShapeType.Filled) ;
-		rend.setColor (0, 0, 0, 255) ; // TEMP VALUES 255, 175, 229, 255
-		rend.rect (0, 0, 1200, 100) ;
-		rend.end () ;
+		floor.draw();
+		floor2.draw();
+	}
+	
+	public void drawBackground() {
+		background.draw();
+		background2.draw();
 	}
 	
 
 	@Override
 	public void render () {
+		//all elements in the game are drawn
+		//calls update to update the page of the game
 		try{
 			Thread.sleep(33);
 				
@@ -379,10 +388,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		background.draw();
-		background2.draw();
-		floor.draw();
-		floor2.draw();
+		drawBackground();
+		drawFloor();
 		drawPlatforms();
 		if (player.deactivateHoles == false) {
 			drawHoles();
@@ -397,6 +404,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void startMenu() {
+		//updates page with everything concerning the start menu
 		page = title.updatePage () ;
 		if (page == gameNum) {
 			reset(true, false);
@@ -404,11 +412,13 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void pauseMenu() {
+		//updates page with everything concerning the pause menu
 		pause.update () ;
 		page = pause.giveNextScreen () ;
 	}
 	
 	public void areYouSureMenu() {
+		//updates page with everything concerning the yes or no menu
 		page = pause.areYouSure();
 		if (page == controlsNum || page == titleNum || page == shopNum) {
 			reset (true, true) ;
@@ -416,6 +426,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void shopMenu () {
+		//updates page with everything concerning the shop
 		shop.update (money) ;
 		page = shop.giveNextScreen () ;
 		if (page != shopNum) {
@@ -426,16 +437,19 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void controlScreen () {
+		//updates page with everything concerning the controls screen
 		control.update () ;
 		page = control.giveNextScreen () ;
 	}
 	
 	public void creditsScreen () {
+		//updates page with everything concerning the credits
 		credits.update () ;
 		page = credits.giveNextScreen () ;
 	}
 	
 	public void loseScreen() {
+		//updates page with everything concerning the lose screen
 		lose.update () ;
 		page = lose.giveNextScreen () ;
 		if (page == gameNum) {
@@ -444,8 +458,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void storyPage() {
+		//updates page with everything concerning the story
+		//hidden easter egg that you will regret finding
 		if (story == null) {
-			story = new Story(batch);
+			story = new Story(batch); //creates object when you activate story
 		}
 		story.update();
 		page = story.giveNextScreen();
@@ -464,12 +480,12 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void movePlatforms() {
+	public void movePlatforms() { //COMMENT
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms.get(i).move();
 			if (platforms.get(i).getX() < 0 - platforms.get(i).getWidth ()) { // went off screen to left
-				int height = platforms.get(i).getY() ;
-				Platform newplat = new Platform(batch, speed, height, 1000 + rand.nextInt (1000), player.getMoneyMult(), player.deactivateFire) ;
+				int yPos = platforms.get(i).getY() ;
+				Platform newplat = new Platform(batch, speed, 1000 + rand.nextInt (1000), yPos, player.getMoneyMult(), player.deactivateFire) ;
 				platforms.set(i, newplat) ;
 				platforms.get(i).createMoney (rand.nextInt (5)) ;
 				makeEnemy (platforms.get(i)) ;
@@ -478,6 +494,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void moveHoles() {
+		//updates hole position to move backwards across the screen
 		for (int i = 0; i < holes.size(); i++) {
 			holes.get(i).move();
 		}
@@ -489,7 +506,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void moveEnemies () {
+	public void moveEnemies () { //COMMENT
 		for (Enemy e : enemies) {
 			e.moveWithPlat () ;
 			if (!e.dying) {
@@ -502,40 +519,36 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void generateCourse() {
+		//shuffles the positions of the obstacles
 		randomizeHoles();
 		enemies.clear () ;
 		randomizePlatforms();
 	}
 	
-	public void randomizePlatforms() {
-		platforms.get(0).randPosition(0, 1);
-		for (int i = 1; i < 4; i++) {
-			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 1);
-			makeEnemy (platforms.get(i)) ;
-		}
-		platforms.get(4).randPosition(0, 2);
-		for (int i = 5; i < 8; i++) {
-			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 2);
+	public void randomizePlatforms() { //COMMENT
+		//randomizes the positions of the platforms
+		for (int j = 0; j < 3; j++) { //3 rows of platforms
+			platforms.get(j * platNum).randPosition(0, 1);
+			for (int i = 1 + platNum * j; i < platNum * (j+1); i++) {
+				platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 1);
 				makeEnemy (platforms.get(i)) ;
+			}
 		}
-		platforms.get(8).randPosition(0, 3);
-		for (int i = 9; i < 12; i++) {
-			platforms.get(i).randPosition(platforms.get(i-1).getX() + platforms.get(i-1).getWidth(), 3);
-				makeEnemy (platforms.get(i)) ;
-		}
+		
 		for (int i = 0 ; i < platforms.size () ; i++) {
 			platforms.get(i).setFireStatus(player.deactivateFire);
 		}
 	}
 	
 	public void randomizeHoles() {
+		//randomizes the positions of the holes
 		holes.get(0).randPosition(0);
 		for (int i = 1; i < holes.size(); i++) {
 			holes.get(i).randPosition(holes.get(i-1).getX() + holes.get(i-1).getWidth());
 		}
 	}
 	
-	public void updateLasers () {
+	public void updateLasers () { //COMMENT
 		for (int i = 0 ; i < enemies.size () ; i++) {
 			if (enemies.get(i).getType () == 3) { // a golem
 				ArrayList <Laser> elasers = enemies.get(i).getLasers () ;
@@ -575,7 +588,9 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void reset(boolean gameOver, boolean resetUps) {
+	public void reset(boolean gameOver, boolean resetUps) { //COMMENT
+		//all elements in the game are reset to their original position and speed
+		//one time use upgrades in the shop can be repurchased
 		background.setX(0);
 		background2.setX(3430);
 		floor.setX(0);
@@ -609,6 +624,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void resetSpeed() {
+		//speeds are reset to their original speed
 		player.setSpeed(10);
 		speed = 2;
     	
@@ -628,6 +644,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void drawLives() {
+		//draws how many lives the player has on screen
 		batch.begin();
 		for(int i = 0; i < player.getLives() - 1; i ++) {
         	batch.draw(lifeImg, i * 45 + 18, 10);
@@ -635,7 +652,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
         batch.end();
 	}
 	
-	public void drawNum(int xDisplace, int y, int num) { //i was lazy ill make it nicer jk
+	public void drawNum(int xDisplace, int y, int num) {
 		//draws numbers
 		batch.begin();
 		for(int i = 0; i < Integer.toString(num).length(); i++) {

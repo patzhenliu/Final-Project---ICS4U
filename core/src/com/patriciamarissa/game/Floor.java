@@ -3,7 +3,6 @@ package com.patriciamarissa.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Floor {
@@ -16,7 +15,6 @@ public class Floor {
     private int width;
     
     private int moveSpeed;
-    private boolean moving;
 	
 	public Floor(Batch batch, int x, int width, int height, int moveSpeed) {
 		this.batch = batch;
@@ -28,20 +26,20 @@ public class Floor {
 		
 		this.x = x;
 		int y = Gdx.graphics.getHeight();
-		moving = true;
 	}
 	
 	public void draw() {
-		if (x <= -1 * width) {
-			x = width;
-		}
+		//draws floor on screen
 		batch.begin();
-		//batch.draw(background, 0, 0);
 	    batch.draw(background, x, y);
 		batch.end();
 	}
 	
 	public void move() {
+		//updates x coordinate so that it moves backwards on the screen
+		if (x <= -1 * width) {
+			x = width;
+		}
 		x -= moveSpeed;
 	}
 	

@@ -18,14 +18,15 @@ public class CreditsScreen {
 	public CreditsScreen (Batch batch) { // TEMP STUFF FOR NOW
 		this.batch = batch;
 		img = new Texture(Gdx.files.internal("menus/credits.png"));
-		y = 0 - img.getHeight();
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
 		winnerMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/medalceremony.mp3"));
 		title = 1 ;
 		credits = 5 ;
+		y = 0 - img.getHeight();
 	}
 	
 	public void draw() {
+		//draws image on screen		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -35,6 +36,7 @@ public class CreditsScreen {
 	
 	public void update () {
 		if (y >= -1400) {
+			//music changed at a certain point in the credits
 			music.dispose();
 			winnerMusic.play () ;
 		}
@@ -42,11 +44,14 @@ public class CreditsScreen {
 			music.play();
 		}
 		draw () ;
+		//y coordinate is updated so credits scroll upward
 		y += 3;
 	}
 	
 	public int giveNextScreen () {
+		//press buttons to go to different pages
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) || y >= 0) {
+			//ESC to return to start menu
 			music.dispose() ;
 			winnerMusic.dispose();
 			y = 0 - img.getHeight();

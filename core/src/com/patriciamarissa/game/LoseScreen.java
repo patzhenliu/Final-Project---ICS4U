@@ -12,7 +12,6 @@ public class LoseScreen {
 	private final int title, game, shop, lose ;
 	private Batch batch;
 	private Texture background ;
-	private Texture page ;
 	private Texture highscoreandcoins ;
 	private Texture loseMenu;
 	private Texture [] nums;
@@ -30,24 +29,25 @@ public class LoseScreen {
 	Sound clickSound;
 	
 	public LoseScreen (Batch batch) {
+		this.batch = batch ;
 		title = 1 ;
 		game = 2 ;
 		shop = 3 ;
 		lose = 7 ;
+		
 		highscore = 0 ;
 		coins = 0 ;
-		this.batch = batch ;
 		
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/game over music.mp3"));
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
-		//I DIDNT PLAY ANY MUSIC ANYWHERE YET
-		
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
+
 		nums = new Texture[10];
 		for(int i = 0; i < nums.length; i++){
 		    String fileName = "text/" + i + ".png";
 		    nums[i] = new Texture(Gdx.files.internal(fileName));
 		}
 		
+		//buttons on the lose screen - play again, go to shop, go home
 		buttonNum = 0;
 		playButton = new Button(batch, new Texture(Gdx.files.internal("menus/go again w.png")),
 				new Texture(Gdx.files.internal("menus/go again r.png")), 390, 273, game);
@@ -61,23 +61,23 @@ public class LoseScreen {
 		buttons[1] = shopButton;
 		buttons[2] = homeButton;
 		
-		
+		//import images
 		loseMenu = new Texture(Gdx.files.internal("menus/lose blank.png"));
 		background = new Texture(Gdx.files.internal("backgrounds/losebg.png"));
 		highscoreandcoins = new Texture(Gdx.files.internal("menus/highscore and cc.png"));
 	}
 	
 	public void draw () {
+		//draws buttons, score and backgrounds on screen
 		batch.begin();
 		batch.draw (background, 0, 0) ;
 	    batch.draw(loseMenu, 300, 50);
 	    batch.draw (highscoreandcoins, 700, 0) ;
 	    batch.end();
 	    
-	    playButton.draw();
-	    shopButton.draw();
-	    homeButton.draw();
-	    
+	    for (Button b: buttons) {
+        	b.draw();
+	    }
 	    buttons[buttonNum].drawHoverImg();
 	    
 		drawNum (875, 90, coins) ;
@@ -85,6 +85,7 @@ public class LoseScreen {
 	}
 	
 	public void drawNum(int xDisplace, int y, int num) {
+		//draws numbers
 		batch.begin();
 		for(int i = 0; i < Integer.toString(num).length(); i++) {
 			batch.draw(nums[Integer.parseInt(Integer.toString(num).substring(i, i + 1))], i * 20 + xDisplace, y);
@@ -105,6 +106,7 @@ public class LoseScreen {
 	}
 	
 	public void updatePage () {
+		//checks for keyboard input to update selected button
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
 			if (buttonNum + 1 < buttons.length) {
 				buttonNum += 1;
@@ -130,7 +132,9 @@ public class LoseScreen {
 	}
 	
 	public int giveNextScreen () {
+		//press button to change page
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			//ENTER to play again, shop or return to start menu
 			music.dispose() ;
 			return buttons[buttonNum].getPageNum();
 		}

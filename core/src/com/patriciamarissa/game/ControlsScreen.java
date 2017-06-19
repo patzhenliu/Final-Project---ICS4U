@@ -9,25 +9,20 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public class ControlsScreen {
 	private Batch batch;
 	private Texture shopImg;
-	private final int title, game, controls ;
-	private int coins ;
+	private final int title, controls ;
 	
 	Music music;
 	
-	public ControlsScreen (Batch batch) { // TEMP STUFF FOR NOW
-		// THREE CONTROLS PAGES
-		// FIRST ONE IS PLAYER
-		// SECOND ONE IS ENEMY EXPLAINATIONS
-		// THIRD ONE IS PAGE EXPLAINATIONS
+	public ControlsScreen (Batch batch) {
 		this.batch = batch;
 		shopImg = new Texture(Gdx.files.internal("menus/controlscreen.png"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
 		title = 1 ;
-		game = 2 ;
 		controls = 4 ;
 	}
 	
 	public void draw() {
+		//draws image on screen
 		batch.begin();
 	    batch.draw(shopImg, 0, 0);
 		batch.end();
@@ -39,7 +34,9 @@ public class ControlsScreen {
 	}
 	
 	public int giveNextScreen () {
+		//press buttons to go to different page
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			//ESC to return to start menu
 			music.stop () ;
 			return title ;
 		}

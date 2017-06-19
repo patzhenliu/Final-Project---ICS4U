@@ -8,14 +8,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Background {
 	private Batch batch;
 	private Texture backgroundImg;
-    private TextureRegion background;
     
-    private int x;
-    private int y;
+    private int x, y;
     private int width;
     
     private int moveSpeed;
-    private boolean moving;
 	
 	public Background(Batch batch, int x, int width, int height, int moveSpeed) {
 		this.batch = batch;
@@ -23,24 +20,23 @@ public class Background {
 		this.moveSpeed = moveSpeed;
 		
 		backgroundImg = new Texture(Gdx.files.internal("backgrounds/background.png"));
-		//background = new TextureRegion(backgroundImg, 0, 100, width, height);
 		
 		this.x = x;
-		int y = 100;
-		moving = true;
+		y = 100;
 	}
 	
 	public void draw() {
-		if (x <= -1 * width) {
-			x = width;
-		}
+		//draws background on screen
 		batch.begin();
-		//batch.draw(background, 0, 0);
-	    batch.draw(backgroundImg, x, 100);
+	    batch.draw(backgroundImg, x, y);
 		batch.end();
 	}
 	
 	public void move() {
+		//updates x coordinate so background moves backwards on screen
+		if (x <= -1 * width) {
+			x = width;
+		}
 		x -= moveSpeed;
 	}
 	

@@ -45,29 +45,34 @@ public class Player {
 	
 	public Player(Batch batch, int speed, int moveSpeed) {
 		this.batch = batch;
-		startSpeed = speed;
-		this.moveSpeed = moveSpeed;
+		
 		deathImg = new Texture(Gdx.files.internal("sprites/death.png")) ;
+		jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/jump1.wav")); //temp
+		dieSound = Gdx.audio.newSound(Gdx.files.internal("sounds/die.wav")); //temp
 		importSprite();
 		currentSprite = sprites[0];
-		spriteCount = 0;
-		animationCount = 2;
-		powerups = new int [6] ; // lasers, life, jump, money, fire, holes
+		
+		startSpeed = speed;
+		this.moveSpeed = moveSpeed;
 		groundLvl = 100;
 		jumpHeight = 150;
-		facingForwards = true;
 		lives = 3;
+		
+		spriteCount = 0;
+		animationCount = 2;
+		dyingSpeed = 20;
+		
+		powerups = new int [6] ; // lasers, life, jump, money, fire, holes
 		lasers = new ArrayList <Laser> () ;
-		reset();
-		hole = null;
+		
 		deactivateHoles = false ;
 		deactivateFire = false ;
 		
-		jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/jump1.wav")); //temp
-		dieSound = Gdx.audio.newSound(Gdx.files.internal("sounds/die.wav")); //temp
+		reset();
 	}
 	
 	public void importSprite() {
+		//import player sprites
 		spritePage = new Texture(Gdx.files.internal("sprites/SpriteSheet.png"));
 		sprites = new Sprite[4];
 		sprites[0] = new Sprite(spritePage, 38, 50, 31, 50);
@@ -77,26 +82,28 @@ public class Player {
 	}
 	
 	public void reset() {
-		
+		//sets variables to their original values
 		if (!facingForwards) {
 			changeDirection();
 		}
+		if (lives <= 0) {
+			resetLives () ;
+		}
+		
 		resetPos();
 		lasers.clear();
 		hole = null;
 		minX = -100;
 		maxX = Gdx.graphics.getWidth();
-		if (lives <= 0) {
-			resetLives () ;
-		}
+		
 		groundLvl = 100;
 		jumpHeight = 150 + (125 * (powerups [2])) ;
 		speed = startSpeed;
+
 		isJumpingUp = false;
 		facingForwards = true;
 		isDead = false;
-		dyingSpeed = 20;
-		
+				
 		if (powerups [4] == 1) {
 			deactivateFire = true ;
 		}
@@ -106,6 +113,7 @@ public class Player {
 	}
 	
 	public void resetPos() {
+		//sets player to original position
 		x = 100;
 		y = 100;
 		for (int i = 0; i < sprites.length; i++) {
@@ -114,7 +122,8 @@ public class Player {
 	}
 	
 	public void moveLeft() {
-		
+		//checks if player can move left
+		//direction facing left if he moves
 		if (x - speed > minX) {
 			x -= speed;
 		}
@@ -128,7 +137,8 @@ public class Player {
 	}
 	
 	public void moveRight() {
-		
+		//checks if player can move right
+		//direction facing right if he moves
 		if (x + speed < maxX) {	
 			x += speed;
 		}
@@ -142,6 +152,7 @@ public class Player {
 	}
 	
 	public void moveBack() {
+		//player moves backwards with the environment
 		x -= moveSpeed;
 	}
 	
@@ -153,7 +164,7 @@ public class Player {
 	}
 	
 	public void changeDirection() {
-		
+		//changes sprites to face to opposite direction
 		for (int i = 0; i < sprites.length; i++) {
 			sprites[i].flip(true,false);
 		}
@@ -162,6 +173,7 @@ public class Player {
 	}
 	
 	public void draw() {
+		//draws player on screen
 		batch.begin();
 		currentSprite.draw(batch);
 		batch.end();
@@ -169,11 +181,13 @@ public class Player {
 	
 	public void move() {
 		if (hole != null) {
-			//System.out.println("BOUNDARIES RESET!");
+			//player get stuck in a hole
 			setBoundaries(hole.getX(), hole.getX() + hole.getWidth()- getWidth());
 		}
-			//System.out.println(facingForwards);
+			
 		moveBack();
+		
+		//cycles through sprites to animate player
 		if (spriteCount > 0) {
 			animationCount--;
 			if (animationCount == 0) {
@@ -197,11 +211,12 @@ public class Player {
 			y -= speed;
 			currentSprite = sprites[3];
 		}
-		//System.out.println(x+","+y);
 		currentSprite.setPosition(x, y);
 	}
 	
 	public void shoot() {
+		//create laser object
+		//speed is dependent on the direction player is facing
 		int laserSpeed = speed;
 		if (facingForwards) {
 			if (laserSpeed < 0) {
@@ -225,6 +240,7 @@ public class Player {
 	}
 	
 	public void resetOneTimeUps () {
+		//upgrades with one time use are reset to not bought
 		deactivateFire = false ;
 		deactivateHoles = false ;
 		powerups [4] = 0 ;
@@ -232,6 +248,7 @@ public class Player {
 	}
 	
 	public void die(){
+		//player loses a life when he dies
 		dieSound.play();
 		isDead = true;
 		lives -= 1 ;

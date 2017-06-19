@@ -14,7 +14,6 @@ public class Story implements InputProcessor{
 	private Texture [] pages;
 	private int pageNum;
 	private final int totPages = 100;
-	private Texture waitImg;
 	
 	Music music;
 	Sound clickSound;
@@ -23,46 +22,38 @@ public class Story implements InputProcessor{
 		pages = new Texture [totPages] ;
 		this.batch = batch ;
 		
-		waitImg = new Texture(Gdx.files.internal("menus/wait.png"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/frogger-music.mp3"));
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
 		
-		
+		//import images
 		for (int i = 0; i < totPages; i++) {
-			drawWaitImg(); //this doesn't work FOR SOME REASON >:(
 			pages [i] = new Texture(Gdx.files.internal("story/story" + i +".png"));
 		}
 		
 		pageNum = 0;
 	}
 	
-	public void drawWaitImg() {
-		batch.begin();
-		batch.draw(waitImg, 0, 0);
-		batch.end();
-	}
-	
 	public void draw () {
+		//draws current page on screen
 		TextureRegion page = new TextureRegion(pages[pageNum], 0, 0, 900, 600);
 		batch.begin();
 	    batch.draw(pages[pageNum], 0, 0, 1000, 600);
 	    batch.end();
 	}
 	
-	public void updatePage () {
-		// use mouse coordinates to figure out which img from the list to use
-	}
-	
 	public void update () {
 		music.play();
 		draw () ;
-		if (Gdx.input.isKeyJustPressed(Keys.S)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			//press ESCAPE to skip the story
 			pageNum = totPages;
 		}
 	}
 	
-	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
+	public int giveNextScreen () {
+		//press arrow keys to change slides
 		if (pageNum > totPages - 1) {
+			//returns to title menu if its the end of the story
 			return 1;
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {

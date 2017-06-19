@@ -17,7 +17,6 @@ public class Upgrade {
 	private Texture upjump2, upjump3 ;
 	private Texture mongrey2, mongrey3 ;
 	private Texture cicon, ccross ; // current icon, current cross
-	private String description;
 	
 	/* lasers (upgradable to 3) (10, 20, 40)
 	 * more life (upgradable to 6, but starts at 3) (20, 40, 80)

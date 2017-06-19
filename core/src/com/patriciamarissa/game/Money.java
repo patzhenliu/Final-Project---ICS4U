@@ -32,6 +32,7 @@ public class Money {
 		upsprs2 = new Sprite [4] ;
 		upsprs3 = new Sprite [4] ;
 		
+		//all money sprites
 		sprites[0] = new Sprite(spritePage, 56, 6, 50, 48);
 		sprites[1] = new Sprite(spritePage, 6, 6, 46, 48);
 		sprites[2] = new Sprite(spritePage, 160, 6, 10, 48);
@@ -72,12 +73,13 @@ public class Money {
 		currentSprite = sprites[0];
 		spriteCount = 0;
 		animationCount = 4;
+		
 		offsetX = rand.nextInt(range - (int)sprites[0].getWidth());
 		y = py;
-		System.out.println ("px is " + px + ", offset is" + offsetX) ;
 	}
 	
 	public void draw(int px) {
+		//draws current sprite on screen
 		currentSprite.setPosition(px + offsetX - (int)currentSprite.getWidth()/2, y);
 		batch.begin();
 		currentSprite.draw(batch);
@@ -105,6 +107,7 @@ public class Money {
 	
 	
 	public void spin() {
+		//cycles through sprite to animate money
 		if (spriteCount > 0) {
 			animationCount--;
 			if (animationCount == 0) {
@@ -116,6 +119,7 @@ public class Money {
 	}
 	
 	public boolean collide(Player player){
+		//checks collision with player
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight()/2);
 		Rectangle moneyRect = new Rectangle(currentSprite.getX(), currentSprite.getY(), currentSprite.getWidth(), currentSprite.getHeight() );

@@ -23,6 +23,8 @@ public class Fire {
 	public Fire(Batch batch, int px, int py, int range) {
 		this.batch = batch;
 		spritePage = new Texture(Gdx.files.internal("sprites/Fire.png"));
+		
+		//fire sprite images
 		sprites = new Sprite[6];
 		sprites[0] = new Sprite(spritePage, 4, 116, 41, 50);
 		sprites[1] = new Sprite(spritePage, 57, 117, 42, 50);
@@ -36,11 +38,11 @@ public class Fire {
 		animationCount = 20;
 		offsetX = rand.nextInt(range - (int)sprites[0].getWidth());
 		y = py;
-		System.out.println(y);
 		
 	}
 	
 	public void draw(int px) {
+		//draws fire
 		currentSprite.setPosition(px + offsetX - (int)currentSprite.getWidth()/2, y);
 		batch.begin();
 		currentSprite.draw(batch);
@@ -50,6 +52,7 @@ public class Fire {
 	}
 	
 	public void animate() {
+		//cycles between the fire sprites to animate the fire
 		if (spriteCount == 0) {
 			spriteCount = sprites.length - 1;
 		}
@@ -64,10 +67,10 @@ public class Fire {
 	}
 	
 	public boolean collide(Player player){
+		//checks collision with player
 		Sprite playerSprite = player.getSprite();
 		Rectangle rect = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight()/2);
 		Rectangle fireRect = new Rectangle(currentSprite.getX(), currentSprite.getY(), currentSprite.getWidth()/32, currentSprite.getHeight()/2 );
-		//play with fireRect size
 		return rect.overlaps(fireRect);
 		
 	}

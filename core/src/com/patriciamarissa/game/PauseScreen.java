@@ -62,6 +62,7 @@ public class PauseScreen {
 	}
 	
 	public void draw () {
+		//draw buttons and backgrounds
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		batch.begin();
         batch.draw(pauseMenu, 270, 250);
@@ -74,6 +75,7 @@ public class PauseScreen {
 	}
 	
 	public void updatePage (Button[] buttonList) {
+		//use LEFT and RIGHT to change highlighted button
 		if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
 			if (buttonNum + 1 < buttonList.length) {
 				buttonNum += 1;
@@ -97,8 +99,11 @@ public class PauseScreen {
 		draw () ;
 	}
 	
-	public int giveNextScreen () { // idk replace the keyboard commands with cursor stuff eventually
+	public int giveNextScreen () {
+		//press buttons to update page
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			//for home, shop and controls button it will ask
+			//are you sure first
 			if (buttons[buttonNum].equals(homeButton)) {
 				yesButton.setPageNum(TITLE);
 			}
@@ -120,6 +125,7 @@ public class PauseScreen {
 	}
 	
 	public int areYouSure() {
+		//draws menu and buttons and handles keyboard input
 		updatePage(buttons2);
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
