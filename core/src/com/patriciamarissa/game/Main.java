@@ -262,7 +262,7 @@ public class Main extends ApplicationAdapter{
 	public void playGame() {
 		//checks player death
 		if (player.dying()) {
-			gameMusic.dispose();
+			gameMusic.stop();
 			System.out.println(player.getLives());
 			if (player.getLives() > 0) {
 				if (player.getDyingSpeed() == 0) {

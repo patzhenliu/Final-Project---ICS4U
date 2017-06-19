@@ -52,7 +52,7 @@ public class CreditsScreen {
 		}
 		draw () ;
 		//y coordinate is updated so credits scroll upward
-		y += 3;
+		y += 30;
 	}
 	
 	public void stopMusic() {

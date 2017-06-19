@@ -101,8 +101,7 @@ public class TitleScreen {
 	public int giveNextScreen () {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			//ENTER to change pages
-			music.stop () ;
-			music.dispose();
+			music.stop();
 			clickSound.play();
 			int temp = buttonNum;
 			buttonNum = 0;

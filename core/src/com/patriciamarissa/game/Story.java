@@ -51,6 +51,7 @@ public class Story{
 		//press arrow keys to change slides
 		if (pageNum > totPages - 1) {
 			//returns to title menu if its the end of the story
+			pageNum = 0;
 			return 1;
 		}
 		else if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
