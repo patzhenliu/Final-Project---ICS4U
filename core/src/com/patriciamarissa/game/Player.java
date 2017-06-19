@@ -18,7 +18,6 @@ public class Player {
 	
 	private int dyingSpeed; //how long death lasts for
 	private boolean isDead;
-	private Texture deathImg;
 	
 	private int spriteCount;
 	private int speed;
@@ -45,8 +44,6 @@ public class Player {
 	
 	public Player(Batch batch, int speed, int moveSpeed) {
 		this.batch = batch;
-		
-		deathImg = new Texture(Gdx.files.internal("sprites/death.png")) ;
 		jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/jump1.wav")); //temp
 		dieSound = Gdx.audio.newSound(Gdx.files.internal("sounds/die.wav")); //temp
 		importSprite();
@@ -259,13 +256,10 @@ public class Player {
 	}
 	
 	public boolean dying() {
-		//dying "animation"
+		//player is stuck in the death position for a while until death is over
 		if(isDead){
 			if (dyingSpeed > 0) {
 				dyingSpeed--;
-				batch.begin();
-				batch.draw(deathImg, x, y);
-				batch.end();
 			}
 			else {
 				reset(false);
