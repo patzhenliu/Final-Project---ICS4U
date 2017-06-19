@@ -2,7 +2,6 @@ package com.patriciamarissa.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,7 +21,7 @@ public class Story{
 		this.batch = batch ;
 		
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/main game music.mp3"));
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sound-frogger-time.wav")); //temp
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav")); //temp
 		
 		//import images
 		for (int i = 0; i < totPages; i++) {

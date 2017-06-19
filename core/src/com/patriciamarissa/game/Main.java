@@ -118,8 +118,11 @@ public class Main extends ApplicationAdapter{
 		// this was taken entirely from an example you gave us. thank you, sir!
 		Timer.schedule (new Task () { 
 			@Override public void run () {
-				increaseSpeed (1) ;
+				//System.out.println ("SPEEDUP") ;
+				if (isMoving) {
+					increaseSpeed (1) ;
 				}
+			}
 		} , 10, 10) ; // first is delay to starting in seconds, second is time in between each tick in seconds
 	}
 	
