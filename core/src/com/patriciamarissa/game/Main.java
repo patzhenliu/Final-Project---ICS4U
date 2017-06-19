@@ -106,7 +106,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		
 		score = 0;
 		speed = 2; //speed on screen moving backwards
-		money = 1000;
+		money = 0;
 		isMoving = false;
 		
 		holeNum = 2;
@@ -149,7 +149,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 	public void makeEnemy (Platform plat) { //COMMENT
 		int chance = rand.nextInt (3) ;
 		if (chance == 1) {
-			System.out.println ("bam") ;
+			//System.out.println ("bam") ;
 			int type = rand.nextInt (4) ;
 			if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
 				type = 0 ;

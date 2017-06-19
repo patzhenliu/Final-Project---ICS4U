@@ -12,7 +12,7 @@ public class TimerRunner {
 		System.out.println (timedelay) ;
 		Timer.schedule (new Task () { 
 			@Override public void run () {
-				System.out.println ("SPEEDUP") ;
+				//System.out.println ("SPEEDUP") ;
 				accumulated += 1 ;
 				}
 		} , timedelay, timedelay) ;

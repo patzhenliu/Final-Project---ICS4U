@@ -117,7 +117,6 @@ public class Platform {
 		for (int i = 0; i < moneyList.size(); i++) {
 			if (moneyList.get(i).collide(player)) {
 				moneyList.remove(i);
-				System.out.println("MONEY");
 				return true;
 			}
 		}

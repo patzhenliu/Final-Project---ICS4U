@@ -90,7 +90,7 @@ public class Money {
 		}
 	}
 	
-	public void updateSprite (int moneymult) {
+	public void updateSprite (int moneymult) { //COMMENT
 		if (moneymult == 1) {
 			currentSprites = upsprs1 ;
 			currentSprite = currentSprites [0] ;
