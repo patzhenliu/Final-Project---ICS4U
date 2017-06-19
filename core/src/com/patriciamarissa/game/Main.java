@@ -16,11 +16,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-/* OVERALL TO DO LIST
- * CLEAN UP CODE
- * COMMENTS yes maybe latr
- */
-
 public class Main extends ApplicationAdapter implements InputProcessor{
 	SpriteBatch batch;
 	
@@ -112,17 +107,18 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		holeNum = 2;
 		platNum = 4;
 
-		createHoles(holeNum);
+		createHoles(holeNum); // these 4 were lengthy enough to be put into their own methods
 		createPlatforms(platNum, 300, 200);
 		createPlatforms(platNum, 500, 320);
 		createPlatforms(platNum, 800, 440);
 		runTimer () ;
 	}
 	
-	public void runTimer () { //COMMENT
+	public void runTimer () {
+		// determines the time intervals between each speedup of the game. speedups occur every 10 seconds.
+		// this was taken entirely from an example you gave us. thank you, sir!
 		Timer.schedule (new Task () { 
 			@Override public void run () {
-				System.out.println ("SPEEDUP") ;
 				increaseSpeed (1) ;
 				}
 		} , 10, 10) ; // first is delay to starting in seconds, second is time in between each tick in seconds
@@ -145,19 +141,19 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
-	public void makeEnemy (Platform plat) { //COMMENT
+	public void makeEnemy (Platform plat) {
+		// 50% chance that an enemy aligned with the plat parameter will be made.
+		// type of enemy is randomized.
 		int chance = rand.nextInt (2) ;
 		if (chance == 1) {
-			//System.out.println ("bam") ;
 			int type = rand.nextInt (4) ;
 			if (type == 2 && plat.getWidth () < 110) { // only make it a golem if the platform is large enough for the feet.
 				type = 0 ;
 			}
-			if (type != 3) {
+			if (type != 3) { // anything except the lion
 				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), plat.getY () + plat.getHeight () - 1, speed, plat, holes, player.deactivateHoles)) ;
 			}
 			else { // lion is always on floor
-				// CHANGE THE X SO IT AVOIDS THE HOLES
 				enemies.add (new Enemy (batch, type, plat.getX () + plat.getWidth (), 100, speed, plat, holes, player.deactivateHoles)) ;
 			}
 		}
@@ -251,7 +247,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 			System.out.println(player.getLives());
 			if (player.getLives() > 0) {
 				if (player.getDyingSpeed() == 0) {
-					//hole or enemy will disappear if it collides with the player when respawning
+					//hole or enemy will disappear if it collides with the player when respawning to prevent a death loop
 					for (Hole h: holes) {
 						if (h.collide(100, 100, player.getWidth(), player.getHeight())) {
 							System.out.println("HOLE COLLISION");
@@ -260,7 +256,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 						}
 					}
 					for (Enemy e: enemies) {
-						if (e.collide(player) == true) { // if enemy collides, enemy dies. by blazing.
+						if (e.collide(player) == true) {
 							e.loseHp(420);
 						}
 					}
@@ -282,19 +278,19 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 		gameMusic.play();
 		boolean isOnPlatform = false;
 		for (int i = 0; i < platforms.size(); i++) {
-			if (player.getY () + player.getHeight () >= 600) {
+			if (player.getY () + player.getHeight () >= 600) { // top of screen, stop the jump
 				player.stopJump () ;
 			}
 			if (platforms.get(i).collideTop(player)) {
 				isOnPlatform = true;
-				if (platforms.get(i).moneyCollision(player)) {
+				if (platforms.get(i).moneyCollision(player)) { // get that cash dolla
 					money += player.getMoneyMult () + 1;
 					moneySound.play();
 				}
 				if (platforms.get(i).fireCollision(player) && player.deactivateFire == false) {
 					player.die();
 				}
-				if (!player.isJumping()) {
+				if (!player.isJumping()) { // ground level is the platform the player just jumped off of
 					player.setGroundLvl(platforms.get(i).getY() + platforms.get(i).getHeight());
 				}	
 			}
