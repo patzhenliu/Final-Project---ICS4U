@@ -328,7 +328,7 @@ public class Shop {
 	
 	public int giveNextScreen () { // checks to see if the player has inputted that they want to go to another screen
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			music.dispose() ;
+			music.stop() ;
 			spriteCount = 0;
 			return title;
 		}

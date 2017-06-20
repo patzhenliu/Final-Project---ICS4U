@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class LoseScreen {
+	
 	private final int title, game, shop, lose ;
 	private Batch batch;
 	private Texture background ;
@@ -27,7 +28,7 @@ public class LoseScreen {
 	Music music;
 	Sound clickSound;
 	
-	public LoseScreen (Batch batch) { // constructor
+	public LoseScreen (Batch batch) {
 		this.batch = batch ;
 		title = 1 ;
 		game = 2 ;
@@ -92,15 +93,15 @@ public class LoseScreen {
 		batch.end();
 	}
 	
-	public void updateHighScore (int hs) { // only called when there's a new high score
+	public void updateHighScore (int hs) {
 		highscore = hs ;
 	}
 	
-	public void updateCoins (int c) { // updates total amount of coins
+	public void updateCoins (int c) {
 		coins = c ;
 	}
 	
-	public int getHighScore () { // used for determining if the current score beats the old high
+	public int getHighScore () {
 		return highscore ;
 	}
 	
@@ -124,7 +125,7 @@ public class LoseScreen {
 		}
 	}
 	
-	public void update () { // updates everything
+	public void update () {
 		music.play () ;
 		updatePage () ;
 		draw () ;
@@ -134,7 +135,7 @@ public class LoseScreen {
 		//press button to change page
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			//ENTER to play again, shop or return to start menu
-			music.dispose() ;
+			music.stop() ;
 			int temp = buttonNum;
 			buttonNum = 0;
 			return buttons[temp].getPageNum();

@@ -17,8 +17,7 @@ public class CreditsScreen {
 	Music music, winnerMusic;
 	Sound staticSound;
 	
-	public CreditsScreen (Batch batch) {
-		// constructor
+	public CreditsScreen (Batch batch) { // TEMP STUFF FOR NOW
 		this.batch = batch;
 		img = new Texture(Gdx.files.internal("menus/credits.png"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/not main game music.mp3"));
@@ -39,14 +38,13 @@ public class CreditsScreen {
 	}
 	
 	public void update () {
-		// moves the picture up the page, checks to see if its at the point where the music changes
 		if (y >= -250) {
-			winnerMusic.dispose();
+			winnerMusic.stop();
 			staticSound.play();
 		}
 		else if (y >= -1400) {
 			//music changed at a certain point in the credits
-			music.dispose();
+			music.stop();
 			winnerMusic.play () ;
 		}
 		else {
@@ -54,14 +52,13 @@ public class CreditsScreen {
 		}
 		draw () ;
 		//y coordinate is updated so credits scroll upward
-		y += 30;
+		y += 3;
 	}
 	
 	public void stopMusic() {
-		// gets rid of music when the credits are over so no musical overlap with title screen
-		music.dispose() ;
-		winnerMusic.dispose();
-		staticSound.dispose();
+		music.stop() ;
+		winnerMusic.stop();
+		staticSound.stop();
 	}
 	
 	public int giveNextScreen () {
